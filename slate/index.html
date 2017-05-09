@@ -401,7 +401,7 @@ You must replace <code>your_api_key</code> with your personal API key.
 </span></code></pre>
 <p>We refer to any <strong>apparel</strong>, <strong>accessory</strong>, or <strong>shoes</strong> as a <strong>product</strong> in the table below. A product in a catalog is represented as a json object with fields specified below. Ingesting the catalog means uploading these json files for all products in the catalog via an API call.</p>
 
-<p>Try to populate as much information available for each product into these fields in the json document. Except for the fields in bold (<strong>id</strong>, <strong>name</strong> (for natural language search), <strong>images</strong>(for visual search and visual browse)) all of these are optional. However the the performance of the natural language search is heavily dependent on the richness of these structured fields and is recommended that you provide as much information as possible.</p>
+<p>Try to populate as much information available for each product into these fields in the json document. Except for the fields in bold (<strong>id</strong>, <strong>gender</strong>, <strong>name</strong> (for natural language search), <strong>images</strong>(for visual search and visual browse)) all of these are optional. However the the performance of the natural language search is heavily dependent on the richness of these structured fields and is recommended that you provide as much information as possible.</p>
 
 <table><thead>
 <tr>
@@ -451,7 +451,7 @@ You must replace <code>your_api_key</code> with your personal API key.
 <td>The complete product taxonomy if known, separated via <code class="prettyprint">;</code>.</td>
 </tr>
 <tr>
-<td>gender</td>
+<td><strong>gender</strong></td>
 <td>string</td>
 <td>The gender for which the product is intended for, can be <code class="prettyprint">male</code>, <code class="prettyprint">female</code> or <code class="prettyprint">unisex</code>.</td>
 </tr>
