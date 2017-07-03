@@ -221,6 +221,7 @@
       </div>
         <ul class="toc-footer">
             <li><a href='https://www.ibm.com/us-en/marketplace/8075'>Sign up for an API key</a></li>
+            <li><a href='https://github.com/cognitivefashion/cf-sdk-python'>Python SDK</a></li>
             <li><a href='https://www.ibm.com/us-en/marketplace/8075'>Cognitive Fashion site</a></li>
         </ul>
     </div>
@@ -230,6 +231,8 @@
         <h1 id="ibm-research-cognitive-fashion">IBM Research Cognitive Fashion</h1>
 
 <p>The <a href="https://www.ibm.com/us-en/marketplace/8075">IBM Research Cognitive Fashion</a> project aims to build a suite of APIs for the fashion industry in order to enable an engaging shopping experience, primarily leveraging natural language and image understanding technologies together with other cognitive capabilities. Developers/in-house IT team can use these APIs to build their own applications. Central to this is a curated domain specific taxonomy/knowledge graph, fashion related content and text/image annotators tuned to the domain of fashion. </p>
+
+<p><a href="https://github.com/cognitivefashion/cf-sdk-python">Python SDK</a></p>
 
 <aside class="notice">
 <b>IBM fashion taxonomy</b> is a semi-automatically curated comprehensive hierarchical fashion taxonomy for apparel, footwear, and accessories along with their attributes and relations. The taxonomy is curated from several fashion resources and then hand tuned by domain experts. All the APIs below leverage this fashion taxonomy. Fashion evolves constantly and hence IBM fashion taxonomy is dynamically updated at regular intervals to include the current fashion terms and trends. The user will always have access to the latest fashion taxonomy when using any of these APIs.
@@ -338,24 +341,28 @@ You must replace <code>your_api_key</code> with your personal API key.
   </span><span class="s2">"1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"full"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"front"</span><span class="p">,</span><span class="w"> 
+   </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2016/109FA16AWWWDR9D03Y10/Front_Large.jpg"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="w">
   </span><span class="p">},</span><span class="w"> 
   </span><span class="s2">"3"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"detail"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w"> 
+   </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2016/109FA16AWWWDR9D03Y10/Detail_Large.jpg"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="w">
   </span><span class="p">},</span><span class="w"> 
   </span><span class="s2">"2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"full"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"right"</span><span class="p">,</span><span class="w"> 
+   </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2016/109FA16AWWWDR9D03Y10/Right_Large.jpg"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="w">
   </span><span class="p">},</span><span class="w"> 
   </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"full"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"back"</span><span class="p">,</span><span class="w"> 
+   </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2016/109FA16AWWWDR9D03Y10/Back_Large.jpg"</span><span class="p">,</span><span class="w"> 
    </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="w">
   </span><span class="p">}</span><span class="w">
@@ -428,7 +435,7 @@ You must replace <code>your_api_key</code> with your personal API key.
 <tr>
 <td>out_of_stock</td>
 <td>string</td>
-<td>Can either be <code class="prettyprint">yes</code> or <code class="prettyprint">no</code>. This is the field that need to be changed to <code class="prettyprint">yes</code> when a product goes out of stock. By default all search queries will not return out-of-stock products.</td>
+<td>Can either be <code class="prettyprint">yes</code> or <code class="prettyprint">no</code>. This is the field that need to be changed to <code class="prettyprint">yes</code> when a product goes out of stock. By default all search queries will not return out-of-stock products. Note that typically out of stock is at the SKU level. Ideally make this <code class="prettyprint">yes</code>  only when all SKUs for this product are out of stock.</td>
 </tr>
 <tr>
 <td></td>
@@ -468,12 +475,17 @@ You must replace <code>your_api_key</code> with your personal API key.
 <tr>
 <td></td>
 <td>image_id</td>
-<td>The image id.</td>
+<td>The image id (string).</td>
 </tr>
 <tr>
 <td></td>
 <td>image_url</td>
-<td>The image url. The actual image will be downloaded from this url to build the visual search index. The image can be in PNG, JPEG, BMP, or GIF.</td>
+<td>The image url. The actual image will be downloaded from this url to build the visual search index. The image format can be in JPEG,PNG,BMP, or GIF.</td>
+</tr>
+<tr>
+<td></td>
+<td>ignore</td>
+<td>You can use this field to select what kind of images should be used for visual browse/search.  If <code class="prettyprint">yes</code> then the image will not be downloaded and excluded from visual browse/search. In the example on the right, we ignore all images which have close-up of some details in the product.</td>
 </tr>
 <tr>
 <td></td>
@@ -488,12 +500,12 @@ You must replace <code>your_api_key</code> with your personal API key.
 <tr>
 <td></td>
 <td>camera_focus</td>
-<td>Which part of the model the camera is focussed on. Can take one of the following values: <code class="prettyprint">full</code> (complete view of the model, entire body), <code class="prettyprint">top</code> (upper part of the model above the waist, used in shirts etc.), <code class="prettyprint">bottom</code> (lower part of the model below the waist, used in trousers etc.), <code class="prettyprint">portrait</code> (model face, normally up to the shoulder), <code class="prettyprint">detail</code> (a close-up of some details in the product), <code class="prettyprint">UNK</code>.</td>
+<td>Which part of the model the camera is focussed on. Can take one of the following values: <code class="prettyprint">full</code> (complete view of the model, entire body), <code class="prettyprint">top</code> (upper part of the model above the waist, used in shirts etc.), <code class="prettyprint">bottom</code> (lower part of the model below the waist, used in trousers etc.), <code class="prettyprint">portrait</code> (model face, normally up to the shoulder), <code class="prettyprint">detail</code> (a close-up of some details in the product), <code class="prettyprint">outfit</code> (complete view of the model, entire body along with other apparel and accessories), <code class="prettyprint">UNK</code>.</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td><em>The tags <code class="prettyprint">model_worn</code>, <code class="prettyprint">pose</code> and <code class="prettyprint">orientation</code> are optional. Also images with <code class="prettyprint">camera_focus</code> of type <code class="prettyprint">detail</code> will be excluded from visual browse/search.</em></td>
+<td><em>The fields <code class="prettyprint">ignore</code>,<code class="prettyprint">model_worn</code>, <code class="prettyprint">pose</code> and <code class="prettyprint">camera_focus</code> are optional.</em></td>
 </tr>
 <tr>
 <td>color</td>
@@ -608,7 +620,6 @@ You must replace <code>your_api_key</code> with your personal API key.
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="c"># Optional parameters.</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'download_images'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'ignore_detail_images'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
 
 <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">json_filenames</span><span class="p">:</span>
     <span class="c"># load the json file</span>
@@ -682,12 +693,6 @@ You must replace <code>your_api_key</code> with your personal API key.
 <td>By default all the images specified in the json will be downloaded. Set this to <code class="prettyprint">false</code> if you do not want to download the images.</td>
 <td><code class="prettyprint">true</code></td>
 </tr>
-<tr>
-<td>ignore_detail_images</td>
-<td>query</td>
-<td>By default visual search ignores images of type <code class="prettyprint">detail</code> (specified by the field <code class="prettyprint">camera_focus</code> in the json) and hence does not download these images. Set this to <code class="prettyprint">false</code> if you also want to download the <code class="prettyprint">detail</code> images.</td>
-<td><code class="prettyprint">true</code></td>
-</tr>
 </tbody></table>
 
 <h3 id="response">Response</h3>
@@ -720,7 +725,7 @@ You must replace <code>your_api_key</code> with your personal API key.
 </tr>
 <tr>
 <td>n_images_ignored</td>
-<td>The total number of images ignored (images of type <code class="prettyprint">detail</code>).</td>
+<td>The total number of images ignored (specified by the field <code class="prettyprint">ignore</code> in <code class="prettyprint">images</code>).</td>
 </tr>
 <tr>
 <td>n_images_error</td>
@@ -793,6 +798,7 @@ Note that the image download happens only once. If you post the json again the i
    </span><span class="s2">"1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"front"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/20DRA16FWCWFT9010970/Front_Large.jpg"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20DRA16FWCWFT9010970_1_front_UNK.jpg"</span><span class="w">
@@ -800,6 +806,7 @@ Note that the image download happens only once. If you post the json again the i
    </span><span class="s2">"3"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"right"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/20DRA16FWCWFT9010970/Right_Large.jpg"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20DRA16FWCWFT9010970_3_right_UNK.jpg"</span><span class="w">
@@ -807,6 +814,7 @@ Note that the image download happens only once. If you post the json again the i
    </span><span class="s2">"2"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"left"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/20DRA16FWCWFT9010970/Left_Large.jpg"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20DRA16FWCWFT9010970_2_left_UNK.jpg"</span><span class="w">
@@ -814,6 +822,7 @@ Note that the image download happens only once. If you post the json again the i
    </span><span class="s2">"5"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"top"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/20DRA16FWCWFT9010970/Top_Large.jpg"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20DRA16FWCWFT9010970_5_top_UNK.jpg"</span><span class="w">
@@ -821,6 +830,7 @@ Note that the image download happens only once. If you post the json again the i
    </span><span class="s2">"4"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"detail"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/20DRA16FWCWFT9010970/Detail_Large.jpg"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20DRA16FWCWFT9010970_4_UNK_detail.jpg"</span><span class="w">
@@ -828,6 +838,7 @@ Note that the image download happens only once. If you post the json again the i
    </span><span class="s2">"6"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"camera_focus"</span><span class="p">:</span><span class="w"> </span><span class="s2">"full"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"pose"</span><span class="p">:</span><span class="w"> </span><span class="s2">"front"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ignore"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/20DRA16FWCWFT9010970/Look_Large.jpg"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"model_worn"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20DRA16FWCWFT9010970_6_front_full.jpg"</span><span class="w">
@@ -1053,7 +1064,6 @@ Note that the image download happens only once. If you post the json again the i
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="c"># Optional parameters.</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'download_images'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'ignore_detail_images'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
@@ -1115,12 +1125,6 @@ Note that the image download happens only once. If you post the json again the i
 <td>download_images</td>
 <td>query</td>
 <td>By default all the images specified in the json will be downloaded. Set this to <code class="prettyprint">false</code> if you do not want to download the images.</td>
-<td><code class="prettyprint">true</code></td>
-</tr>
-<tr>
-<td>ignore_detail_images</td>
-<td>query</td>
-<td>By default visual search ignores images of type <code class="prettyprint">detail</code> (specified by the field <code class="prettyprint">camera_focus</code> in the json) and hence does not download these images. Set this to <code class="prettyprint">false</code> if you also want to download the <code class="prettyprint">detail</code> images.</td>
 <td><code class="prettyprint">true</code></td>
 </tr>
 </tbody></table>
@@ -1944,11 +1948,7 @@ The structured parse is grounded in the fashion taxonomy and can understand vari
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
-<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="c"># Optional parameters.</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'ignore_detail_images'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
@@ -2005,12 +2005,6 @@ This is a one time long running operation. Currently it takes around 1-2 seconds
 <td>path</td>
 <td>(<strong>Required</strong>) The catalog name.</td>
 <td></td>
-</tr>
-<tr>
-<td>ignore_detail_images</td>
-<td>query</td>
-<td>By default visual search ignores images of type <code class="prettyprint">detail</code> (specified by the field <code class="prettyprint">camera_focus</code> in the json). Set this to <code class="prettyprint">false</code> if you also want to include the <code class="prettyprint">detail</code> images.</td>
-<td><code class="prettyprint">true</code></td>
 </tr>
 </tbody></table>
 
