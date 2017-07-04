@@ -1319,6 +1319,67 @@ Note that the image download happens only once. If you post the json again the i
 </tr>
 </tbody></table>
 
+<h2 id="get-all-catalog-names">Get all catalog names</h2>
+<pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># API end point.</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog_names'</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"catalog_names"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"sample_catalog"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"sample_catalog_2"</span><span class="p">],</span><span class="w">
+  </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.78"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get all the catalog names.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog_names</code></p>
+
+<h3 id="request">Request</h3>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>catalog_names</td>
+<td>The catalog names.</td>
+</tr>
+</tbody></table>
+
 <h1 id="natural-language-search">Natural Language Search</h1>
 
 <p>The Natural Language Search (NLS) for fashion allows the user to search a fashion e-commerce catalog using complex <strong>natural language queries</strong>. Below are a few sample queries that NLS can handle:</p>
