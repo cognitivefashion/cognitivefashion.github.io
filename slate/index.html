@@ -2998,13 +2998,14 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 <h2 id="dominant-color-palette">Dominant color palette</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># Dominant color palette. </span>
-<span class="c"># POST /v1/colors/image_color_palette</span>
+<span class="c"># POST /v1/colors/dominant_colors</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -3015,86 +3016,104 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 <span class="c"># Replace 'your_api_key' with your API key.</span>
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
 
-<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/colors/image_color_palette'</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'color_count'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'quality'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'image_max_dimension'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/colors/dominant_colors'</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
 <span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
-<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"color_palette"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+ </span><span class="s2">"dominant_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">240</span><span class="p">,</span><span class="w">
-    </span><span class="mi">86</span><span class="p">,</span><span class="w">
-    </span><span class="mi">74</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lavender blush"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#f7e8f2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">93.40649747006204</span><span class="p">,</span><span class="w">
+    </span><span class="mf">6.792207586509836</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-3.019243619029366</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tomato"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#f0564a"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tart orange"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="mi">247</span><span class="p">,</span><span class="w">
-    </span><span class="mi">243</span><span class="p">,</span><span class="w">
-    </span><span class="mi">248</span><span class="w">
+    </span><span class="mi">232</span><span class="p">,</span><span class="w">
+    </span><span class="mi">242</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"off white"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#f7f3f8"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"off white"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">320.00000000000006</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.06072874493927127</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9686274509803922</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"off white"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">246</span><span class="p">,</span><span class="w">
-    </span><span class="mi">171</span><span class="p">,</span><span class="w">
-    </span><span class="mi">216</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carmine pink"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#ed574b"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">57.398596108439904</span><span class="p">,</span><span class="w">
+    </span><span class="mf">57.08313749589916</span><span class="p">,</span><span class="w">
+    </span><span class="mf">37.966663400202684</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#f6abd8"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"light hot pink"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">237</span><span class="p">,</span><span class="w">
+    </span><span class="mi">87</span><span class="p">,</span><span class="w">
+    </span><span class="mi">75</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">4.444444444444457</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.6835443037974683</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9294117647058824</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tomato"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">66</span><span class="p">,</span><span class="w">
-    </span><span class="mi">52</span><span class="p">,</span><span class="w">
-    </span><span class="mi">52</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#423434"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"old burgundy"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">204</span><span class="p">,</span><span class="w">
-    </span><span class="mi">139</span><span class="p">,</span><span class="w">
-    </span><span class="mi">113</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#483431"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">23.854492807791047</span><span class="p">,</span><span class="w">
+    </span><span class="mf">8.487853036308863</span><span class="p">,</span><span class="w">
+    </span><span class="mf">5.404592036438394</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"coral"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#cc8b71"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"copper crayola"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"orange"</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">72</span><span class="p">,</span><span class="w">
+    </span><span class="mi">52</span><span class="p">,</span><span class="w">
+    </span><span class="mi">49</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">7.826086956521749</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.3194444444444444</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.2823529411764706</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">],</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2139.95"</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1226.92"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>Get the dominant color palette for a image.</p>
+<p>Get the dominant color palette for an image.</p>
 
 <h3 id="end-point">End point</h3>
 
-<p><code class="prettyprint">POST /v1/colors/image_color_palette</code></p>
+<p><code class="prettyprint">POST /v1/colors/dominant_colors</code></p>
 
 <h3 id="request">Request</h3>
 
@@ -3109,6 +3128,21 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 <td>data</td>
 <td>image/jpeg</td>
 <td>(<strong>Required</strong>) The image. The image can be in PNG, JPEG, BMP, or GIF.</td>
+</tr>
+<tr>
+<td>color_count</td>
+<td>query</td>
+<td>The maximum number of dominant colors to extract per image.</td>
+</tr>
+<tr>
+<td>quality</td>
+<td>query</td>
+<td>This parameter provides a trade off between the computation time and the quality of the dominant colors. Larger the number faster is the dominant color computation but greater the chance that the colors will be missed. 1 is the highest quality.</td>
+</tr>
+<tr>
+<td>image_max_dimension</td>
+<td>query</td>
+<td>You can set this parameters to resize the image for faster computation of dominant colors. If your images are of very high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
 </tr>
 </tbody></table>
 
@@ -3125,18 +3159,1326 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 <td>The time taken in milliseconds.</td>
 </tr>
 <tr>
-<td>color_palette</td>
-<td>The top 5 dominant colors in the image.</td>
+<td>computed_on</td>
+<td>The time the dominant colors where computed.</td>
+</tr>
+<tr>
+<td><strong>dominant_colors</strong></td>
+<td>A list of dominant colors for the catalog sorted in the decreasing order of popularity. Each field in the list has the following fieldnames.</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a> values for the color.</td>
+</tr>
+<tr>
+<td>hsv</td>
+<td>The <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a> values for the color.</td>
+</tr>
+<tr>
+<td>hex</td>
+<td>The hex code for the color.</td>
+</tr>
+<tr>
+<td>universal_name</td>
+<td>The best matching universal color name. Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</td>
+</tr>
+<tr>
+<td>entrylevel_name</td>
+<td>The best matching entry level color name. A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The best guess for the color name based on all the colors avaialable in our color taxonomy.</td>
+</tr>
+<tr>
+<td>popularity</td>
+<td>A score between 0 and 1 indicating the popularity of the color.</td>
+</tr>
+<tr>
+<td>popularity_percentile</td>
+<td>The corresponding percentile score.</td>
+</tr>
+<tr>
+<td>n_instances</td>
+<td>The number of colors in the cluster.</td>
 </tr>
 </tbody></table>
 
-<h1 id="cognitive-stylist">Cognitive Stylist</h1>
+<h1 id="color-search">Color Search</h1>
 
-<p>Coming soon&hellip;</p>
+<p>A collection of APIs for enabling catalog search based on colors.</p>
 
-<h2 id="what-goes-well-with-this">What goes well with this</h2>
+<h2 id="build-color-search-index">Build color search index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Build the color search index.</span>
+<span class="c"># POST /v1/catalog/{catalog_name}/color_search_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
 
-<p>Given an fashion apparel suggest another apparel/accessory that goes well with it.</p>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'color_count'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'quality'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'image_max_dimension'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/color_search_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"color_computation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_existing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_processed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"46"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 04:35:03.112859"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 04:34:51.450504"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"224"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"index_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"color_search_index"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_colors"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"46"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.97"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Build the color search index.</p>
+
+<p>Before you can start using the color search APIs the color search index has to be built. This API computes the dominant colors for all the uploaded images in the catalog and then builds an index for fast nearest neighbor retrieval.</p>
+
+<aside class="notice">
+This is a one time long running operation. Currently it takes around 200-500 milliseconds to compute the dominant colors for one image. Depending on your catalog size you will have to wait till the index creation is completed to start using the color search APIs. You can query the status of the index creation using the GET endpoint. The index is built when the status changes to `done`
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/catalog/{catalog_name}/color_search_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>color_count</td>
+<td>query</td>
+<td>The maximum number of dominant colors to extract per image.</td>
+<td>3</td>
+</tr>
+<tr>
+<td>quality</td>
+<td>query</td>
+<td>This parameter provides a trade off between the computation time and the quality of the dominant colors. Larger the number faster is the dominant color computation but greater the chance that the colors will be missed. 1 is the highest quality.</td>
+<td>1</td>
+</tr>
+<tr>
+<td>image_max_dimension</td>
+<td>query</td>
+<td>You can set this parameters to resize the image for faster computation of dominant colors. If your images are of very high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
+<td>no image resizing</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">computing_dominant_color</code>,<code class="prettyprint">building_index</code>,or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>color_computation</strong></td>
+<td>Info about dominant color computation.</td>
+</tr>
+<tr>
+<td>num_of_images_error</td>
+<td>The number of images for which there was some error in dominant color computation.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_existing</td>
+<td>The number of images for which the dominant colors were already computed (in case of building a new index with new products added).</td>
+</tr>
+<tr>
+<td>num_of_images_processed</td>
+<td>The total number of images for which the dominant colors were computed.</td>
+</tr>
+<tr>
+<td><strong>color_search_index</strong></td>
+<td>Info about the index building.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_colors</td>
+<td>The number of images for which there was no dominant color was found.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Any time you add new images to the catalog you will have to rebuild the index by calling this API again. Note that the dominant colors for the old images will still be saved and we will be computing the dominant colors only for the newly added images.
+</aside>
+
+<aside class="warning">
+The current version supports building only one index at the same time and does not allow you to build another index when a current index building process in running. Please wait till the current index creation is completed. 
+</aside>
+
+<h2 id="get-color-search-index-status">Get color search index status</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the status of the color search index.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/color_search_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/color_search_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"color_computation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_existing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_processed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"46"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 04:35:03.112859"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 04:34:51.450504"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"224"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"index_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"color_search_index"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_colors"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"46"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.97"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the status of the color search index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/color_search_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">computing_dominant_color</code>,<code class="prettyprint">building_index</code>,or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>color_computation</strong></td>
+<td>Info about dominant color computation.</td>
+</tr>
+<tr>
+<td>num_of_images_error</td>
+<td>The number of images for which there was some error in dominant color computation.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_existing</td>
+<td>The number of images for which the dominant colors were already computed (in case of building a new index with new products added).</td>
+</tr>
+<tr>
+<td>num_of_images_processed</td>
+<td>The total number of images for which the dominant colors were computed.</td>
+</tr>
+<tr>
+<td><strong>color_search_index</strong></td>
+<td>Info about the index building.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_colors</td>
+<td>The number of images for which there was no dominant color was found.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-the-color-search-index">Delete the color search index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Delete the color search index.</span>
+<span class="c"># DELETE /v1/catalog/{catalog_name}/color_search_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/color_search_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"deleted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.88"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"catalog_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample_catalog"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Delete the color search index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">DELETE /v1/catalog/{catalog_name}/color_search_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>catalog_name</td>
+<td>The catalog name.</td>
+</tr>
+<tr>
+<td>deleted</td>
+<td>This is <code class="prettyprint">true</code> if the index was successfully deleted.</td>
+</tr>
+</tbody></table>
+
+<h1 id="dominant-colors">Dominant Colors</h1>
+
+<p>A collection of APIs for computing the dominant colors for the catalog.</p>
+
+<h2 id="build-dominant-colors-index">Build dominant colors index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Build the dominant colors index.</span>
+<span class="c"># POST /v1/catalog/{catalog_name}/dominant_colors_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'max_colors_per_image'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_colors_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"results_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 17:10:00.141319"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"379"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dominant_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_colors"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"46"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 17:10:05.956428"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.51"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Build the dominant colors index.</p>
+
+<p>This loads all the dominant colors for every image in the catalog and then clusters the colors to compute the dominant colors for the entire catalog. Before you can start querying for the dominant colors you need to call this API to start the clustering procedure. </p>
+
+<aside class="notice">
+Prior to calling this API the colors search index has to be built, which computes the dominant colors for all the images. 
+</aside>
+
+<aside class="notice">
+This is a one time long running operation. Depending on your catalog size you will have to wait till the index creation is completed to start using the dominant colors APIs. You can query the status of the index creation using the GET endpoint. The clusteing is completed when the status changes to `done`
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/catalog/{catalog_name}/dominant_colors_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>colors</td>
+<td>query</td>
+<td>The number of dominant colors to compute.</td>
+<td>10</td>
+</tr>
+<tr>
+<td>max_colors_per_image</td>
+<td>query</td>
+<td>The maximum number of dominant colors to use per image.</td>
+<td>all available colors</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">clustering</code> or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>dominant_colors</strong></td>
+<td>Info about dominant color.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_colors</td>
+<td>The number of images for which there was no dominant color was found.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">
+The current version supports building only one index at the same time and does not allow you to build another index when a current index building process in running. Please wait till the current index creation is completed. 
+</aside>
+
+<h2 id="get-dominant-colors-index-status">Get dominant colors index status</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the status of the dominant colors index.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/dominant_colors_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_colors_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"results_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 17:10:00.141319"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"379"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dominant_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_colors"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"46"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 17:10:05.956428"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.51"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the status of the dominant colors index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/dominant_colors_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">clustering</code> or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>dominant_colors</strong></td>
+<td>Info about dominant color.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_colors</td>
+<td>The number of images for which there was no dominant color was found.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-the-dominant-colors-index">Delete the dominant colors index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Delete the dominant colors index.</span>
+<span class="c"># DELETE /v1/catalog/{catalog_name}/dominant_colors_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_colors_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"deleted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.88"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"catalog_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample_catalog"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Delete the dominant colors index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">DELETE /v1/catalog/{catalog_name}/dominant_colors_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>catalog_name</td>
+<td>The catalog name.</td>
+</tr>
+<tr>
+<td>deleted</td>
+<td>This is <code class="prettyprint">true</code> if the index was successfully deleted.</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-dominant-colors-for-a-catalog">Get dominant colors for a catalog</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the dominant colors for all images in the catalog.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/dominant_colors</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_colors'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-18 17:38:03.146494"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.69"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"dominant_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"platinum"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.20652173913043478</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#e6e3e1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">230</span><span class="p">,</span><span class="w">
+    </span><span class="mi">227</span><span class="p">,</span><span class="w">
+    </span><span class="mi">225</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">23.999999999999886</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.021739130434782705</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9019607843137255</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"platinum"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.17391304347826086</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#e9e8e7"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">95.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">233</span><span class="p">,</span><span class="w">
+    </span><span class="mi">232</span><span class="p">,</span><span class="w">
+    </span><span class="mi">231</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">30.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.008583690987124415</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9137254901960784</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"timberwolf"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08695652173913043</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#dfdad6"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">90.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">223</span><span class="p">,</span><span class="w">
+    </span><span class="mi">218</span><span class="p">,</span><span class="w">
+    </span><span class="mi">214</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">26.666666666666572</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.04035874439461884</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8745098039215686</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jet"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07608695652173914</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#36322f"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">85.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">54</span><span class="p">,</span><span class="w">
+    </span><span class="mi">50</span><span class="p">,</span><span class="w">
+    </span><span class="mi">47</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">25.714285714285722</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.12962962962962954</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.21176470588235294</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raisin black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05434782608695652</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#24222c"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">77.5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">36</span><span class="p">,</span><span class="w">
+    </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="mi">44</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">252.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.2272727272727273</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.17254901960784313</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the dominant colors for all images in the catalog.</p>
+
+<p>The dominant colors is to be interpreted as a representative of the cluster of similar colors.</p>
+
+<aside class="notice">
+Prior to calling this API the dominant colors index has to be built.
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/dominant_colors</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>colors</td>
+<td>query</td>
+<td>The number of dominant colors to return.</td>
+<td>10</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>computed_on</td>
+<td>The time the dominant colors where computed.</td>
+</tr>
+<tr>
+<td><strong>dominant_colors</strong></td>
+<td>A list of dominant colors for the catalog sorted in the decreasing order of popularity. Each field in the list has the following fieldnames.</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a> values for the color.</td>
+</tr>
+<tr>
+<td>hsv</td>
+<td>The <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a> values for the color.</td>
+</tr>
+<tr>
+<td>hex</td>
+<td>The hex code for the color.</td>
+</tr>
+<tr>
+<td>universal_name</td>
+<td>The best matching universal color name. Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</td>
+</tr>
+<tr>
+<td>entrylevel_name</td>
+<td>The best matching entry level color name. A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The best guess for the color name based on all the colors avaialable in our color taxonomy.</td>
+</tr>
+<tr>
+<td>popularity</td>
+<td>A score between 0 and 1 indicating the popularity of the color.</td>
+</tr>
+<tr>
+<td>popularity_percentile</td>
+<td>The corresponding percentile score.</td>
+</tr>
+<tr>
+<td>n_instances</td>
+<td>The number of colors in the cluster.</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-dominant-colors-for-a-product">Get dominant colors for a product</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the dominant colors for an image in the catalog.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/dominant_colors/{id}/{image_id}</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="nb">id</span> <span class="o">=</span><span class="s">'109FA16AWWWTN9C36M18'</span>
+<span class="n">image_id</span> <span class="o">=</span> <span class="s">'1'</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_colors/</span><span class="si">%</span><span class="s">s/</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">,</span><span class="nb">id</span><span class="p">,</span><span class="n">image_id</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"dominant_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"platinum"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#eae5e1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">91.21959480157497</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9891444931204307</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.535346529827587</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">234</span><span class="p">,</span><span class="w">
+    </span><span class="mi">229</span><span class="p">,</span><span class="w">
+    </span><span class="mi">225</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">26.666666666666742</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.038461538461538436</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9176470588235294</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carrot orange"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#f49023"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">68.97150523958666</span><span class="p">,</span><span class="w">
+    </span><span class="mf">30.7687372058737</span><span class="p">,</span><span class="w">
+    </span><span class="mf">67.65927525225112</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">244</span><span class="p">,</span><span class="w">
+    </span><span class="mi">144</span><span class="p">,</span><span class="w">
+    </span><span class="mi">35</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">31.291866028708114</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8565573770491803</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9568627450980393</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"orange"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cinnamon"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#d16718"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">55.405269947627616</span><span class="p">,</span><span class="w">
+    </span><span class="mf">37.53890699256518</span><span class="p">,</span><span class="w">
+    </span><span class="mf">58.230572519589465</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">209</span><span class="p">,</span><span class="w">
+    </span><span class="mi">103</span><span class="p">,</span><span class="w">
+    </span><span class="mi">24</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">25.621621621621614</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8851674641148325</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8196078431372549</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"copper"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">],</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.90"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the dominant colors for an image in the catalog.</p>
+
+<aside class="notice">
+Prior to calling this API the dominant colors index has to be built.
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/dominant_colors/{id}/{image_id}</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>id</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The product id.</td>
+<td></td>
+</tr>
+<tr>
+<td>image_id</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The image id.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>computed_on</td>
+<td>The time the dominant colors where computed.</td>
+</tr>
+<tr>
+<td><strong>dominant_colors</strong></td>
+<td>A list of dominant colors. Each field in the list has the following fieldnames.</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a> values for the color.</td>
+</tr>
+<tr>
+<td>hsv</td>
+<td>The <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a> values for the color.</td>
+</tr>
+<tr>
+<td>hex</td>
+<td>The hex code for the color.</td>
+</tr>
+<tr>
+<td>universal_name</td>
+<td>The best matching universal color name. Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</td>
+</tr>
+<tr>
+<td>entrylevel_name</td>
+<td>The best matching entry level color name. A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The best guess for the color name based on all the colors avaialable in our color taxonomy.</td>
+</tr>
+<tr>
+<td>popularity</td>
+<td>A score between 0 and 1 indicating the popularity of the color.</td>
+</tr>
+<tr>
+<td>popularity_percentile</td>
+<td>The corresponding percentile score.</td>
+</tr>
+<tr>
+<td>n_instances</td>
+<td>The number of colors in the cluster.</td>
+</tr>
+</tbody></table>
 
 <h1 id="zietgiest">Zietgiest</h1>
 
@@ -3145,6 +4487,10 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 <h2 id="color-trends">Color trends</h2>
 
 <p>Analyze dominant color palette for a given instagram hashtag/user account.</p>
+
+<h1 id="complete-the-look">Complete the Look</h1>
+
+<p>Given an fashion apparel suggest another apparel/accessory that goes well with it.</p>
 
           <h1 id="errors">Errors</h1>
 
