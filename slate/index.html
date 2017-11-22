@@ -3970,7 +3970,7 @@ The color search index has to be built first before you can use this API.
 <h2 id="color-search-by-image">Color Search by image</h2>
 <pre class="highlight shell tab-shell"><code></code></pre><pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># Get similar color images in the catalog for a given uploaded image.</span>
-<span class="c"># GET /v1/catalog/{catalog_name}/color_search</span>
+<span class="c"># POST /v1/catalog/{catalog_name}/color_search</span>
 <span class="c"># params - color_count,image_max_dimension,max_number_of_results</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
@@ -4003,7 +4003,7 @@ The color search index has to be built first before you can use this API.
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
@@ -4063,7 +4063,7 @@ The color search index has to be built first before you can use this API.
 
 <h3 id="end-point">End point</h3>
 
-<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/color_search</code></p>
+<p><code class="prettyprint">POST /v1/catalog/{catalog_name}/color_search</code></p>
 
 <h3 id="request">Request</h3>
 
