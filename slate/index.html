@@ -3619,6 +3619,10 @@ The color search index has to be built first before you can use this API.
 <td>distance</td>
 <td>The euclidean distance (in LAB space)  between the color in the image to the color in the query.</td>
 </tr>
+<tr>
+<td>rgb</td>
+<td>The RGB value of the matching color.</td>
+</tr>
 </tbody></table>
 
 <h2 id="color-search-by-name">Color Search by name</h2>
@@ -3785,6 +3789,10 @@ The color search index has to be built first before you can use this API.
 <tr>
 <td>distance</td>
 <td>The euclidean distance (in LAB space)  between the color in the image to the color in the query.</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The RGB value of the matching color.</td>
 </tr>
 </tbody></table>
 
@@ -3965,6 +3973,10 @@ The color search index has to be built first before you can use this API.
 <td>distance</td>
 <td>The euclidean distance (in LAB space)  between the color in the image to the color in the query.</td>
 </tr>
+<tr>
+<td>rgb</td>
+<td>The RGB value of the matching color.</td>
+</tr>
 </tbody></table>
 
 <h2 id="color-search-by-image">Color Search by image</h2>
@@ -4104,6 +4116,12 @@ The color search index has to be built first before you can use this API.
 <td>query</td>
 <td>You can set this parameters to resize the image for faster computation of dominant colors. If your image is of high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
 <td>no image resizing</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The RGB value of the matching color.</td>
+<td></td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -5006,12 +5024,30 @@ Prior to calling this API the dominant colors index has to be built.
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
-<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
+<span class="c"># Three options to pass the image</span>
 
+<span class="c"># OPTION 1 : Directly post the image</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
                          <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                          <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                          <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+
+
+<span class="c"># OPTION 2 : Pass the image url</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'image_url'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'http://vg-images.condecdn.net/image/oDXPOxw65EZ/crop/405'</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="c"># OPTION 3 : using multipart</span>
+<span class="n">image_filename</span> <span class="o">=</span> <span class="s">'test_image_2.jpeg'</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">image_filename</span><span class="p">,</span><span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">images_file</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                             <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                             <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                             <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s">'image'</span><span class="p">:</span> <span class="p">(</span><span class="n">image_filename</span><span class="p">,</span><span class="n">images_file</span><span class="p">,</span><span class="s">'image/jpeg'</span><span class="p">)})</span>   
+
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
@@ -5124,6 +5160,24 @@ Prior to calling this API the dominant colors index has to be built.
 <td>You can set this parameters to resize the image for faster computation of dominant colors. If your images are of very high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
 </tr>
 </tbody></table>
+
+<p>Instead of the posting the image data you can also pass an image url.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>image_url</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The image url.</td>
+</tr>
+</tbody></table>
+
+<p>You can also pass the image using multipart/form-data with the fieldname <code class="prettyprint">image</code>.</p>
 
 <h3 id="response">Response</h3>
 
