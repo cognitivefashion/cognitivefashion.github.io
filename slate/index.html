@@ -2714,7 +2714,17 @@ Note that the visual search index has to be built first before we can use this A
 
 <h1 id="colors">Colors</h1>
 
-<p>These are a few APIs for dealing with color terms. A <strong>color term</strong>, also known as a color name, is a word or phrase that refers to a specific color. For example <em>red</em> is the color term used for a color with RGB values [255,0,0]. While the number of color terms are quite huge we restrict ourselves a set of color terms that are broadly understood by a layperson and skip the more esoteric color terms. Color similarities are computed using the <a href="https://en.wikipedia.org/wiki/Color_difference">Delta E (CIE2000)</a> metric in the LAB space.</p>
+<p>These are a few APIs for dealing with color terms. </p>
+
+<p>A <strong>color term</strong>, also known as a color name, is a word or phrase that refers to a specific color. For example <em>red</em> is the color term used for a color with RGB values [255,0,0]. While the number of color terms are quite huge we internally organize our color terms into three color families:</p>
+
+<ul>
+<li><strong>universal</strong> Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</li>
+<li><strong>entrylevel</strong> A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</li>
+<li><strong>full</strong> The full set of colors available in our color taxonomy including more esoteric color terms.</li>
+</ul>
+
+<p>Color similarities are computed using the <a href="https://en.wikipedia.org/wiki/Color_difference">Delta E (CIE2000)</a> metric in the LAB space.</p>
 
 <h2 id="get-color-terms">Get color terms</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
@@ -2754,13 +2764,88 @@ Note that the visual search index has to be built first before we can use this A
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6.37"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"250.63"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"color_terms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-  </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"grey"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"teal"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"brown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"olive"</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"papaya"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#645e54"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="mi">94</span><span class="p">,</span><span class="w">
+    </span><span class="mi">84</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">37.5</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.16000000000000003</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.39215686274509803</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"granite gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#676767"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">103</span><span class="p">,</span><span class="w">
+    </span><span class="mi">103</span><span class="p">,</span><span class="w">
+    </span><span class="mi">103</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.403921568627451</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dim gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#696969"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">105</span><span class="p">,</span><span class="w">
+    </span><span class="mi">105</span><span class="p">,</span><span class="w">
+    </span><span class="mi">105</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4117647058823529</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nickel"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#727472"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">114</span><span class="p">,</span><span class="w">
+    </span><span class="mi">116</span><span class="p">,</span><span class="w">
+    </span><span class="mi">114</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">120.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.01724137931034475</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4549019607843137</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sonic silver"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#757575"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">117</span><span class="p">,</span><span class="w">
+    </span><span class="mi">117</span><span class="p">,</span><span class="w">
+    </span><span class="mi">117</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4588235294117647</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -2810,7 +2895,31 @@ Note that the visual search index has to be built first before we can use this A
 </tr>
 <tr>
 <td>color_terms</td>
-<td>A list of five closest color terms.</td>
+<td>A list of five closest color terms. Each field has the following field names.</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a> values for the color.</td>
+</tr>
+<tr>
+<td>hsv</td>
+<td>The <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a> values for the color.</td>
+</tr>
+<tr>
+<td>hex</td>
+<td>The hex code for the color.</td>
+</tr>
+<tr>
+<td>universal_name</td>
+<td>The best matching universal color name. Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</td>
+</tr>
+<tr>
+<td>entrylevel_name</td>
+<td>The best matching entry level color name. A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The best guess for the color name based on all the colors available in our color taxonomy.</td>
 </tr>
 </tbody></table>
 
@@ -2841,6 +2950,9 @@ Note that the visual search index has to be built first before we can use this A
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'color_term'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'purple'</span>
 
+<span class="c"># Optional parameters</span>
+<span class="c">#params['color_family'] = 'full'</span>
+
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
@@ -2851,13 +2963,88 @@ Note that the visual search index has to be built first before we can use this A
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
  </span><span class="s2">"similar_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-  </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"violet"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"navy blue"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"maroon"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"blue"</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple html"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#800080"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">128</span><span class="p">,</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mi">128</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">300.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.5019607843137255</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"violet"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#8f00ff"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">143</span><span class="p">,</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mi">255</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">273.6470588235294</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"violet"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#000080"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mi">128</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">240.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.5019607843137255</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy blue"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rich maroon"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#b03060"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">176</span><span class="p">,</span><span class="w">
+    </span><span class="mi">48</span><span class="p">,</span><span class="w">
+    </span><span class="mi">96</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">337.5</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7272727272727273</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.6901960784313725</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maroon"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#0000ff"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="mi">255</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">240.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
  </span><span class="p">],</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.17"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Get other color terms similar to a given color term.</p>
@@ -2873,12 +3060,20 @@ Note that the visual search index has to be built first before we can use this A
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>color_term</td>
 <td>query</td>
 <td>(<strong>Required</strong>) The color term.</td>
+<td></td>
+</tr>
+<tr>
+<td>color_family</td>
+<td>query</td>
+<td>The color family to use to retrieve the similar colors. Can take values <code class="prettyprint">universal</code>, <code class="prettyprint">entrylevel</code> or <code class="prettyprint">full</code></td>
+<td><code class="prettyprint">entrylevel</code></td>
 </tr>
 </tbody></table>
 
@@ -2896,11 +3091,35 @@ Note that the visual search index has to be built first before we can use this A
 </tr>
 <tr>
 <td>similar_colors</td>
-<td>A list of five closest color terms.</td>
+<td>A list of five closest color terms. Each field has the following field names.</td>
+</tr>
+<tr>
+<td>rgb</td>
+<td>The <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB</a> values for the color.</td>
+</tr>
+<tr>
+<td>hsv</td>
+<td>The <a href="https://en.wikipedia.org/wiki/HSL_and_HSV">HSV</a> values for the color.</td>
+</tr>
+<tr>
+<td>hex</td>
+<td>The hex code for the color.</td>
+</tr>
+<tr>
+<td>universal_name</td>
+<td>The best matching universal color name. Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</td>
+</tr>
+<tr>
+<td>entrylevel_name</td>
+<td>The best matching entry level color name. A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>The best guess for the color name based on all the colors available in our color taxonomy.</td>
 </tr>
 </tbody></table>
 
-<h2 id="get-color-similairty">Get color similairty</h2>
+<h2 id="get-color-similarity">Get color similarity</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># Get similarity score between two color terms. </span>
 <span class="c"># GET /v1/colors/color_terms_similarity</span>
@@ -2991,7 +3210,7 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 </tr>
 <tr>
 <td>similarity_score</td>
-<td>The similarity score (between 0 and 1) which indicates the similarity between the two color terms. Interanlly it uses the <a href="https://en.wikipedia.org/wiki/Color_difference">CIEDE2000</a> metric to measure similarity between two color terms.</td>
+<td>The similarity score (between 0 and 1) which indicates the similarity between the two color terms. Internally it uses the <a href="https://en.wikipedia.org/wiki/Color_difference">CIEDE2000</a> metric to measure similarity between two color terms.</td>
 </tr>
 </tbody></table>
 
