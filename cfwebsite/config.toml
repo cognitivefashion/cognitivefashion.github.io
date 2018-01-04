@@ -1,4 +1,4 @@
-baseurl = "https://cognitivefashion.github.io"
+baseurl = "https://cognitivefashion.github.io/"
 title = "Cognitive Fashion"
 theme = "hugo-creative-portfolio-theme"
 languageCode = "en-us"
@@ -39,6 +39,10 @@ googleAnalytics = ""
   [[params.navlinks]]
   name = "About"
   url = "about/"
+
+  [[params.navlinks]]
+  name = "API docs"
+  url = "slate/"
 
   #[[params.navlinks]]
   #name = "Get in touch"
