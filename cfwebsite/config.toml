@@ -11,11 +11,11 @@ googleAnalytics = ""
   # Style options: default (pink), blue, green, pink, red, sea, violet
   # Use custom.css for your custom styling
   style = "red"
-  description = "IBM Research Cognitive Fashion"
-  copyright = "&copy;2017 IBM Research Cognitive Fashion"
+  description = "IBM Research cognitive fashion"
+  copyright = "&copy;2017 IBM Research cognitive fashion"
   sidebarAbout = [
-    "The IBM Research Cognitive Fashion project aims to build a suite of APIs for the fashion industry primarily leveraging natural language and image understanding.",
-    "The usecases are targeted towards end consumers, buyers, merchandisers and designers."
+    "The IBM Research cognitive fashion project aims to build a suite of APIs for the fashion industry primarily leveraging natural language and image understanding.",
+    "The usecases are targeted towards end consumers, online retailers, buyers, merchandisers and designers."
   ]
   # Contact page
      # Since this template is static, the contact form uses www.formspree.io as a
