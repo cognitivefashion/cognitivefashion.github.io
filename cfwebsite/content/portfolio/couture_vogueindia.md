@@ -1,31 +1,42 @@
 +++
-image = "img/portfolio/gravity-paper.jpg"
 showonlyimage = false
-date = "2016-11-05T19:44:32+05:30"
-title = "Vogue India"
 draft = false
-weight = 2
+image = "img/portfolio/gg_1.jpg"
+date = "2016-11-05T18:25:22+05:30"
+title = "Vogue India and Gaurav Gupta #cognitivecouture"
+weight = 3
 +++
 
-Fifth abundantly made Give sixth hath. Cattle creature i be don't them.
+Towards the first AI inspired Saree Gown, in collaboration with Vogue and Designer Gaurav Gupta
 <!--more-->
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+<img src="/img/portfolio/gg_2.jpg" width="700">
 
-A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+The Cognitive Fashion team collaborated with Vogue and fashion designer Gaurav Gupta for creating a line of designs. The designs would showcase the theme around the native place of the winners of Vogue Women of the Year Awards, 2017. We analysed images crawled using instagram for each of these regions to mine dominant patterns and colors for each of these native place and shared them with the designer. Designer Gaurav used these as a source of inspiration to design a saree gown which lit up in the colours representative of the winners as they received their award. 
 
-1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-2. Aliquam tincidunt mauris eu risus.
+<br>
+{{< youtube id="A8MUWs8LMow" >}}
+<br>
 
-> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+## Benefits
 
-## Header Level 2
+* First of a kind AI inspited Saree gown
+* Derived key colors and prints for the award winners solely on Watson’s insights.
+* Gaurav Gupta shared, `It has opened another door for me, a door of another era.`
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
+<br>
+## Solution Components
 
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+* Visual Discovery powered by [Visual Search]({{< ref "portfolio/visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/visual_browse.md" >}}) 
+* [Watson Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)
+* [Watson Prints]({{< ref "portfolio/prints.md" >}}) - Automatic generation of prints and textures
 
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
 
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then  
+<br>
+## More details
+
+1. [Presenting the Indian Saree, in its most intelligent form yet.](https://www-07.ibm.com/events/in-en/ibminvogue/index.html) IBM Events
+1. [IBM and Gaurav Gupta’s cognitive sari-gown is nothing like you’ve ever seen before.](https://www.vogue.in/content/ibm-gaurav-guptas-cognitive-sari-gown-nothing-like-youve-ever-seen/#s-cust0) Vogue India
+1. [#IBMinVogue](https://twitter.com/hashtag/IBMinVogue) | [#ibminvogue](https://www.instagram.com/explore/tags/ibminvogue/) 
+
+
