@@ -1,6 +1,6 @@
 +++
 image = "img/portfolio/label-clothes.jpg"
-showonlyimage = false
+showonlyimage = true
 date = "2016-11-05T19:57:40+05:30"
 title = "Natural Language Search"
 draft = false

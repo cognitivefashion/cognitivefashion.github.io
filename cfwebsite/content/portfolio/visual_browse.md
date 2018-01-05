@@ -3,7 +3,7 @@ date = "2016-11-05T19:41:01+05:30"
 title = "Visual Browse"
 draft = false
 image = "img/portfolio/business-card.jpg"
-showonlyimage = false
+showonlyimage = true
 weight = 1
 +++
 

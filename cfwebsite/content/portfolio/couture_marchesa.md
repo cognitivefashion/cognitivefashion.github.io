@@ -1,31 +1,23 @@
 +++
 draft = false
-image = "img/portfolio/paper-presentation.jpg"
-showonlyimage = true
+image = "img/portfolio/marchesa_2.jpeg"
+showonlyimage = false
 date = "2016-11-05T20:23:59+05:30"
 title = "Marchesa"
-weight = 11
+weight = 3
 +++
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+Marchesa teams up with IBM Watson, to design their first cognitive dress.
 <!--more-->
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+<img src="/img/portfolio/marchesa_3.jpeg" width="400">
 
-A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
 
-1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-2. Aliquam tincidunt mauris eu risus.
+Marchesa first selected the five key human emotions they wanted their dress to convey.  Watson then ingested hundreds of images associates with Marchesa dress to understand the brand color palette. Watson then proceeded to search through more than 40,000 sources of fabric information and delivered 35 unique fabric recommendations to meet design requirements for weight, flexibility, and luminosity.  Embedded with LED lights, when the dress was debuted at the Met Gala, it changed colors based on the real-time emotions expressed on social media. 
 
-> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
 
-## Header Level 2
+## More details
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
-
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
-
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
-
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then  
+* [The Master and the Machine](https://www.thecut.com/2016/04/met-gala-dress-designed-by-marchesa-ibm-watson-c-v-r.html)
+* [IBM's Watson Helped Design Karolina Kurkova's Light-Up Dress for the Met Gala](https://www.wired.com/2016/05/ibms-watson-helped-design-karolina-kurkovas-light-dress-met-gala/)
+* [Marchesa and Watson worked together to create a dress that thinks](https://www.ibm.com/watson/stories/dress.html)

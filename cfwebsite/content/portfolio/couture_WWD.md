@@ -1,31 +1,30 @@
 +++
 draft = false
-image = ""
+image = "img/portfolio/wwd_1.jpeg"
 date = "2016-11-05T19:56:17+05:30"
-title = "WWD"
-showonlyimage = false
+title = "Women's Wear Daily"
+showonlyimage = true
 weight = 6
 +++
 
-Fifth abundantly made Give sixth hath. Cattle creature i be don't them.
+Cognitive is the new black at New York Fashion Week
 <!--more-->
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+[Exclusive: How AI Predicts the Biggest Trends of the Season](http://wwd.com/business-news/technology/ibm-watson-fashion-week-analysis-10842213/)  
+Women's Wear Daily Exclusive by Elizabeth Doupnik on March 14, 2017 
 
-A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+<img src="/img/portfolio/wwd_1.jpeg" width="200">
+<img src="/img/portfolio/wwd_2.jpeg" width="300">
 
-1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-2. Aliquam tincidunt mauris eu risus.
+Traditionally, fashion houses send fashion experts to the big four major runway shows who actually observe what is being shown and form a subjective opinion of the emerging mega trends. While there is great value in expert fashion observations, they are invariably limited by how many shows they can see. It is seemingly impossible for one person to manually look towards say 50,000 thousand images coming out from the runway shows. With a more data-driven approach, AI tools can crunch all the images and then provide trend reports to the observers who can now use data based insights to back up their gut instincts.
 
-> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+On the heels of New York Fashion Week, the IBM Research Cognitive Fashion team analyzed runway images from 12 different designers, to uncover insights such as dominant color trends, repeating patterns, and similarities (cut, color and knee length) between classic and up-and-coming designers and offer the data and insights exclusively to Women's Wear Daily (WWD). WWD is considered the bible of the fashion industry. Based on the insights provided an exclusive article appeared in WWD on March 14, 2017. 
 
-## Header Level 2
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
 
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
 
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
 
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then  
+
+[Cognitive is the new black at New York Fashion Week](https://www.ibm.com/blogs/think/2017/03/cognitive-ny-fashion-week/) 
+IBM THINK blog
+
