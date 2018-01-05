@@ -29,8 +29,8 @@ The Cognitive Collection is an exploration into unconventional design that takes
 <br>
 ## Solution Components
 
-* [Fashion Zeitgeist]({{< ref "portfolio/zeitgeist.md" >}}) - Color trend analysis and forecasting
-* Visual Discovery powered by [Visual Search]({{< ref "portfolio/visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/visual_browse.md" >}}) 
+* [Fashion Zeitgeist]({{< ref "portfolio/api_zeitgeist.md" >}}) - Color trend analysis and forecasting
+* Visual Discovery powered by [Visual Search]({{< ref "portfolio/api_visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/api_visual_browse.md" >}}) 
 * [Watson Natural Language Understanding](https://www.ibm.com/watson/services/natural-language-understanding/)
 * [Watson Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)
 

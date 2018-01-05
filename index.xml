@@ -7,18 +7,28 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy;2017 IBM Research cognitive fashion</copyright>
-    <lastBuildDate>Sat, 05 Nov 2016 19:41:01 +0530</lastBuildDate>
+    <lastBuildDate>Sat, 05 Nov 2016 19:50:47 +0530</lastBuildDate>
     
 	<atom:link href="https://cognitivefashion.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>ABOF</title>
+      <link>https://cognitivefashion.github.io/portfolio/client_abof/</link>
+      <pubDate>Sat, 05 Nov 2016 19:50:47 +0530</pubDate>
+      
+      <guid>https://cognitivefashion.github.io/portfolio/client_abof/</guid>
+      <description>&lt;p&gt;Natural Language Semantic Search for ABOF
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Visual Browse</title>
-      <link>https://cognitivefashion.github.io/portfolio/visual_browse/</link>
+      <link>https://cognitivefashion.github.io/portfolio/api_visual_browse/</link>
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
-      <guid>https://cognitivefashion.github.io/portfolio/visual_browse/</guid>
-      <description>&lt;p&gt;Find other similar images in the product catalog for a given image based on visual appearance.
+      <guid>https://cognitivefashion.github.io/portfolio/api_visual_browse/</guid>
+      <description>&lt;p&gt;Show me more like this
 &lt;/p&gt;</description>
     </item>
     
@@ -33,22 +43,12 @@
     </item>
     
     <item>
-      <title>Visual Search</title>
-      <link>https://cognitivefashion.github.io/portfolio/visual_search/</link>
-      <pubDate>Sat, 05 Nov 2016 20:22:08 +0530</pubDate>
+      <title>Natural Language Semantic Search</title>
+      <link>https://cognitivefashion.github.io/portfolio/api_natural_language_search/</link>
+      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
-      <guid>https://cognitivefashion.github.io/portfolio/visual_search/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
-&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Vogue India</title>
-      <link>https://cognitivefashion.github.io/portfolio/couture_vogueindia/</link>
-      <pubDate>Sat, 05 Nov 2016 19:44:32 +0530</pubDate>
-      
-      <guid>https://cognitivefashion.github.io/portfolio/couture_vogueindia/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.
+      <guid>https://cognitivefashion.github.io/portfolio/api_natural_language_search/</guid>
+      <description>&lt;p&gt;Search the product catalog in natural language.
 &lt;/p&gt;</description>
     </item>
     
@@ -58,7 +58,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_fsp/</guid>
-      <description>&lt;p&gt;IBM and Jason Grech launched a couture collection at MSFW 2016 developed using technology to analyze and predict fashion trends from runway images.
+      <description>&lt;p&gt;The future of Bollywood fashion designed by Falguni Shane Peacock in association with IBM Watson on Cloud.
 &lt;/p&gt;</description>
     </item>
     
@@ -73,22 +73,32 @@
     </item>
     
     <item>
-      <title>NLS @ ABOF</title>
-      <link>https://cognitivefashion.github.io/portfolio/client_abof/</link>
-      <pubDate>Sat, 05 Nov 2016 19:50:47 +0530</pubDate>
+      <title>Visual Search</title>
+      <link>https://cognitivefashion.github.io/portfolio/api_visual_search/</link>
+      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
-      <guid>https://cognitivefashion.github.io/portfolio/client_abof/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+      <guid>https://cognitivefashion.github.io/portfolio/api_visual_search/</guid>
+      <description>&lt;p&gt;Shop the look
 &lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Huishan Zhang</title>
-      <link>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</link>
+      <title>Vogue India and Gaurav Gupta</title>
+      <link>https://cognitivefashion.github.io/portfolio/couture_vogueindia/</link>
+      <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
+      
+      <guid>https://cognitivefashion.github.io/portfolio/couture_vogueindia/</guid>
+      <description>&lt;p&gt;Towards the first AI inspired Saree Gown, in collaboration with Vogue and Designer Gaurav Gupta
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>KDD2017 workshop</title>
+      <link>https://cognitivefashion.github.io/portfolio/workshop_kdd2017/</link>
       <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
       
-      <guid>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</guid>
-      <description>&lt;p&gt;IBM and Vogue present the first cognitive dress in china
+      <guid>https://cognitivefashion.github.io/portfolio/workshop_kdd2017/</guid>
+      <description>&lt;p&gt;Machine learning meets fashion
 &lt;/p&gt;</description>
     </item>
     
@@ -103,32 +113,52 @@
     </item>
     
     <item>
-      <title>Natural Language Search</title>
-      <link>https://cognitivefashion.github.io/portfolio/natural_language_search/</link>
-      <pubDate>Sat, 05 Nov 2016 19:57:40 +0530</pubDate>
+      <title>CLRS</title>
+      <link>https://cognitivefashion.github.io/portfolio/api_colors/</link>
+      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
-      <guid>https://cognitivefashion.github.io/portfolio/natural_language_search/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.
-&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Zietgiest</title>
-      <link>https://cognitivefashion.github.io/portfolio/zeitgeist/</link>
-      <pubDate>Sat, 05 Nov 2016 19:59:22 +0530</pubDate>
-      
-      <guid>https://cognitivefashion.github.io/portfolio/zeitgeist/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.
+      <guid>https://cognitivefashion.github.io/portfolio/api_colors/</guid>
+      <description>&lt;p&gt;Dominant color palette
 &lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Visual Attributes</title>
-      <link>https://cognitivefashion.github.io/portfolio/visual_attributes/</link>
-      <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
+      <link>https://cognitivefashion.github.io/portfolio/api_visual_attributes/</link>
+      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
-      <guid>https://cognitivefashion.github.io/portfolio/visual_attributes/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+      <guid>https://cognitivefashion.github.io/portfolio/api_visual_attributes/</guid>
+      <description>&lt;p&gt;Entities and attributes
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Huishan Zhang</title>
+      <link>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</link>
+      <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
+      
+      <guid>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</guid>
+      <description>&lt;p&gt;IBM and Vogue present the first cognitive dress in china
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Complete the look</title>
+      <link>https://cognitivefashion.github.io/portfolio/api_ctl/</link>
+      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
+      
+      <guid>https://cognitivefashion.github.io/portfolio/api_ctl/</guid>
+      <description>&lt;p&gt;What goes well with this
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Zeitgeist</title>
+      <link>https://cognitivefashion.github.io/portfolio/api_zeitgeist/</link>
+      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
+      
+      <guid>https://cognitivefashion.github.io/portfolio/api_zeitgeist/</guid>
+      <description>&lt;p&gt;Fashion trends
 &lt;/p&gt;</description>
     </item>
     

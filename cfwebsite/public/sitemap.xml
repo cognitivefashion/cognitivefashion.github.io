@@ -3,7 +3,12 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/visual_browse/</loc>
+    <loc>https://cognitivefashion.github.io/portfolio/client_abof/</loc>
+    <lastmod>2016-11-05T19:50:47+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cognitivefashion.github.io/portfolio/api_visual_browse/</loc>
     <lastmod>2016-11-05T19:41:01+05:30</lastmod>
   </url>
   
@@ -13,8 +18,8 @@
   </url>
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/visual_search/</loc>
-    <lastmod>2016-11-05T20:22:08+05:30</lastmod>
+    <loc>https://cognitivefashion.github.io/portfolio/api_natural_language_search/</loc>
+    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
   </url>
   
   <url>
@@ -28,17 +33,17 @@
   </url>
   
   <url>
+    <loc>https://cognitivefashion.github.io/portfolio/api_visual_search/</loc>
+    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>https://cognitivefashion.github.io/portfolio/couture_vogueindia/</loc>
     <lastmod>2016-11-05T18:25:22+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/client_abof/</loc>
-    <lastmod>2016-11-05T19:50:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</loc>
+    <loc>https://cognitivefashion.github.io/portfolio/workshop_kdd2017/</loc>
     <lastmod>2016-11-05T19:56:17+05:30</lastmod>
   </url>
   
@@ -48,23 +53,28 @@
   </url>
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/natural_language_search/</loc>
-    <lastmod>2016-11-05T19:57:40+05:30</lastmod>
+    <loc>https://cognitivefashion.github.io/portfolio/api_colors/</loc>
+    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/zeitgeist/</loc>
-    <lastmod>2016-11-05T19:59:22+05:30</lastmod>
+    <loc>https://cognitivefashion.github.io/portfolio/api_visual_attributes/</loc>
+    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/visual_attributes/</loc>
-    <lastmod>2016-11-05T20:02:19+05:30</lastmod>
+    <loc>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</loc>
+    <lastmod>2016-11-05T19:56:17+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://cognitivefashion.github.io/portfolio/prints/</loc>
-    <lastmod>2016-11-05T20:22:08+05:30</lastmod>
+    <loc>https://cognitivefashion.github.io/portfolio/api_ctl/</loc>
+    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cognitivefashion.github.io/portfolio/api_zeitgeist/</loc>
+    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
   </url>
   
   <url>
@@ -84,13 +94,13 @@
   
   <url>
     <loc>https://cognitivefashion.github.io/</loc>
-    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
+    <lastmod>2016-11-05T19:50:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://cognitivefashion.github.io/portfolio/</loc>
-    <lastmod>2016-11-05T19:41:01+05:30</lastmod>
+    <lastmod>2016-11-05T19:50:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   

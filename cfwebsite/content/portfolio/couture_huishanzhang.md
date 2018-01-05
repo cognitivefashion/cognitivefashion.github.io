@@ -3,7 +3,7 @@ draft = false
 image = "img/portfolio/huishanzhang_1.jpg"
 date = "2016-11-05T19:56:17+05:30"
 title = "Huishan Zhang"
-showonlyimage = true
+showonlyimage = false
 weight = 6
 +++
 

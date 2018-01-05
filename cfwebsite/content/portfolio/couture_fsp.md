@@ -3,7 +3,7 @@ showonlyimage = false
 draft = false
 image = "img/portfolio/fsp_1.jpg"
 date = "2016-11-05T18:25:22+05:30"
-title = "Falguni Shane Peacock #cognitivecouture"
+title = "Falguni Shane Peacock"
 weight = 2
 +++
 
@@ -27,10 +27,10 @@ Indian designer duo Falguni & Shane Peacock worked with IBM Cognitive Fashion te
 <br>
 ## Solution Components
 
-* [Fashion Zeitgeist]({{< ref "portfolio/zeitgeist.md" >}}) - Color trend analysis and forecasting
-* Visual Discovery powered by [Visual Search]({{< ref "portfolio/visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/visual_browse.md" >}}) 
+* [Fashion Zeitgeist]({{< ref "portfolio/api_zeitgeist.md" >}}) - Color trend analysis and forecasting
+* Visual Discovery powered by [Visual Search]({{< ref "portfolio/api_visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/api_visual_browse.md" >}}) 
 * [Watson Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)
-* [Watson Prints]({{< ref "portfolio/prints.md" >}}) - Automatic generation of prints and textures
+* Watson Prints - Automatic generation of prints and textures
 
 <br>
 ## More details

@@ -3,8 +3,8 @@ draft = false
 image = "img/portfolio/wwd_1.jpeg"
 date = "2016-11-05T19:56:17+05:30"
 title = "Women's Wear Daily"
-showonlyimage = true
-weight = 6
+showonlyimage = false
+weight = 4
 +++
 
 Cognitive is the new black at New York Fashion Week

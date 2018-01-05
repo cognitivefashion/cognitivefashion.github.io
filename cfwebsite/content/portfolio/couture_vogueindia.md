@@ -1,16 +1,16 @@
 +++
 showonlyimage = false
 draft = false
-image = "img/portfolio/gg_1.jpg"
+image = "img/portfolio/vogueindia_1.jpg"
 date = "2016-11-05T18:25:22+05:30"
-title = "Vogue India and Gaurav Gupta #cognitivecouture"
+title = "Vogue India and Gaurav Gupta"
 weight = 3
 +++
 
 Towards the first AI inspired Saree Gown, in collaboration with Vogue and Designer Gaurav Gupta
 <!--more-->
 
-<img src="/img/portfolio/gg_2.jpg" width="700">
+<img src="/img/portfolio/gg_2.jpg" width="500">
 
 The Cognitive Fashion team collaborated with Vogue and fashion designer Gaurav Gupta for creating a line of designs. The designs would showcase the theme around the native place of the winners of Vogue Women of the Year Awards, 2017. We analysed images crawled using instagram for each of these regions to mine dominant patterns and colors for each of these native place and shared them with the designer. Designer Gaurav used these as a source of inspiration to design a saree gown which lit up in the colours representative of the winners as they received their award. 
 
@@ -27,9 +27,9 @@ The Cognitive Fashion team collaborated with Vogue and fashion designer Gaurav G
 <br>
 ## Solution Components
 
-* Visual Discovery powered by [Visual Search]({{< ref "portfolio/visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/visual_browse.md" >}}) 
+* Visual Discovery powered by [Visual Search]({{< ref "portfolio/api_visual_search.md" >}}) and [Visual Browse]({{< ref "portfolio/api_visual_browse.md" >}}) 
 * [Watson Visual Recognition](https://www.ibm.com/watson/services/visual-recognition/)
-* [Watson Prints]({{< ref "portfolio/prints.md" >}}) - Automatic generation of prints and textures
+* Watson Prints - Automatic generation of prints and textures
 
 
 <br>

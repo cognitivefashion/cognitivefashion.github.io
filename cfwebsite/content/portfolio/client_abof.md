@@ -1,31 +1,35 @@
 +++
 draft = false
-image = ""
+image = "img/portfolio/abofnls_1.jpg"
 showonlyimage = false
 date = "2016-11-05T19:50:47+05:30"
-title = "NLS @ ABOF"
-weight = 4
+title = "ABOF"
+weight = 1
 +++
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+Natural Language Semantic Search for ABOF
 <!--more-->
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+<img src="/img/portfolio/abofnls_2.jpg" width="600">
 
-A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+The search on abof e-commerce site was powered by the Natural Language Sematic Search (NLS) asset from IBM Research Cognitive Fashion. NLS allows the user to search a fashion e-commerce catalog using complex natural language queries (e.g. `Show me some black graphic tees for my girlfriend under 1k`). The NLS is grounded in the fashion taxonomy and can understand various apparel, accessories and footwear names and the various attributes like category, color, pattern/print, brand (understands various brand abbreviations), style, price (can handle under, above, around and currency denotations.), sale/discount, fabric/material, occasion, size, fit, themes etc. Also handles query back off, color substitution, brand substitution and spelling correction tuned to the fashion taxonomy. 
 
-1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-2. Aliquam tincidunt mauris eu risus.
+> NLS resulted in a substantial improvement in PDP click through rate and percentage of queries with zero results was significantly reduced.
 
-> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+<br>
+{{< youtube id="nyw-ytDxll0" >}}
+<br>
 
-## Header Level 2
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
+<br>
+## Solution Components
 
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+* [Natural Language Semantic Search]({{< ref "portfolio/api_natural_language_search.md" >}}) 
 
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
+<br>
+## More info
 
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then  
+* [Indian Retailer abof personalizes online shopping experience with IBM Watson and Cloud](http://www-03.ibm.com/press/us/en/pressrelease/52047.wss)
+* [video blog](https://blog.balfes.net/2017/04/11/video-blog-abof-com-uses-watson-and-natural-language-to-enhance-online-search/) 
+
+
