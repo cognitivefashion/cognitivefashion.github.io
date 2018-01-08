@@ -3245,6 +3245,7 @@ We internally use our color taxonomy to get the RGB values for the color term. I
 <span class="n">params</span><span class="p">[</span><span class="s">'color_count'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'quality'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'image_max_dimension'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'ignore_background'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'false'</span>
 
 <span class="c"># Catalog name.</span>
 <span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
@@ -3330,6 +3331,12 @@ This is a one time long running operation. Currently it takes around 200-500 mil
 <td>query</td>
 <td>You can set this parameters to resize the image for faster computation of dominant colors. If your images are of very high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
 <td>no image resizing</td>
+</tr>
+<tr>
+<td>ignore_background</td>
+<td>query</td>
+<td>By default we use the entire image to docmpute the domianant colors. If our set this paramter to <code class="prettyprint">true</code> we internally use some algorithms to ignore the background and mainly focus on the person or apparel.</td>
+<td>false</td>
 </tr>
 </tbody></table>
 

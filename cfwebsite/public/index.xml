@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Cognitive Fashion</title>
+    <title>AI for Fashion</title>
     <link>https://cognitivefashion.github.io/</link>
-    <description>Recent content on Cognitive Fashion</description>
+    <description>Recent content on AI for Fashion</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy;2017 IBM Research cognitive fashion</copyright>
@@ -153,7 +153,7 @@
     </item>
     
     <item>
-      <title>Zeitgeist</title>
+      <title>Fashion Zeitgeist</title>
       <link>https://cognitivefashion.github.io/portfolio/api_zeitgeist/</link>
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       

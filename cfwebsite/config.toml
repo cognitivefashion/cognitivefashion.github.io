@@ -1,5 +1,5 @@
 baseurl = "https://cognitivefashion.github.io/"
-title = "Cognitive Fashion"
+title = "AI for Fashion"
 theme = "hugo-creative-portfolio-theme"
 languageCode = "en-us"
 # Enable comments by entering your Disqus shortname
@@ -14,7 +14,7 @@ googleAnalytics = ""
   description = "IBM Research cognitive fashion"
   copyright = "&copy;2017 IBM Research cognitive fashion"
   sidebarAbout = [
-    "The IBM Research cognitive fashion project aims to build a suite of APIs for the fashion industry primarily leveraging natural language and image understanding.",
+    "The IBM Research cognitive fashion project aims to build a suite of APIs for the fashion industry primarily leveraging deep learning, natural language processing and computer vision.",
     "The usecases are targeted towards end consumers, online retailers, buyers, merchandisers and designers."
   ]
   # Contact page

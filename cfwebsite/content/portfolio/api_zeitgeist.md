@@ -1,6 +1,6 @@
 +++
 date = "2016-11-05T19:41:01+05:30"
-title = "Zeitgeist"
+title = "Fashion Zeitgeist"
 draft = false
 image = "img/portfolio/trends_1.jpg"
 showonlyimage = true
