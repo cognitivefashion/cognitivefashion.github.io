@@ -16,13 +16,13 @@ Find other similar images in the product catalog for a given uploaded wild image
 
 [API documentation](https://cognitivefashion.github.io/slate/#visual-search) | [Demo](http://cfdemosflagship.mybluemix.net/)
 
+For consumers who are unsure of exactly what they want, or they’ve seen something that’s inspired them in the real world, but can’t put it into words, visual search will help accelerates the discovery process.
+
 </br>
 ## Use cases
 
-1. Fashion is highly visual and very often it is hard to describe the kind of apparel the in words. The consumer can upload any fashion image of his/her liking and the Visual Search will show other visually similar products that exist in the catalog. 
-1. This tool can also be used by content writers and stylists who can find the matching catalog items based on trending fashion images. 
-1. For any given image in the product catalog find other visually similar images in various social media.
-
+1. `Share & Shop`  Take a picture or upload saved image or screenshot and discover products that are visually similar. 
+1. `Creative Discovery`  Content writers, designers or fashion stylists can find matching catalog items based on selected photograph (“which dress best resembles this painting” etc.)
 
 </br>
 ## References

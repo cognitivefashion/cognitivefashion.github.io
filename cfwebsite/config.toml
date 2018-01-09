@@ -11,10 +11,10 @@ googleAnalytics = ""
   # Style options: default (pink), blue, green, pink, red, sea, violet
   # Use custom.css for your custom styling
   style = "red"
-  description = "IBM Research cognitive fashion"
-  copyright = "&copy;2017 IBM Research cognitive fashion"
+  description = "IBM Research - AI for fashion"
+  copyright = "&copy;2018 IBM Research AI"
   sidebarAbout = [
-    "The IBM Research cognitive fashion project aims to build a suite of APIs for the fashion industry primarily leveraging deep learning, natural language processing and computer vision.",
+    "This IBM Research AI project aims to build a suite of APIs for the fashion industry primarily leveraging deep learning, natural language processing and computer vision.",
     "The usecases are targeted towards end consumers, online retailers, buyers, merchandisers and designers."
   ]
   # Contact page

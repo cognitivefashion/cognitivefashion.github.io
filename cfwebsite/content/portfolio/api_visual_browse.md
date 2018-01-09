@@ -14,17 +14,17 @@ For any given image in the product catalog find other similar images in the prod
 
 <img src="/img/portfolio/visual_browse_1.jpg" width="600">
 
-A user clicks on an existing apparel/accessory image in the catalog and Visual Browse will fetch and display similar looking products from the catalog. Visual Browse does not need any meta information and search is based only on images. The deep learning based CNN model has been fine tuned to the domain of fashion.
+A user clicks on an existing apparel or accessory image in the product catalog and Visual Browse will fetch and display other similar looking products from the catalog. Visual Browse does not need any meta information as searches are performed only on images themselves. 
 
 [API documentation](https://cognitivefashion.github.io/slate/#visual-browse) | [Demo](http://cfdemosflagship.mybluemix.net/)
 
 </br>
 ## Use cases
 
-1. Automatically enable `other similar looks` feature on the website.
-1. Useful to recommend alternate items when an item goes out of stock.
-1. This is a more interactive way of browsing the catalog based on visual search. It essentially recreates the experience of asking `Show me more dresses like this.` 
-1. Encourages serendipitous buying and sticky behavior on the website.
+1. `Curation`  Instantly refine product results or feed by visual similarity ("shop more that look like this") or automatically enable "other similar looks" feature on the website.
+1. `Out-of-Stock`  Recommend visually similar available products when desired product is out-of-stock.
+1. `Retargeting`  Follow-up with customers by recommending products that are visually similar to items in abandoned cart. 
+ 
 
 </br>
 ## References

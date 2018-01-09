@@ -6,21 +6,11 @@
     <description>Recent content on AI for Fashion</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy;2017 IBM Research cognitive fashion</copyright>
-    <lastBuildDate>Sat, 05 Nov 2016 19:50:47 +0530</lastBuildDate>
+    <copyright>&amp;copy;2018 IBM Research AI</copyright>
+    <lastBuildDate>Sat, 05 Nov 2016 19:41:01 +0530</lastBuildDate>
     
 	<atom:link href="https://cognitivefashion.github.io/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>ABOF</title>
-      <link>https://cognitivefashion.github.io/portfolio/client_abof/</link>
-      <pubDate>Sat, 05 Nov 2016 19:50:47 +0530</pubDate>
-      
-      <guid>https://cognitivefashion.github.io/portfolio/client_abof/</guid>
-      <description>&lt;p&gt;Natural Language Semantic Search for ABOF
-&lt;/p&gt;</description>
-    </item>
     
     <item>
       <title>Visual Browse</title>
@@ -69,6 +59,16 @@
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_marchesa/</guid>
       <description>&lt;p&gt;Marchesa teams up with IBM Watson, to design their first cognitive dress.
+&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ABOF</title>
+      <link>https://cognitivefashion.github.io/portfolio/client_abof/</link>
+      <pubDate>Sat, 05 Nov 2016 19:50:47 +0530</pubDate>
+      
+      <guid>https://cognitivefashion.github.io/portfolio/client_abof/</guid>
+      <description>&lt;p&gt;ABOF improved site search performance with complex natural language queries
 &lt;/p&gt;</description>
     </item>
     
@@ -128,7 +128,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_visual_attributes/</guid>
-      <description>&lt;p&gt;Entities and attributes
+      <description>&lt;p&gt;Identify product attributes from images
 &lt;/p&gt;</description>
     </item>
     
