@@ -48,7 +48,3 @@ The increase in voice-based search and intelligent in-home speakers, like Alexa 
 Fashion evolves constantly and hence IBM fashion taxonomy is dynamically updated at regular intervals to include the current fashion terms and trends. NLS will be delivered as a REST API on IBM cloud and hence the user will always have access to the latest fashion taxonomy.
 
 </br>
-## References
-
-1. [ABOF improved site search performance with complex natural language queries](http://www-03.ibm.com/press/us/en/pressrelease/52047.wss)
-
