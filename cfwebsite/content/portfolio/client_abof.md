@@ -1,5 +1,5 @@
 +++
-draft = false
+draft = true
 image = "img/portfolio/abofnls_1.jpg"
 showonlyimage = false
 date = "2016-11-05T19:50:47+05:30"
@@ -31,5 +31,5 @@ The search on abof e-commerce site was powered by the Natural Language Semantic 
 
 * [Indian Retailer abof personalizes online shopping experience with IBM Watson and Cloud](http://www-03.ibm.com/press/us/en/pressrelease/52047.wss)
 * [video blog](https://blog.balfes.net/2017/04/11/video-blog-abof-com-uses-watson-and-natural-language-to-enhance-online-search/) 
-
+1. [ABOF]({{< ref "portfolio/client_abof.md" >}}) 
 

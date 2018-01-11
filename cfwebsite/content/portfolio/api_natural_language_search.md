@@ -50,6 +50,5 @@ Fashion evolves constantly and hence IBM fashion taxonomy is dynamically updated
 </br>
 ## References
 
-1. [ABOF]({{< ref "portfolio/client_abof.md" >}}) 
-
+1. [ABOF improved site search performance with complex natural language queries](http://www-03.ibm.com/press/us/en/pressrelease/52047.wss)
 
