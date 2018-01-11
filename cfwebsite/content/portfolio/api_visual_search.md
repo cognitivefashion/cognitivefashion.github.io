@@ -21,7 +21,7 @@ For consumers who are unsure of exactly what they want, or they’ve seen someth
 </br>
 ## Use cases
 
-1. `Share & Shop`  Take a picture or upload saved image or screenshot and discover products that are visually similar. 
+1. `Share & Shop`  Take a picture or upload saved image or screen shot and discover products that are visually similar. 
 1. `Creative Discovery`  Content writers, designers or fashion stylists can find matching catalog items based on selected photograph (“which dress best resembles this painting” etc.)
 
 </br>
