@@ -1,6 +1,6 @@
 +++
 date = "2016-11-05T19:41:01+05:30"
-title = "CLRS"
+title = "COLORS"
 draft = false
 image = "img/portfolio/clrs_1.jpg"
 showonlyimage = false
