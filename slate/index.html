@@ -7045,7 +7045,7 @@ Prior to calling this API the trend report has to be built.
 
 <h1 id="complete-the-look">Complete the Look</h1>
 
-<p>Given an fashion apparel suggest another apparel/accessory that goes well with it.</p>
+<p>Given a fashion apparel suggest another apparel/accessory that goes well with it.</p>
 
 <h1 id="visual-attributes">Visual Attributes</h1>
 
@@ -7054,7 +7054,7 @@ Prior to calling this API the trend report has to be built.
 <h2 id="get-visual-attributes">Get visual attributes</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># Get visual attributes for a given uploaded image.</span>
-<span class="c"># GET /v1/visualattributes/visualattributes</span>
+<span class="c"># GET /v1/visualattributes/iconic</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -7077,7 +7077,7 @@ Prior to calling this API the trend report has to be built.
 
 <span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
 
-<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/visualattributes/visualattributes'</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/visualattributes/iconic'</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
@@ -7207,7 +7207,25 @@ Prior to calling this API the trend report has to be built.
 </span></code></pre>
 <h3 id="end-point">End point</h3>
 
-<p><code class="prettyprint">GET /v1/visualattributes/visualattributes</code></p>
+<p><code class="prettyprint">GET /v1/visualattributes/iconic</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>data</td>
+<td>image/jpeg</td>
+<td>(<strong>Required</strong>) The 3-channel image. The image can be in PNG, JPEG, BMP, or GIF.</td>
+<td></td>
+</tr>
+</tbody></table>
 
 <h3 id="response">Response</h3>
 
