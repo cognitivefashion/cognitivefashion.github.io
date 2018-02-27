@@ -7043,17 +7043,27 @@ Prior to calling this API the trend report has to be built.
 </tr>
 </tbody></table>
 
-<h1 id="complete-the-look">Complete the Look</h1>
-
-<p>Given a fashion apparel suggest another apparel/accessory that goes well with it.</p>
-
 <h1 id="visual-attributes">Visual Attributes</h1>
 
-<p>Given a fashion apparel image get the attributes associated with it.</p>
+<p>Given a fashion image (containing apparel,accessories,or footwear) identify the main product <strong>category</strong> along with the different <strong>attributes</strong>. The category and attributes are grounded in a standardized fashion taxonomy. </p>
 
-<h2 id="get-visual-attributes">Get visual attributes</h2>
+<p>Some use cases for visual attributes include:</p>
+
+<ul>
+<li>Auto-attribution of catalog images.</li>
+<li>Catalog enrichment for a better text search.</li>
+<li>Post-filtering of visual search results.</li>
+</ul>
+
+<aside class="notice">
+We differentiate between two kinds of images. Iconic images are mainly single product images where the image is loosely focused only on the main apparel, footwear or accessory. Non-Iconic are mainly multiple product images where the image contains multiple apparel, footwear and accessories. Non-Iconic images are typically full outfit images whereas iconic images are mainly focused on the main product.
+</aside>
+
+<h2 id="get-visual-attributes-for-iconic-images">Get visual attributes for iconic images</h2>
+
+<p>Given a iconic fashion image (containing apparel,accessories,or footwear) identify the main product <strong>category</strong> along with the different <strong>attributes</strong>. The attributes predicted shall be consistent with the predicted category, e.g. <code class="prettyprint">sleeve length</code> won&rsquo;t be predicted for category <code class="prettyprint">jeans</code>.</p>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Get visual attributes for a given uploaded image.</span>
+<span class="c"># Get visual attributes for a given iconic image.</span>
 <span class="c"># GET /v1/visualattributes/iconic</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
@@ -7075,16 +7085,36 @@ Prior to calling this API the trend report has to be built.
 <span class="c"># Parameters.</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
-
 <span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/visualattributes/iconic'</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
+<span class="c"># Three options to pass the image</span>
+
+<span class="c"># OPTION 1 : Directly post the image</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
-                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-                        <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_1.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_1.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+
+<span class="s">"""            
+# OPTION 2 : Pass the image url
+params['image_url'] = 'http://vg-images.condecdn.net/image/oDXPOxw65EZ/crop/405'
+response = requests.post(url,
+                         headers=headers,
+                         params=params)
+"""</span>
+
+<span class="s">"""
+# OPTION 3 : using multipart
+image_filename = 'test_image_1.jpeg'
+with open(image_filename,'rb') as images_file:
+    response = requests.post(url,
+                             headers=headers,
+                             params=params,
+                             files={'image': (image_filename,images_file,'image/jpeg')})   
+"""</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
@@ -7093,114 +7123,79 @@ Prior to calling this API the trend report has to be built.
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"570.49"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"peep toes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.011904310435056686</span><span class="p">,</span><span class="w"> 
-    </span><span class="s2">"stilettos"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7297826409339905</span><span class="p">,</span><span class="w"> 
-    </span><span class="s2">"sandals"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22344675660133362</span><span class="p">,</span><span class="w"> 
-    </span><span class="s2">"pumps"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02747255750000477</span><span class="p">,</span><span class="w"> 
-    </span><span class="s2">"boots"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005754747893661261</span><span class="w">
-   </span><span class="p">},</span><span class="w"> 
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stilettos"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
- </span><span class="p">},</span><span class="w"> 
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"618.91"</span><span class="p">,</span><span class="w"> 
+  </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"stilettos"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7297826409339905</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"sandals"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22344675660133362</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pumps"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02747255750000477</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stilettos"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
  </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
   </span><span class="s2">"fit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"skinny"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.011083225719630718</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"regular"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.947587251663208</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"slim"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.024282250553369522</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"comfort"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.006625995971262455</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"narrow"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008856412954628468</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regular"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"skinny"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.011083225719630718</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"regular"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.947587251663208</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"slim"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.024282250553369522</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regular"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"color"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"grey"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04689091071486473</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"golden"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08500122278928757</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"black"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5809345245361328</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"silver"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10020259022712708</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"brown"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03913440182805061</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"golden"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08500122278928757</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"black"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5809345245361328</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"silver"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10020259022712708</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"age_gender"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"boys"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.963291001141981e-16</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"women"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9999998807907104</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"men"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.310367149988451e-08</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"girls"</span><span class="p">:</span><span class="w"> </span><span class="mf">9.555650493098256e-09</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"kids"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.271256421508543e-29</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"women"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"men"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.310367149988451e-08</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"girls"</span><span class="p">:</span><span class="w"> </span><span class="mf">9.555650493098256e-09</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"women"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9999998807907104</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"women"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"heel height"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"flat: 0-1.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00011825565889012069</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"medium: 2.5-3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3852241635322571</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"low: 1.5-2.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008176162838935852</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"high: above 3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6064814925193787</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high: above 3.5 inch"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"medium: 2.5-3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3852241635322571</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"low: 1.5-2.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008176162838935852</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"high: above 3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6064814925193787</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high: above 3.5 inch"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"heel shape"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"platform"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.5389754480565898e-05</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"stiletto"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9994674324989319</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"cone"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.879075393342646e-06</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"block"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00012550147948786616</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"kitten"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0003877997223753482</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stiletto"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"stiletto"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9994674324989319</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"block"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00012550147948786616</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"kitten"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0003877997223753482</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stiletto"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"tip shape"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"pointed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.20216183364391327</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"almond"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3935624338046182e-05</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"open"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6662291884422302</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"round"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1315946727991104</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"closed"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.12320509010533e-07</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"pointed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.20216183364391327</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"open"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6662291884422302</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"round"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1315946727991104</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"ankle height"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"calf length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.014615225605666637</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"low ankle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.003991052508354187</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"ankle length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9804659485816956</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"mid ankle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0007725586765445769</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"high ankle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0001550178276374936</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ankle length"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> 
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"calf length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.014615225605666637</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"low ankle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.003991052508354187</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"ankle length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9804659485816956</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ankle length"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"closing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"CNN-HYDRA"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"lace-up"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04957474023103714</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"slip on"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4985831677913666</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"buckle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.26762887835502625</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.145882248878479</span><span class="p">,</span><span class="w"> 
-     </span><span class="s2">"velcro"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03686698153614998</span><span class="w">
-    </span><span class="p">},</span><span class="w"> 
-    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"slip on"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"buckle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.26762887835502625</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"slip on"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4985831677913666</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.145882248878479</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"slip on"</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -7222,10 +7217,28 @@ Prior to calling this API the trend report has to be built.
 <tr>
 <td>data</td>
 <td>image/jpeg</td>
-<td>(<strong>Required</strong>) The 3-channel image. The image can be in PNG, JPEG, BMP, or GIF.</td>
+<td>(<strong>Required</strong>) The image. The image can be in PNG, JPEG, BMP, or GIF.</td>
 <td></td>
 </tr>
 </tbody></table>
+
+<p>Instead of the posting the image data you can also pass an image url.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>image_url</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The image url.</td>
+</tr>
+</tbody></table>
+
+<p>You can also pass the image using multipart/form-data with the fieldname <code class="prettyprint">image</code>.</p>
 
 <h3 id="response">Response</h3>
 
@@ -7241,11 +7254,11 @@ Prior to calling this API the trend report has to be built.
 </tr>
 <tr>
 <td>category</td>
-<td>The top-5 product categories predicted along with their respective confidence levels and the final predicted category.</td>
+<td>The top-3 product categories predicted along with their respective confidence levels and the final predicted category.</td>
 </tr>
 <tr>
 <td>attributes</td>
-<td>The attributes and their top-5 values predicted along with the respective confidence levels. The attributes predicted shall be consistent with the predicted category. Eg &ldquo;sleeve length&rdquo; won&rsquo;t be predicted along with &lsquo;jeans&rsquo;.</td>
+<td>The attributes and their top-3 values predicted along with the respective confidence levels.</td>
 </tr>
 </tbody></table>
 
@@ -7420,6 +7433,12 @@ with open(image_filename,'rb') as images_file:
 <td>The confidence score (between 0 and 1) that the bounding box contains a person.</td>
 </tr>
 </tbody></table>
+
+<h1 id="complete-the-look">Complete the Look</h1>
+
+<p>Given a fashion apparel suggest another apparel/accessory that goes well with it.</p>
+
+<p>Coming soon &hellip;</p>
 
           <h1 id="errors">Errors</h1>
 
