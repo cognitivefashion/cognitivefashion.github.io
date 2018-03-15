@@ -7658,6 +7658,125 @@ with open(image_filename,'rb') as images_file:
 
 <p>Coming soon &hellip;</p>
 
+          <h1 id="text-search">Text Search</h1>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Basic text search</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/text_search</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/text_search'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'query_text'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'joggers'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span>
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c"># Get more info about the relevant results</span>
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">'products'</span><span class="p">]:</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">product</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span>
+    <span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/products/</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">,</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">'data'</span><span class="p">][</span><span class="s">'name'</span><span class="p">]))</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"41.15"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10448"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10449"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Search the product catalog using a simple text query (e.g. <code class="prettyprint">joggers</code>).</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/text_search</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>query_text</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The text query. (e.g. <code class="prettyprint">joggers</code>)</td>
+<td></td>
+</tr>
+<tr>
+<td>max_number_of_results</td>
+<td>query</td>
+<td>The maximum number of results to return.</td>
+<td>12</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>products</strong></td>
+<td>A sorted list of products in the catalog relevant to the query.</td>
+</tr>
+<tr>
+<td>id</td>
+<td>The id of the product.</td>
+</tr>
+</tbody></table>
+
           <h1 id="errors">Errors</h1>
 
 <p>The Cogntive Fashion API uses the following error codes:</p>
