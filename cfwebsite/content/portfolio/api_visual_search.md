@@ -14,7 +14,7 @@ Find other similar images in the product catalog for a given uploaded wild image
 
 <img src="/img/portfolio/visual_search_1.jpg" width="600">
 
-[API documentation](https://cognitivefashion.github.io/slate/#visual-search) | [Demo](http://cfdemosflagship.mybluemix.net/)
+[API documentation](https://cognitivefashion.github.io/slate/#visual-search)
 
 For consumers who are unsure of exactly what they want, or they’ve seen something that’s inspired them in the real world, but can’t put it into words, visual search will help accelerates the discovery process.
 

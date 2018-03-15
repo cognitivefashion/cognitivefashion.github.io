@@ -29,7 +29,7 @@ NLS enables the user to query the product catalog in a more natural language as 
 The increase in voice-based search and intelligent in-home speakers, like Alexa and Google Home, have started to disrupt the general search paradigm.  Consumers expect to search naturally, which usually means searching with questions words or searching with more complex queries, including everyday phrases.  If a retail site search returns and error page, or hundreds of irrelevant results when a customers searches “men’s white indoor running shoes under $100”, that retailer will surely experience lower click-through and conversions through search, and in many cases, a higher abandonment rate.
 
 
-[API documentation](https://cognitivefashion.github.io/slate/#natural-language-search) | [Demo](http://cfdemosflagship.mybluemix.net/)
+[API documentation](https://cognitivefashion.github.io/slate/#natural-language-search) 
 
 </br>
 ## NLS features

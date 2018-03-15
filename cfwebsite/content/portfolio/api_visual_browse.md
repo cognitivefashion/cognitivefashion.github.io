@@ -16,7 +16,7 @@ For any given image in the product catalog find other similar images in the prod
 
 A user clicks on an existing apparel or accessory image in the product catalog and Visual Browse will fetch and display other similar looking products from the catalog. Visual Browse does not need any meta information as searches are performed only on images themselves. 
 
-[API documentation](https://cognitivefashion.github.io/slate/#visual-browse) | [Demo](http://cfdemosflagship.mybluemix.net/)
+[API documentation](https://cognitivefashion.github.io/slate/#visual-browse) 
 
 </br>
 ## Use cases

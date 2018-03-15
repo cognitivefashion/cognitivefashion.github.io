@@ -22,7 +22,7 @@ The color terms come from our curated color taxonomy. A `color term`, also known
 
 Color similarities are computed using the Delta E (CIE2000) metric in the LAB space.
 
-[API documentation](https://cognitivefashion.github.io/slate/#colors) | [Demo](http://cfdemosflagship.mybluemix.net/)
+[API documentation](https://cognitivefashion.github.io/slate/#colors) 
 
 </br>
 ## Use cases
