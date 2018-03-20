@@ -7779,6 +7779,255 @@ with open(image_filename,'rb') as images_file:
 </tr>
 </tbody></table>
 
+          <h1 id="dominant-prints">Dominant Prints</h1>
+
+<p>A collection of APIs for computing the dominant prints for an user uploaded image, the entire catalog, and any image in the catalog.</p>
+
+<h2 id="get-dominant-prints-for-an-image">Get dominant prints for an image</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Dominant prints for an image. </span>
+<span class="c"># POST /v1/prints/dominant_prints</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'count'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="c">#params['image_max_dimension'] = 512</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'ignore_background'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'person_fast'</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/prints/dominant_prints'</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="c"># Three options to pass the image</span>
+
+<span class="c"># OPTION 1 : Directly post the image</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+
+<span class="s">"""          
+# OPTION 2 : Pass the image url
+params['image_url'] = 'https://vg-images.condecdn.net/image/oDXPOxw65EZ/crop/405'
+response = requests.post(url,
+                         headers=headers,
+
+
+# OPTION 3 : using multipart
+image_filename = 'test_image_2.jpeg'
+with open(image_filename,'rb') as images_file:
+    response = requests.post(url,
+                             headers=headers,
+                             params=params,
+                             files={'image': (image_filename,images_file,'image/jpeg')})   
+"""</span> 
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"dominant_prints"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">276</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">359</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"fraction_boxes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.46</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">285</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">244</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"fraction_boxes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.278</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">225</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">206</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"fraction_boxes"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.262</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">],</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4023.90"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">158</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">640</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">259</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.819546</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"model"</span><span class="p">:</span><span class="w"> </span><span class="s2">"person_fast"</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the dominant prints for an image.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/prints/dominant_prints</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>data</td>
+<td>image/jpeg</td>
+<td>(<strong>Required</strong>) The image. The image can be in PNG, JPEG, BMP, or GIF.</td>
+<td></td>
+</tr>
+<tr>
+<td>count</td>
+<td>query</td>
+<td>The number of dominant prints to extract per image.</td>
+<td>3</td>
+</tr>
+<tr>
+<td>image_max_dimension</td>
+<td>query</td>
+<td>You can set this parameters to resize the image for faster computation of dominant prints. If your images are of very high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
+<td>no image resizing</td>
+</tr>
+<tr>
+<td>ignore_background</td>
+<td>query</td>
+<td>By default we use the entire image to compute the dominant prints. If we set this parameter to <code class="prettyprint">true</code> we internally use some algorithms to ignore the background and mainly focus on the person or apparel.</td>
+<td><code class="prettyprint">false</code></td>
+</tr>
+<tr>
+<td>model</td>
+<td>query</td>
+<td>The model to use to ignore the background. Currently we use person detecors to focus only on the person. The following options are supported <code class="prettyprint">person_fast</code> (faster but slightly less accurate model), <code class="prettyprint">person_accurate</code> (slower but more accurate model) and <code class="prettyprint">person_basic</code> (a basic person detector using standard body proportions).</td>
+<td><code class="prettyprint">person_fast</code></td>
+</tr>
+</tbody></table>
+
+<p>Instead of the posting the image data you can also pass an image url.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>image_url</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The image url.</td>
+</tr>
+</tbody></table>
+
+<p>You can also pass the image using multipart/form-data with the fieldname <code class="prettyprint">image</code>.</p>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>dominant_prints</strong></td>
+<td>A list of dominant prints for the image sorted in the decreasing order of the fraction of boxes. Each field in the list has the following fieldnames.</td>
+</tr>
+<tr>
+<td><strong>bounding_box</strong></td>
+<td>The bounding box of the print swatch.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+<tr>
+<td>fraction_boxes</td>
+<td>The fraction of swatches in the bounding box that can be attributed to this print.</td>
+</tr>
+<tr>
+<td><strong>bounding_box</strong></td>
+<td>The region in the image used to compute the dominant prints and corresponds to the the bounding box for the central detected person. In case <code class="prettyprint">ignore_background</code> is set to <code class="prettyprint">false</code> this corresponds to the entire image.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+<tr>
+<td>score</td>
+<td>The confidence score (between 0 and 1) that the bounding box contains a person.</td>
+</tr>
+<tr>
+<td>model</td>
+<td>The person detection model used.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">
+If the person detector is unable to detect any person in the image then we backoff to the person_basic model. 
+</aside>
+
           <h1 id="errors">Errors</h1>
 
 <p>The Cogntive Fashion API uses the following error codes:</p>
