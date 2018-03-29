@@ -10222,6 +10222,1543 @@ Prior to calling this API the dominant prints index has to be built.
 </tr>
 </tbody></table>
 
+          <h1 id="looks-search">Looks Search</h1>
+
+<p>A collection of APIs for enabling catalog search based on looks.</p>
+
+<h2 id="build-look-search-index">Build look search index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Build the looks search index.</span>
+<span class="c"># POST /v1/catalog/{catalog_name}/looks_search_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Query parameters.</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c"># Optional parameters.</span>
+<span class="c">#params['image_max_dimension'] = 512</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'ignore_background'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'person_fast'</span>
+<span class="c">#params['ignore_images_without_person'] = 'true'</span>
+
+<span class="c"># Path paarameters.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/looks_search_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"computing_features"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"looks_search_index"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-28 15:05:30.654530"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1229"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"feature_computation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_existing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_processed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.29"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Build the looks search index.</p>
+
+<p>Before you can start using the looks search or dominant looks APIs the looks search index has to be built. This API computes the features for all the uploaded images in the catalog and then builds an index for fast nearest neighbor retrieval.</p>
+
+<aside class="notice">
+This is a one time long running operation. Depending on your catalog size you will have to wait till the index creation is completed to start using the looks search or dominant looks APIs. You can query the status of the index creation using the GET endpoint. The index is built when the status changes to `done`
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/catalog/{catalog_name}/looks_search_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>image_max_dimension</td>
+<td>query</td>
+<td>You can set this parameters to resize the image for faster computation of dominant prints. If your images are of very high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
+<td>no image resizing</td>
+</tr>
+<tr>
+<td>ignore_background</td>
+<td>query</td>
+<td>By default we use the entire image to compute the dominant prints. If we set this parameter to <code class="prettyprint">true</code> we internally use some algorithms to ignore the background and mainly focus on the person or apparel.</td>
+<td><code class="prettyprint">false</code></td>
+</tr>
+<tr>
+<td>model</td>
+<td>query</td>
+<td>The model to use to ignore the background. Currently we use person detecors to focus only on the person. The following options are supported <code class="prettyprint">person_fast</code> (faster but slightly less accurate model), <code class="prettyprint">person_accurate</code> (slower but more accurate model) and <code class="prettyprint">person_basic</code> (a basic person detector using standard body proportions).</td>
+<td><code class="prettyprint">person_fast</code></td>
+</tr>
+<tr>
+<td>ignore_images_without_person</td>
+<td>query</td>
+<td>If <code class="prettyprint">true</code> ignore images where person is not detected. If <code class="prettyprint">false</code> and person is not detected then defaults to using the entire image.</td>
+<td><code class="prettyprint">false</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">computing_features</code>,<code class="prettyprint">building_index</code>,or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>feature_computation</strong></td>
+<td>Info about feature computation.</td>
+</tr>
+<tr>
+<td>num_of_images_error</td>
+<td>The number of images for which there was some error in features computation.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_existing</td>
+<td>The number of images for which the features were already computed (in case of building a new index with new products added).</td>
+</tr>
+<tr>
+<td>num_of_images_processed</td>
+<td>The total number of images for which the features were computed.</td>
+</tr>
+<tr>
+<td><strong>looks_search_index</strong></td>
+<td>Info about the index building.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_feature</td>
+<td>The number of images for which there was no features.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+Any time you add new images to the catalog you will have to rebuild the index by calling this API again. Note that the features for the old images will still be saved and we will be computing the features only for the newly added images.
+</aside>
+
+<aside class="warning">
+The current version supports building only one index at the same time and does not allow you to build another index when a current index building process in running. Please wait till the current index creation is completed. 
+</aside>
+
+<h2 id="get-looks-search-index-status">Get looks search index status</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the status of the looks search index.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/looks_search_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/looks_search_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"index_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"looks_search_index"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-28 15:05:30.654530"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1229"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-28 15:06:37.109888"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"feature_computation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_existing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_processed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.54"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the status of the looks search index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/looks_search_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">computing_features</code>,<code class="prettyprint">building_index</code>,or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>feature_computation</strong></td>
+<td>Info about feature computation.</td>
+</tr>
+<tr>
+<td>num_of_images_error</td>
+<td>The number of images for which there was some error in features computation.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_existing</td>
+<td>The number of images for which the features were already computed (in case of building a new index with new products added).</td>
+</tr>
+<tr>
+<td>num_of_images_processed</td>
+<td>The total number of images for which the features were computed.</td>
+</tr>
+<tr>
+<td><strong>looks_search_index</strong></td>
+<td>Info about the index building.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_feature</td>
+<td>The number of images for which there was no features.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-the-looks-search-index">Delete the looks search index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Delete the looks search index.</span>
+<span class="c"># DELETE /v1/catalog/{catalog_name}/looks_search_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/looks_search_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"deleted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.88"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"catalog_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample_catalog"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Delete the looks search index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">DELETE /v1/catalog/{catalog_name}/looks_search_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>catalog_name</td>
+<td>The catalog name.</td>
+</tr>
+<tr>
+<td>deleted</td>
+<td>This is <code class="prettyprint">true</code> if the index was successfully deleted.</td>
+</tr>
+</tbody></table>
+
+<h2 id="looks-search-by-id">Looks Search by id</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------ </span>
+<span class="c"># Get similar looks in the catalog for an existing image.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/looks_search</span>
+<span class="c"># params - id,image_id,max_number_of_results</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Parameters.</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'id'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'SHRES16AWFSDR9346A'</span> 
+<span class="n">params</span><span class="p">[</span><span class="s">'image_id'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'1'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/looks_search'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c"># Human friendly repsonse.</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'products'</span><span class="p">]:</span>
+    <span class="n">person_image</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s&amp;api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">info</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                    <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'[</span><span class="si">%1.2</span><span class="s">f] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">'similarity'</span><span class="p">],</span><span class="n">person_image</span><span class="p">))</span> 
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.32"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346A_1.jpg?top_left_x=68&amp;top_left_y=0&amp;width=119&amp;height=323"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">119</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.701361</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">68</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">323</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/SHRES16AWFSDR9346A54/Look_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346A"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346A_1.jpg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346A_4.jpg?top_left_x=51&amp;top_left_y=0&amp;width=163&amp;height=347"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6284968256950378</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">163</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.702937</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">347</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/SHRES16AWFSDR9346A54/Front_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346A"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346A_4.jpg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346B_5.jpg?top_left_x=95&amp;top_left_y=0&amp;width=119&amp;height=324"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5597510933876038</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">119</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.629143</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">95</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">324</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/SHRES16AWFSDR9346B18/Front_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346B"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346B_5.jpg"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get similar looks in the catalog for an existing image.</p>
+
+<aside class="notice">
+The looks search index has to be built first before you can use this API.  
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/looks_search</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>id</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The product id.</td>
+<td></td>
+</tr>
+<tr>
+<td>image_id</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The image id.</td>
+<td></td>
+</tr>
+<tr>
+<td>max_number_of_results</td>
+<td>query</td>
+<td>maximum number of results to return.</td>
+<td>12</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>products</strong></td>
+<td>A sorted list similar images. Each item in the list has the following fields.</td>
+</tr>
+<tr>
+<td>id</td>
+<td>The product id.</td>
+</tr>
+<tr>
+<td>image_id</td>
+<td>The image id.</td>
+</tr>
+<tr>
+<td>image_filename</td>
+<td>The image filename.</td>
+</tr>
+<tr>
+<td>image_url</td>
+<td>The image url.</td>
+</tr>
+<tr>
+<td>similariy</td>
+<td>The similarity score.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The resource location of the bounding box for the detected person.</td>
+</tr>
+<tr>
+<td>bounding_box</td>
+<td>The bounding box of the dominant person in the image.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+</tbody></table>
+
+<h2 id="looks-search-by-image">Looks Search by image</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get similar looks in the catalog for a user uploaded image.</span>
+<span class="c"># POST /v1/catalog/{catalog_name}/looks_search</span>
+<span class="c"># params - max_number_of_results,ignore_background,model,image_max_dimension</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Parameters.</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c">#params['image_max_dimension'] = 512</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'ignore_background'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'person_fast'</span>
+
+<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/looks_search'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                        <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_3.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c"># Human friendly repsonse.</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="n">image_location</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s?api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">results</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                  <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'[original image ] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">image_location</span><span class="p">))</span>
+
+<span class="n">image_location</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s&amp;api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">results</span><span class="p">[</span><span class="s">'bounding_box'</span><span class="p">][</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                  <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'[bounding box   ] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">image_location</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'products'</span><span class="p">]:</span>
+    <span class="n">person_image</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s&amp;api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">info</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                    <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'[</span><span class="si">%1.2</span><span class="s">f] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s">'similarity'</span><span class="p">],</span><span class="n">person_image</span><span class="p">))</span> 
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2158.11"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/61e16e38-bb3e-4779-baf8-748491ca6162.jpe?top_left_x=177&amp;top_left_y=27&amp;width=170&amp;height=541"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">177</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">541</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.889102</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346A_5.jpg?top_left_x=54&amp;top_left_y=0&amp;width=154&amp;height=343"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.41838812828063965</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">154</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.575364</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">54</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">343</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/SHRES16AWFSDR9346A54/Left_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346A"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346A_5.jpg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346B_2.jpg?top_left_x=101&amp;top_left_y=0&amp;width=74&amp;height=303"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.404349684715271</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.307322</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">303</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/SHRES16AWFSDR9346B18/Left_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346B"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346B_2.jpg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/ABOFA15AMCWJG10448_5.jpg?top_left_x=0&amp;top_left_y=0&amp;width=313&amp;height=417"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.40286576747894287</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">313</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">417</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/ABOFA15AMCWJG1044801/Front_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10448"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10448_5.jpg"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">],</span><span class="w">
+ </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/61e16e38-bb3e-4779-baf8-748491ca6162.jpe"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get similar looks in the catalog for a user uploaded image.</p>
+
+<aside class="notice">
+The looks search index has to be built first before you can use this API.  
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/catalog/{catalog_name}/looks_search</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>data</td>
+<td>image/jpeg</td>
+<td>(<strong>Required</strong>) The image. The image can be in PNG, JPEG,</td>
+<td></td>
+</tr>
+<tr>
+<td>max_number_of_results</td>
+<td>query</td>
+<td>maximum number of results to return</td>
+<td>12</td>
+</tr>
+<tr>
+<td>print_count</td>
+<td>path</td>
+<td>The maximum number of dominant prints to search for in an image.</td>
+<td>1</td>
+</tr>
+<tr>
+<td>image_max_dimension</td>
+<td>query</td>
+<td>You can set this parameters to resize the image for faster computation of dominant prints. If your image is of high resolution you can set this parameter to a smaller value (suggested values 256-512) for faster computation. For any image if max(image width,image height) &gt; image_max_dimension resizes the image such that max(image width,image height) = image_max_dimension.</td>
+<td>no image resizing</td>
+</tr>
+<tr>
+<td>ignore_background</td>
+<td>query</td>
+<td>By default we use the entire image to compute the dominant prints. If we set this parameter to <code class="prettyprint">true</code> we internally use some algorithms to ignore the background and mainly focus on the person or apparel.</td>
+<td><code class="prettyprint">false</code></td>
+</tr>
+<tr>
+<td>model</td>
+<td>query</td>
+<td>The model to use to ignore the background. Currently we use person detecors to focus only on the person. The following options are supported <code class="prettyprint">person_fast</code> (faster but slightly less accurate model), <code class="prettyprint">person_accurate</code> (slower but more accurate model) and <code class="prettyprint">person_basic</code> (a basic person detector using standard body proportions).</td>
+<td><code class="prettyprint">person_fast</code></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The image location.</td>
+</tr>
+<tr>
+<td><strong>products</strong></td>
+<td>A sorted list similar images. Each item in the list has the following fields.</td>
+</tr>
+<tr>
+<td>id</td>
+<td>The product id.</td>
+</tr>
+<tr>
+<td>image_id</td>
+<td>The image id.</td>
+</tr>
+<tr>
+<td>image_filename</td>
+<td>The image filename.</td>
+</tr>
+<tr>
+<td>image_url</td>
+<td>The image url.</td>
+</tr>
+<tr>
+<td>similarity</td>
+<td>The similarity score.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The resource location of the bounding box for the detected person.</td>
+</tr>
+<tr>
+<td>bounding_box</td>
+<td>The bounding box of the dominant person in the image.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+<tr>
+<td><strong>bounding_box</strong></td>
+<td>The bounding box for the detected person.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+<tr>
+<td>score</td>
+<td>The confidence score (between 0 and 1) that the bounding box contains a person.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The image location of the bounding box.</td>
+</tr>
+</tbody></table>
+
+          <h1 id="dominant-looks">Dominant Looks</h1>
+
+<p>A collection of APIs for computing the dominant looks for a catalog.</p>
+
+<h2 id="build-dominant-looks-index">Build dominant looks index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Build the dominant looks index.</span>
+<span class="c"># POST /v1/catalog/{catalog_name}/dominant_looks_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'looks'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_looks_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dominant_looks"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"results_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-29 11:56:41.883208"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2067"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-29 11:56:42.170910"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.16"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Build the dominant looks index.</p>
+
+<p>Before you can start querying for the dominant looks you need to call this API to start the clustering procedure. </p>
+
+<aside class="notice">
+Prior to calling this API the looks search index has to be built.
+</aside>
+
+<aside class="notice">
+This is a one time long running operation. Depending on your catalog size you will have to wait till the index creation is completed to start using the dominant looks APIs. You can query the status of the index creation using the GET endpoint. The clusteing is completed when the status changes to `done`
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/catalog/{catalog_name}/dominant_looks_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>looks</td>
+<td>query</td>
+<td>The number of dominant looks to compute.</td>
+<td>10</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">clustering</code> or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>dominant_looks</strong></td>
+<td>Info about dominant looks.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_features</td>
+<td>The number of images for which there was no feature was found.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">
+The current version supports building only one index at the same time and does not allow you to build another index when a current index building process in running. Please wait till the current index creation is completed. 
+</aside>
+
+<h2 id="get-dominant-looks-index-status">Get dominant looks index status</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the status of the dominant looks index.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/dominant_looks_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_looks_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dominant_looks"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"results_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-29 11:56:41.883208"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2067"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-29 11:56:42.170910"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38"</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.45"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the status of the dominant looks index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/dominant_looks_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>A json containing various info about the current status of the index building process.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>The current status of the index building process. The status can be one of <code class="prettyprint">clustering</code> or <code class="prettyprint">done</code>. The index is built when the status becomes <code class="prettyprint">done</code>.</td>
+</tr>
+<tr>
+<td>num_of_products</td>
+<td>The number of products in the catalog.</td>
+</tr>
+<tr>
+<td>num_of_images</td>
+<td>The total number of images in the catalog.</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>The time when the index building started.</td>
+</tr>
+<tr>
+<td>finish_time</td>
+<td>The time when the index building finished.</td>
+</tr>
+<tr>
+<td><strong>dominant_looks</strong></td>
+<td>Info about dominant looks.</td>
+</tr>
+<tr>
+<td>num_of_images_missing_features</td>
+<td>The number of images for which there was no feature was found.</td>
+</tr>
+<tr>
+<td>num_of_images_ignored</td>
+<td>The number of images that were ignored.</td>
+</tr>
+<tr>
+<td>num_of_images_indexed</td>
+<td>The total number of images finally indexed.</td>
+</tr>
+</tbody></table>
+
+<h2 id="delete-the-dominant-looks-index">Delete the dominant looks index</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Delete the dominant looks index.</span>
+<span class="c"># DELETE /v1/catalog/{catalog_name}/dominant_looks_index</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_looks_index'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"deleted"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.88"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"catalog_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample_catalog"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Delete the dominant looks index.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">DELETE /v1/catalog/{catalog_name}/dominant_looks_index</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>catalog_name</td>
+<td>The catalog name.</td>
+</tr>
+<tr>
+<td>deleted</td>
+<td>This is <code class="prettyprint">true</code> if the index was successfully deleted.</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-dominant-looks-for-a-catalog">Get dominant looks for a catalog</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get the dominant looks for all images in the catalog.</span>
+<span class="c"># GET /v1/catalog/{catalog_name}/dominant_looks</span>
+<span class="c"># params - looks</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'looks'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/dominant_looks'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+ </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-29 11:56:42.162979"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.24"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"dominant_looks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/LPJNA16AMDMTE91662_2.jpg?top_left_x=57&amp;top_left_y=0&amp;width=197&amp;height=351"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.14285714285714285</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">197</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.530316</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">57</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">351</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2016/LPJNA16AMDMTE9166200/Right_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91662"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91662_2.jpg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346B_4.jpg?top_left_x=111&amp;top_left_y=0&amp;width=91&amp;height=326"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.14285714285714285</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">91</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.538281</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">326</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/SHRES16AWFSDR9346B18/Right_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346B"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SHRES16AWFSDR9346B_4.jpg"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/ABOFA15AMCWJG10449_4.jpg?top_left_x=119&amp;top_left_y=0&amp;width=114&amp;height=360"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.14285714285714285</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">114</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.76403</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">119</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">360</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://images.abofcdn.com/catalog/images/2015/ABOFA15AMCWJG1044901/Look_Medium.jpg"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10449"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_filename"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10449_4.jpg"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get the dominant looks for all images in the catalog.</p>
+
+<p>The dominant looks is to be interpreted as a representative of the cluster of similar looks.</p>
+
+<aside class="notice">
+Prior to calling this API the dominant looks index has to be built.
+</aside>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/dominant_looks</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+<tr>
+<td>looks</td>
+<td>query</td>
+<td>The number of dominant looks to return.</td>
+<td>10</td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>image_url</td>
+<td>The image url.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The image location.</td>
+</tr>
+<tr>
+<td><strong>dominant_looks</strong></td>
+<td>A list of dominant looks for the catalog sorted in the decreasing order of popularity. Each field in the list has the following fieldnames.</td>
+</tr>
+<tr>
+<td>id</td>
+<td>The product id.</td>
+</tr>
+<tr>
+<td>image_id</td>
+<td>The image id.</td>
+</tr>
+<tr>
+<td>image_url</td>
+<td>The image url.</td>
+</tr>
+<tr>
+<td>image_filename</td>
+<td>The image filename.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The image location of the person in the image.</td>
+</tr>
+<tr>
+<td>popularity</td>
+<td>A score between 0 and 1 indicating the popularity of the print.</td>
+</tr>
+<tr>
+<td>n_instances</td>
+<td>The number of looks in the cluster.</td>
+</tr>
+<tr>
+<td><strong>bounding_box</strong></td>
+<td>The bounding box of the person.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+</tbody></table>
+
           <h1 id="complete-the-look">Complete the Look</h1>
 
 <p>Given a fashion apparel suggest another apparel/accessory that goes well with it.</p>
