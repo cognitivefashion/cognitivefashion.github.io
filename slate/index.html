@@ -3295,6 +3295,7 @@ with open(image_filename,'rb') as images_file:
 <li><strong>universal</strong> Berlin and Kay, in a classic <a href="https://en.wikipedia.org/wiki/Basic_Color_Terms:_Their_Universality_and_Evolution">study</a> of worldwide color naming, postulated the existence of <em>11 universal basic color terms</em> across languages. We have included two more colors(<em>olive</em> and <em>yellow green</em>) as per the <a href="https://en.wikipedia.org/wiki/ISCC%E2%80%93NBS_system">ISCC-NBS system</a>.</li>
 <li><strong>entrylevel</strong> A slightly larger curated set of color names which we call <em>entry level</em>. A random person should be able to recognize these color names.</li>
 <li><strong>full</strong> The full set of colors available in our color taxonomy including more esoteric color terms.</li>
+<li><strong>pantone</strong> The pantone color terms for fashion.</li>
 </ul>
 
 <p>Color similarities are computed using the <a href="https://en.wikipedia.org/wiki/Color_difference">Delta E (CIE2000)</a> metric in the LAB space.</p>
@@ -3309,6 +3310,7 @@ with open(image_filename,'rb') as images_file:
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
 
@@ -3323,56 +3325,36 @@ with open(image_filename,'rb') as images_file:
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
+<span class="c"># Parameters - required</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'r'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">106</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'g'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">103</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'b'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">95</span>
 
+<span class="c"># Parameters - optional</span>
+<span class="c">#params['color_count'] = 3</span>
+<span class="c">#params['color_family'] = 'full'</span>
+<span class="c">#params['color_family'] = 'pantone'</span>
+
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
-<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"250.63"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"234.64"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"color_terms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"papaya"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#645e54"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">100</span><span class="p">,</span><span class="w">
-    </span><span class="mi">94</span><span class="p">,</span><span class="w">
-    </span><span class="mi">84</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">37.5</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.16000000000000003</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.39215686274509803</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"granite gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#676767"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">103</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dim gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">104</span><span class="p">,</span><span class="w">
     </span><span class="mi">103</span><span class="p">,</span><span class="w">
     </span><span class="mi">103</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.403921568627451</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dim gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 18-0503 tcx gargoyle"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#696969"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
@@ -3385,44 +3367,62 @@ with open(image_filename,'rb') as images_file:
     </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
     </span><span class="mf">0.4117647058823529</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18-0503 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gargoyle"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nickel"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#727472"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charcoal gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">108</span><span class="p">,</span><span class="w">
+    </span><span class="mi">104</span><span class="p">,</span><span class="w">
+    </span><span class="mi">104</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 18-0601 tcx charcoal gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#6c6868"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">114</span><span class="p">,</span><span class="w">
-    </span><span class="mi">116</span><span class="p">,</span><span class="w">
-    </span><span class="mi">114</span><span class="w">
+    </span><span class="mi">108</span><span class="p">,</span><span class="w">
+    </span><span class="mi">104</span><span class="p">,</span><span class="w">
+    </span><span class="mi">104</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">120.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.01724137931034475</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.4549019607843137</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.03703703703703709</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4235294117647059</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18-0601 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"charcoal gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sonic silver"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#757575"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gunmetal"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">92</span><span class="p">,</span><span class="w">
+    </span><span class="mi">93</span><span class="p">,</span><span class="w">
+    </span><span class="mi">91</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 18-0306 tcx gunmetal"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#5c5d5b"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">117</span><span class="p">,</span><span class="w">
-    </span><span class="mi">117</span><span class="p">,</span><span class="w">
-    </span><span class="mi">117</span><span class="w">
+    </span><span class="mi">92</span><span class="p">,</span><span class="w">
+    </span><span class="mi">93</span><span class="p">,</span><span class="w">
+    </span><span class="mi">91</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.4588235294117647</span><span class="w">
+    </span><span class="mf">90.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.02150537634408589</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.36470588235294116</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18-0306 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gunmetal"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>Get the closest color name for a given color (specified by <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB color model</a>).</p>
+<p>Get the closest color term for a given color (specified by <a href="https://en.wikipedia.org/wiki/RGB_color_model">RGB color model</a>).</p>
 
 <h3 id="end-point">End point</h3>
 
@@ -3435,22 +3435,38 @@ with open(image_filename,'rb') as images_file:
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>r</td>
 <td>query</td>
 <td>(<strong>Required</strong>) The value for the red channel in the RGB color model (in the range 0 to 255).</td>
+<td></td>
 </tr>
 <tr>
 <td>g</td>
 <td>query</td>
 <td>(<strong>Required</strong>) The value for the green channel in the RGB color model (in the range 0 to 255).</td>
+<td></td>
 </tr>
 <tr>
 <td>b</td>
 <td>query</td>
 <td>(<strong>Required</strong>) The value for the blue channel in the RGB color model (in the range 0 to 255).</td>
+<td></td>
+</tr>
+<tr>
+<td>color_count</td>
+<td>query</td>
+<td>the number of similar color terms (maximum value of 10)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>color_family</td>
+<td>query</td>
+<td>the color family, can be either <code class="prettyprint">full</code> or <code class="prettyprint">pantone</code></td>
+<td><code class="prettyprint">pantone</code></td>
 </tr>
 </tbody></table>
 
@@ -3498,7 +3514,7 @@ with open(image_filename,'rb') as images_file:
 
 <h2 id="get-similar-colors">Get similar colors</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Get similar colors. </span>
+<span class="c"># Get other color terms similar to a given color term.</span>
 <span class="c"># GET /v1/colors/similar_colors</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
@@ -3506,14 +3522,14 @@ with open(image_filename,'rb') as images_file:
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c"># Replace this with the custom url generated for you.</span>
 <span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
 
-<span class="c"># Pass the api key into the header</span>
-<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="c"># Pass the api key into the header.</span>
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
 
 <span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/colors/similar_colors'</span>
@@ -3524,12 +3540,19 @@ with open(image_filename,'rb') as images_file:
 <span class="n">params</span><span class="p">[</span><span class="s">'color_term'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'purple'</span>
 
 <span class="c"># Optional parameters</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'color_count'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="c">#params['color_family'] = 'universal'</span>
+<span class="c">#params['color_family'] = 'entrylevel'</span>
 <span class="c">#params['color_family'] = 'full'</span>
+
+<span class="c"># To serch within the pantone family</span>
+<span class="c">#params['color_term'] = 'pantone 19-3336 tcx sparkling grape'</span>
+<span class="c">#params['color_family'] = 'pantone'</span>
 
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
-<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
@@ -3537,7 +3560,13 @@ with open(image_filename,'rb') as images_file:
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
  </span><span class="s2">"similar_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple html"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"patriarch"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">119</span><span class="p">,</span><span class="w">
+    </span><span class="mi">51</span><span class="p">,</span><span class="w">
+    </span><span class="mi">118</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-3336 tcx sparkling grape"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#800080"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
@@ -3550,74 +3579,60 @@ with open(image_filename,'rb') as images_file:
     </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
     </span><span class="mf">0.5019607843137255</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-3336 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sparkling grape"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"violet"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#8f00ff"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">193</span><span class="p">,</span><span class="w">
+    </span><span class="mi">127</span><span class="p">,</span><span class="w">
+    </span><span class="mi">181</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 16-3320 tcx violet"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c17fb5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">143</span><span class="p">,</span><span class="w">
-    </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="mi">255</span><span class="w">
+    </span><span class="mi">193</span><span class="p">,</span><span class="w">
+    </span><span class="mi">127</span><span class="p">,</span><span class="w">
+    </span><span class="mi">181</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">273.6470588235294</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.0</span><span class="w">
+    </span><span class="mf">310.9090909090909</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.34196891191709844</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7568627450980392</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"violet"</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"16-3320 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"violet"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"magenta"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#000080"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="mi">128</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">64</span><span class="p">,</span><span class="w">
+    </span><span class="mi">63</span><span class="p">,</span><span class="w">
+    </span><span class="mi">111</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">240.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.5019607843137255</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy blue"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rich maroon"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#b03060"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-3832 tcx navy blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#403f6f"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">176</span><span class="p">,</span><span class="w">
-    </span><span class="mi">48</span><span class="p">,</span><span class="w">
-    </span><span class="mi">96</span><span class="w">
+    </span><span class="mi">64</span><span class="p">,</span><span class="w">
+    </span><span class="mi">63</span><span class="p">,</span><span class="w">
+    </span><span class="mi">111</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">337.5</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.7272727272727273</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.6901960784313725</span><span class="w">
+    </span><span class="mf">241.25</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.43243243243243246</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.43529411764705883</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maroon"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#0000ff"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="mi">255</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">240.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.0</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blue"</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-3832 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy blue"</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">],</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.17"</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.11"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Get other color terms similar to a given color term.</p>
@@ -3643,9 +3658,15 @@ with open(image_filename,'rb') as images_file:
 <td></td>
 </tr>
 <tr>
+<td>color_count</td>
+<td>query</td>
+<td>the number of similar color terms (maximum value of 10)</td>
+<td>5</td>
+</tr>
+<tr>
 <td>color_family</td>
 <td>query</td>
-<td>The color family to use to retrieve the similar colors. Can take values <code class="prettyprint">universal</code>, <code class="prettyprint">entrylevel</code> or <code class="prettyprint">full</code></td>
+<td>The color family to use to retrieve the similar colors. Can take values <code class="prettyprint">universal</code>, <code class="prettyprint">entrylevel</code> ,<code class="prettyprint">full</code> or <code class="prettyprint">pantone</code></td>
 <td><code class="prettyprint">entrylevel</code></td>
 </tr>
 </tbody></table>
