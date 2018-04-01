@@ -5518,6 +5518,7 @@ If the person detector is unable to detect any person in the image then we backo
 <span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'max_colors_per_image'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'fraction_pixels_threshold'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'embedding'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
 
 <span class="c"># Catalog name.</span>
 <span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
@@ -5601,6 +5602,12 @@ This is a one time long running operation. Depending on your catalog size you wi
 <td>query</td>
 <td>Include only those colors whos fraction of pixels is greater than this number.</td>
 <td>0.0</td>
+</tr>
+<tr>
+<td>embedding</td>
+<td>query</td>
+<td>If <code class="prettyprint">true</code> embeds the dominant colors in two dimensions using <a href="https://lvdmaaten.github.io/tsne/">t-SNE</a> embedding and returns the embedding as a grid assignment in the results. The optimal gird size is automatically computed based on the number of dominant colors requested.</td>
+<td><code class="prettyprint">false</code></td>
 </tr>
 </tbody></table>
 
@@ -5904,7 +5911,7 @@ The current version supports building only one index at the same time and does n
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">9</span>
 
 <span class="c"># Catalog name.</span>
 <span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
@@ -5921,201 +5928,231 @@ The current version supports building only one index at the same time and does n
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="err">u'computed_on'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mi">2018-03-25</span><span class="w"> </span><span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mi">0</span><span class="mf">5.714292</span><span class="err">'</span><span class="p">,</span><span class="w">
- </span><span class="err">u'dominant_colors'</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="err">u'entrylevel_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'black'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hex'</span><span class="p">:</span><span class="w"> </span><span class="err">u'#</span><span class="mi">282629</span><span class="err">'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hsv'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">279.99999999999994</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.07317073170731714</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.1607843137254902</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'lab'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">15.4738227287183</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">1.643636143861621</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">-1.6514882578694712</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'n_instances'</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'raisin</span><span class="w"> </span><span class="err">black'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_code'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mi">19-3911</span><span class="w"> </span><span class="err">tcx'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_id'</span><span class="p">:</span><span class="w"> </span><span class="err">u'pantone</span><span class="w"> </span><span class="mi">19-3911</span><span class="w"> </span><span class="err">tcx</span><span class="w"> </span><span class="err">black</span><span class="w"> </span><span class="err">beauty'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'black</span><span class="w"> </span><span class="err">beauty'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">38</span><span class="p">,</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'popularity'</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10810810810810811</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'popularity_percentile'</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">40</span><span class="p">,</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w"> </span><span class="mi">41</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'universal_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'black'</span><span class="p">},</span><span class="w">
-                      </span><span class="p">{</span><span class="err">u'entrylevel_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'tan'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hex'</span><span class="p">:</span><span class="w"> </span><span class="err">u'#cdb</span><span class="mi">3</span><span class="err">a</span><span class="mi">2</span><span class="err">'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hsv'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">23.720930232558146</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.20975609756097569</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.803921568627451</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'lab'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">74.716930640067</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">6.646359569893512</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">12.110173948868752</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'n_instances'</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'rose</span><span class="w"> </span><span class="err">dust'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_code'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mi">14-1307</span><span class="w"> </span><span class="err">tcx'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_id'</span><span class="p">:</span><span class="w"> </span><span class="err">u'pantone</span><span class="w"> </span><span class="mi">14-1307</span><span class="w"> </span><span class="err">tcx</span><span class="w"> </span><span class="err">rose</span><span class="w"> </span><span class="err">dust'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'rose</span><span class="w"> </span><span class="err">dust'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">205</span><span class="p">,</span><span class="w"> </span><span class="mi">178</span><span class="p">,</span><span class="w"> </span><span class="mi">165</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'popularity'</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'popularity_percentile'</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">205</span><span class="p">,</span><span class="w"> </span><span class="mi">179</span><span class="p">,</span><span class="w"> </span><span class="mi">162</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'universal_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'pink'</span><span class="p">},</span><span class="w">
-                      </span><span class="p">{</span><span class="err">u'entrylevel_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'silver'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hex'</span><span class="p">:</span><span class="w"> </span><span class="err">u'#cfcccc'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hsv'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.01449275362318836</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.8117647058823529</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'lab'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">82.27695306528122</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">1.0314644455792221</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.3580088239849344</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'n_instances'</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'timberwolf'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_code'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mi">13-4104</span><span class="w"> </span><span class="err">tcx'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_id'</span><span class="p">:</span><span class="w"> </span><span class="err">u'pantone</span><span class="w"> </span><span class="mi">13-4104</span><span class="w"> </span><span class="err">tcx</span><span class="w"> </span><span class="err">antarctica'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'antarctica'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">198</span><span class="p">,</span><span class="w"> </span><span class="mi">197</span><span class="p">,</span><span class="w"> </span><span class="mi">198</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'popularity'</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'popularity_percentile'</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">207</span><span class="p">,</span><span class="w"> </span><span class="mi">204</span><span class="p">,</span><span class="w"> </span><span class="mi">204</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'universal_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'white'</span><span class="p">},</span><span class="w">
-                      </span><span class="p">{</span><span class="err">u'entrylevel_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'off</span><span class="w"> </span><span class="err">white'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hex'</span><span class="p">:</span><span class="w"> </span><span class="err">u'#ebe</span><span class="mi">5</span><span class="err">e</span><span class="mi">5</span><span class="err">'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hsv'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.025531914893616947</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.9215686274509803</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'lab'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">91.396105013505</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">2.0227459343862275</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.7108750672036868</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'n_instances'</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'platinum'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_code'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mi">11-1001</span><span class="w"> </span><span class="err">tcx'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_id'</span><span class="p">:</span><span class="w"> </span><span class="err">u'pantone</span><span class="w"> </span><span class="mi">11-1001</span><span class="w"> </span><span class="err">tcx</span><span class="w"> </span><span class="err">white</span><span class="w"> </span><span class="err">alyssum'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'white</span><span class="w"> </span><span class="err">alyssum'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">239</span><span class="p">,</span><span class="w"> </span><span class="mi">235</span><span class="p">,</span><span class="w"> </span><span class="mi">231</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'popularity'</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'popularity_percentile'</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">235</span><span class="p">,</span><span class="w"> </span><span class="mi">229</span><span class="p">,</span><span class="w"> </span><span class="mi">229</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'universal_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'white'</span><span class="p">},</span><span class="w">
-                      </span><span class="p">{</span><span class="err">u'entrylevel_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'peach'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hex'</span><span class="p">:</span><span class="w"> </span><span class="err">u'#ebceb</span><span class="mi">5</span><span class="err">'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'hsv'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">27.77777777777777</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.22978723404255308</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">0.9215686274509803</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'lab'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mf">84.55704693472978</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">6.337699403810959</span><span class="p">,</span><span class="w">
-                                </span><span class="mf">16.165955587964454</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'n_instances'</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'nude'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_code'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mi">12-0807</span><span class="w"> </span><span class="err">tcx'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_id'</span><span class="p">:</span><span class="w"> </span><span class="err">u'pantone</span><span class="w"> </span><span class="mi">12-0807</span><span class="w"> </span><span class="err">tcx</span><span class="w"> </span><span class="err">sun</span><span class="w"> </span><span class="err">kiss'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'sun</span><span class="w"> </span><span class="err">kiss'</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'pantone_rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">235</span><span class="p">,</span><span class="w"> </span><span class="mi">209</span><span class="p">,</span><span class="w"> </span><span class="mi">187</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'popularity'</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'popularity_percentile'</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
-                       </span><span class="err">u'rgb'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">235</span><span class="p">,</span><span class="w"> </span><span class="mi">206</span><span class="p">,</span><span class="w"> </span><span class="mi">181</span><span class="p">],</span><span class="w">
-                       </span><span class="err">u'universal_name'</span><span class="p">:</span><span class="w"> </span><span class="err">u'white'</span><span class="p">}],</span><span class="w">
- </span><span class="err">u'time_ms'</span><span class="p">:</span><span class="w"> </span><span class="err">u'</span><span class="mf">4.42</span><span class="err">'</span><span class="p">}</span><span class="w">
-
-</span><span class="err">In</span><span class="w"> </span><span class="p">[</span><span class="mi">52</span><span class="p">]:</span><span class="w"> </span><span class="err">print</span><span class="w"> </span><span class="err">json.dumps(response.json()</span><span class="p">,</span><span class="err">indent=</span><span class="mi">1</span><span class="err">)</span><span class="w">
-</span><span class="p">{</span><span class="w">
- </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-03-25 13:08:05.714292"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.42"</span><span class="p">,</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-04-01 13:51:12.278474"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.24"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"dominant_colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raisin black"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">38</span><span class="p">,</span><span class="w">
-    </span><span class="mi">38</span><span class="p">,</span><span class="w">
-    </span><span class="mi">42</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-3911 tcx black beauty"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10810810810810811</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#282629"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bisque"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">218</span><span class="p">,</span><span class="w">
+    </span><span class="mi">192</span><span class="p">,</span><span class="w">
+    </span><span class="mi">167</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 13-1011 tcx ivory cream"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1891891891891892</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#dec1aa"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">15.4738227287183</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.643636143861621</span><span class="p">,</span><span class="w">
-    </span><span class="mf">-1.6514882578694712</span><span class="w">
+    </span><span class="mf">79.93886694122813</span><span class="p">,</span><span class="w">
+    </span><span class="mf">6.754293758508223</span><span class="p">,</span><span class="w">
+    </span><span class="mf">15.36922771034137</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">40</span><span class="p">,</span><span class="w">
-    </span><span class="mi">38</span><span class="p">,</span><span class="w">
-    </span><span class="mi">41</span><span class="w">
+    </span><span class="mi">222</span><span class="p">,</span><span class="w">
+    </span><span class="mi">193</span><span class="p">,</span><span class="w">
+    </span><span class="mi">170</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-3911 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"13-1011 tcx"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">279.99999999999994</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.07317073170731714</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.1607843137254902</span><span class="w">
+    </span><span class="mf">26.538461538461547</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.23423423423423428</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8705882352941177</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black beauty"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rose dust"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">205</span><span class="p">,</span><span class="w">
-    </span><span class="mi">178</span><span class="p">,</span><span class="w">
-    </span><span class="mi">165</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 14-1307 tcx rose dust"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#cdb3a2"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">74.716930640067</span><span class="p">,</span><span class="w">
-    </span><span class="mf">6.646359569893512</span><span class="p">,</span><span class="w">
-    </span><span class="mf">12.110173948868752</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">205</span><span class="p">,</span><span class="w">
-    </span><span class="mi">179</span><span class="p">,</span><span class="w">
-    </span><span class="mi">162</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14-1307 tcx"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">23.720930232558146</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.20975609756097569</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.803921568627451</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rose dust"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ivory cream"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tan"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"timberwolf"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">198</span><span class="p">,</span><span class="w">
-    </span><span class="mi">197</span><span class="p">,</span><span class="w">
-    </span><span class="mi">198</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 13-4104 tcx antarctica"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#cfcccc"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jet"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="mi">43</span><span class="p">,</span><span class="w">
+    </span><span class="mi">45</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-4004 tcx tap shoe"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.16216216216216217</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#2b2c2d"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">17.93853276291656</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-0.2022203751522733</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-0.8051385777718023</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">83.33333333333334</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">43</span><span class="p">,</span><span class="w">
+    </span><span class="mi">44</span><span class="p">,</span><span class="w">
+    </span><span class="mi">45</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-4004 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">210.0000000000001</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0444444444444444</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.17647058823529413</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tap shoe"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">2.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver sand"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">197</span><span class="p">,</span><span class="w">
+    </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="mi">199</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 14-4102 tcx glacier gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.16216216216216217</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c4c6c6"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">82.27695306528122</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.0314644455792221</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.3580088239849344</span><span class="w">
+    </span><span class="mf">79.72810735816829</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-0.6892262565815765</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-0.24903099362945103</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">83.33333333333334</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">207</span><span class="p">,</span><span class="w">
-    </span><span class="mi">204</span><span class="p">,</span><span class="w">
-    </span><span class="mi">204</span><span class="w">
+    </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="mi">198</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"13-4104 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14-4102 tcx"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.01449275362318836</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.8117647058823529</span><span class="w">
+    </span><span class="mf">180.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.010101010101010055</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7764705882352941</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"antarctica"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"glacier gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"granite gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">102</span><span class="p">,</span><span class="w">
+    </span><span class="mi">103</span><span class="p">,</span><span class="w">
+    </span><span class="mi">109</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 18-4006 tcx quiet shade"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10810810810810811</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#61636a"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">42.0086797684853</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7439991692389514</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-4.226920295539904</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">55.55555555555556</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">97</span><span class="p">,</span><span class="w">
+    </span><span class="mi">99</span><span class="p">,</span><span class="w">
+    </span><span class="mi">106</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18-4006 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">226.66666666666663</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.08490566037735858</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.41568627450980394</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"quiet shade"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"copper red"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">209</span><span class="p">,</span><span class="w">
+    </span><span class="mi">111</span><span class="p">,</span><span class="w">
+    </span><span class="mi">82</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 16-1441 tcx arabesque"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10810810810810811</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c5694a"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">54.52250103123478</span><span class="p">,</span><span class="w">
+    </span><span class="mf">33.8426536300997</span><span class="p">,</span><span class="w">
+    </span><span class="mf">33.601454680289436</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">55.55555555555556</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">197</span><span class="p">,</span><span class="w">
+    </span><span class="mi">105</span><span class="p">,</span><span class="w">
+    </span><span class="mi">74</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"16-1441 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">15.121951219512198</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.6243654822335025</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7725490196078432</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arabesque"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tomato"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">2.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"steel teal"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">85</span><span class="p">,</span><span class="w">
+    </span><span class="mi">143</span><span class="p">,</span><span class="w">
+    </span><span class="mi">145</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 17-4818 tcx bristol blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10810810810810811</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#54919a"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">56.55290842710919</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-17.2649007031071</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-10.93920065553089</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">55.55555555555556</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">84</span><span class="p">,</span><span class="w">
+    </span><span class="mi">145</span><span class="p">,</span><span class="w">
+    </span><span class="mi">154</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17-4818 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">187.71428571428572</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4545454545454545</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.6039215686274509</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bristol blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"teal"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"platinum"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="mi">239</span><span class="p">,</span><span class="w">
@@ -6131,7 +6168,7 @@ The current version supports building only one index at the same time and does n
     </span><span class="mf">2.0227459343862275</span><span class="p">,</span><span class="w">
     </span><span class="mf">0.7108750672036868</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">33.33333333333333</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="mi">235</span><span class="p">,</span><span class="w">
     </span><span class="mi">229</span><span class="p">,</span><span class="w">
@@ -6148,37 +6185,81 @@ The current version supports building only one index at the same time and does n
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"off white"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nude"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">235</span><span class="p">,</span><span class="w">
-    </span><span class="mi">209</span><span class="p">,</span><span class="w">
-    </span><span class="mi">187</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.0</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 12-0807 tcx sun kiss"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08108108108108109</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#ebceb5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pale turquoise"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="mi">227</span><span class="p">,</span><span class="w">
+    </span><span class="mi">223</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 12-5410 tcx bleached aqua"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05405405405405406</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#bce9e9"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">84.55704693472978</span><span class="p">,</span><span class="w">
-    </span><span class="mf">6.337699403810959</span><span class="p">,</span><span class="w">
-    </span><span class="mf">16.165955587964454</span><span class="w">
+    </span><span class="mf">89.32296955480805</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-14.40754901948721</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-4.797498595756533</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">87.5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">22.22222222222222</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">235</span><span class="p">,</span><span class="w">
-    </span><span class="mi">206</span><span class="p">,</span><span class="w">
-    </span><span class="mi">181</span><span class="w">
+    </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="mi">233</span><span class="p">,</span><span class="w">
+    </span><span class="mi">233</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12-0807 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12-5410 tcx"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">27.77777777777777</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.22978723404255308</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.9215686274509803</span><span class="w">
+    </span><span class="mf">180.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.19313304721030033</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.9137254901960784</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sun kiss"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"peach"</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bleached aqua"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sky blue"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"embedding_grid"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">2.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.0</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"antique brass"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">202</span><span class="p">,</span><span class="w">
+    </span><span class="mi">153</span><span class="p">,</span><span class="w">
+    </span><span class="mi">120</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 16-1331 tcx toast"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02702702702702703</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#cc9773"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"orange"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">66.68024118683753</span><span class="p">,</span><span class="w">
+    </span><span class="mf">15.365610229684856</span><span class="p">,</span><span class="w">
+    </span><span class="mf">26.723238983154786</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">11.11111111111111</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">204</span><span class="p">,</span><span class="w">
+    </span><span class="mi">151</span><span class="p">,</span><span class="w">
+    </span><span class="mi">115</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"16-1331 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">24.2696629213483</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4362745098039216</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"toast"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tan"</span><span class="w">
   </span><span class="p">}</span><span class="w">
+ </span><span class="p">],</span><span class="w">
+ </span><span class="s2">"grid_size"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="mi">3</span><span class="p">,</span><span class="w">
+  </span><span class="mi">3</span><span class="w">
  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -6235,6 +6316,10 @@ Prior to calling this API the dominant colors index has to be built.
 <td>The time the dominant colors where computed.</td>
 </tr>
 <tr>
+<td>grid_size</td>
+<td>The grid size for the embedding.</td>
+</tr>
+<tr>
 <td><strong>dominant_colors</strong></td>
 <td>A list of dominant colors for the catalog sorted in the decreasing order of popularity. Each field in the list has the following fieldnames.</td>
 </tr>
@@ -6273,6 +6358,10 @@ Prior to calling this API the dominant colors index has to be built.
 <tr>
 <td>n_instances</td>
 <td>The number of colors in the cluster.</td>
+</tr>
+<tr>
+<td>embedding_grid</td>
+<td>The position in the grid.</td>
 </tr>
 </tbody></table>
 
@@ -6435,7 +6524,7 @@ Prior to calling this API the dominant colors index has to be built.
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">],</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60.52"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.74"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/catalog/sample_catalog/images/SHRES16AWFSDR9346B_1.jpg?top_left_x=83&amp;top_left_y=0&amp;width=107&amp;height=365"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">83</span><span class="p">,</span><span class="w">
