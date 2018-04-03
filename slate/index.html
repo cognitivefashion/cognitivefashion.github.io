@@ -222,7 +222,7 @@
         <ul class="toc-footer">
             <li><a href='https://cognitivefashion.github.io/'>Project Website</a></li>
             <li><a href='https://github.com/cognitivefashion/cf-sdk-python'>Python SDK</a></li>
-            <li><a href='mailto:viraykar@in.ibm.com?Subject=AI%20%20for%20Fashion%20API%20key'>Request an API key</a></li>
+            <li><a href='mailto:viraykar@in.ibm.com;jaikhari@in.ibm.com?Subject=AI%20%20for%20Fashion%20API%20key'>Request an API key</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -3113,12 +3113,14 @@ with open(image_filename,'rb') as images_file:
 </tr>
 </tbody></table>
 
-          <h1 id="person">Person</h1>
+          <h1 id="detectors">Detectors</h1>
+
+<p>A collection of APIs for detecting person, apparel, accessories and footwear in an image.</p>
 
 <h2 id="detect-persons-in-an-image">Detect persons in an image</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Person detection.</span>
-<span class="c"># POST /v1/person</span>
+<span class="c"># Detect persons in a fashion image.</span>
+<span class="c"># POST /v1/detect_person</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -3132,17 +3134,15 @@ with open(image_filename,'rb') as images_file:
 <span class="c"># Replace this with the custom url generated for you.</span>
 <span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
 
-<span class="c"># Pass the api key into the header</span>
-<span class="c"># Replace 'your_api_key' with your API key.</span>
+<span class="c"># Pass the api key into the header.</span>
 <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
 <span class="c"># Optional parameters.</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'fast'</span> <span class="c"># default</span>
 <span class="c">#params['model'] = 'accurate'</span>
 
-<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/person'</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/detect_person'</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
@@ -3153,7 +3153,7 @@ with open(image_filename,'rb') as images_file:
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
                          <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                          <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_4.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_3.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
 
 <span class="s">"""
 # OPTION 2 : Pass the image url
@@ -3175,26 +3175,43 @@ with open(image_filename,'rb') as images_file:
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+
+<span class="c"># Human friendly repsonse.</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="n">image_location</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s?api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">results</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                  <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'[original image] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">image_location</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'persons'</span><span class="p">]:</span>
+    <span class="n">entity_swatch</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s&amp;api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">entity</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                    <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'[</span><span class="si">%1.2</span><span class="s">f][</span><span class="si">%</span><span class="s">s]'</span><span class="o">%</span><span class="p">(</span><span class="n">entity</span><span class="p">[</span><span class="s">'score'</span><span class="p">],</span><span class="n">entity_swatch</span><span class="p">))</span> 
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3606.45"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1934.55"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/4f394ff2-50fe-482a-a381-8e5f38136b3f.jpe"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"persons"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">184</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.737177</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/4f394ff2-50fe-482a-a381-8e5f38136b3f.jpe?top_left_x=41&amp;top_left_y=14&amp;width=184&amp;height=493"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">41</span><span class="p">,</span><span class="w">
    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">493</span><span class="w">
+   </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">493</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">184</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.737177</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.889102</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/4f394ff2-50fe-482a-a381-8e5f38136b3f.jpe?top_left_x=177&amp;top_left_y=27&amp;width=170&amp;height=541"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">177</span><span class="p">,</span><span class="w">
    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">27</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">541</span><span class="w">
+   </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">541</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.889102</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -3203,7 +3220,7 @@ with open(image_filename,'rb') as images_file:
 
 <h3 id="end-point">End point</h3>
 
-<p><code class="prettyprint">POST /v1/person</code></p>
+<p><code class="prettyprint">POST /v1/detect_person</code></p>
 
 <h3 id="request">Request</h3>
 
@@ -3260,6 +3277,10 @@ with open(image_filename,'rb') as images_file:
 <td>The time taken in milliseconds.</td>
 </tr>
 <tr>
+<td>image_location</td>
+<td>The image location of the uploaded image.</td>
+</tr>
+<tr>
 <td><strong>persons</strong></td>
 <td>A list of bounding boxes for all detected persons. Each element of the list contains the following fields.</td>
 </tr>
@@ -3282,6 +3303,326 @@ with open(image_filename,'rb') as images_file:
 <tr>
 <td>score</td>
 <td>The confidence score (between 0 and 1) that the bounding box contains a person.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The image location of the detected person.</td>
+</tr>
+</tbody></table>
+
+<h2 id="detect-apparel-in-an-image">Detect apparel in an image</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Detect apparel,accessories and footwear in a fashion image.</span>
+<span class="c"># POST /v1/detect_apparel</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'threshold'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/detect_apparel'</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="c"># Three options to pass the image</span>
+
+<span class="c"># OPTION 1 : Directly post the image</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'Content-Type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'image/jpeg'</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+
+<span class="s">"""
+# OPTION 2 : Pass the image url
+params['image_url'] = 'http://vg-images.condecdn.net/image/oDXPOxw65EZ/crop/405'
+response = requests.post(url,
+                         headers=headers,
+                         params=params)
+"""</span>
+
+<span class="s">"""
+# OPTION 3 : using multipart
+image_filename = 'test_image_3.jpeg'
+with open(image_filename,'rb') as images_file:
+    response = requests.post(url,
+                             headers=headers,
+                             params=params,
+                             files={'image': (image_filename,images_file,'image/jpeg')})   
+"""</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+
+<span class="c"># Human friendly repsonse.</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="n">image_location</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s?api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">results</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                  <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'[original image] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">image_location</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'entities'</span><span class="p">]:</span>
+    <span class="n">entity_swatch</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s&amp;api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">entity</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                    <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'[</span><span class="si">%1.2</span><span class="s">f][</span><span class="si">%</span><span class="s">s][</span><span class="si">%</span><span class="s">s]'</span><span class="o">%</span><span class="p">(</span><span class="n">entity</span><span class="p">[</span><span class="s">'category'</span><span class="p">][</span><span class="s">'score'</span><span class="p">][</span><span class="n">entity</span><span class="p">[</span><span class="s">'category'</span><span class="p">][</span><span class="s">'value'</span><span class="p">]],</span>
+                                     <span class="n">entity</span><span class="p">[</span><span class="s">'category'</span><span class="p">][</span><span class="s">'value'</span><span class="p">],</span>
+                                     <span class="n">entity_swatch</span><span class="p">))</span> 
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"259.57"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"entities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"layer_2_lower_body"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"pant"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5747724771499634</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apparel"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pant"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe?top_left_x=168&amp;top_left_y=276&amp;width=266&amp;height=609"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">266</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5747724771499634</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">168</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">276</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">609</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"person"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7402761578559875</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"person"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe?top_left_x=175&amp;top_left_y=44&amp;width=254&amp;height=799"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">254</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7402761578559875</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">175</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">799</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"footwear"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"sandal"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4261542558670044</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"footwear"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sandal"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe?top_left_x=245&amp;top_left_y=825&amp;width=101&amp;height=59"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4261542558670044</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">245</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">825</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">59</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"footwear"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"sandal"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2754097878932953</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"footwear"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sandal"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe?top_left_x=333&amp;top_left_y=835&amp;width=105&amp;height=51"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">105</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2754097878932953</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">333</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">835</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">51</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"layer_2_upper_body"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.31577786803245544</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"apparel"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe?top_left_x=192&amp;top_left_y=148&amp;width=186&amp;height=213"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">186</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.31577786803245544</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">192</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">148</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">213</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"face"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8626712560653687</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"face"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/2e4e7b35-b8de-493f-8e90-e59080c65d73.jpe?top_left_x=221&amp;top_left_y=34&amp;width=89&amp;height=96"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">89</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8626712560653687</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">221</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">96</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Detect and find the bounding boxes for all apparel, accessories and footwear in an image.</p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">POST /v1/detect_apparel</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>data</td>
+<td>image/jpeg</td>
+<td>(<strong>Required</strong>) The image. The image can be in PNG, JPEG, BMP, or GIF.</td>
+<td></td>
+</tr>
+<tr>
+<td>threhold</td>
+<td>query</td>
+<td>Threshold for detections, ignore entities whose score is below this threshold value.</td>
+<td>0.2</td>
+</tr>
+</tbody></table>
+
+<p>Instead of the posting the image data you can also pass an image url.</p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>image_url</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The image url.</td>
+</tr>
+</tbody></table>
+
+<p>You can also pass the image using multipart/form-data with the fieldname <code class="prettyprint">image</code>.</p>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>image_location</td>
+<td>The image location of the uploaded image.</td>
+</tr>
+<tr>
+<td><strong>entities</strong></td>
+<td>A list of detected entities. Each element of the list contains the following fields.</td>
+</tr>
+<tr>
+<td><strong>bounding_box</strong></td>
+<td>The bounding box for the deteted entity containing the following fields.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+<tr>
+<td>score</td>
+<td>The confidence score (between 0 and 1) that the bounding box contains a person.</td>
+</tr>
+<tr>
+<td><strong>category</strong></td>
+<td>The category of deteted entity containing the following fields.</td>
+</tr>
+<tr>
+<td>value</td>
+<td>The category label.</td>
+</tr>
+<tr>
+<td>score</td>
+<td>The confidence score for the category label.</td>
+</tr>
+<tr>
+<td>product_type</td>
+<td>Can be either <code class="prettyprint">apparel</code>,<code class="prettyprint">accessories</code>,<code class="prettyprint">footwear</code> or <code class="prettyprint">UNK</code>.</td>
+</tr>
+<tr>
+<td>layer_type</td>
+<td>The layer type.</td>
+</tr>
+<tr>
+<td><strong>image_location</strong></td>
+<td>The image location of the detected entity.</td>
 </tr>
 </tbody></table>
 
