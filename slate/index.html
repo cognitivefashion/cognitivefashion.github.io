@@ -2910,12 +2910,12 @@ The structured parse is grounded in the fashion taxonomy and can understand vari
 We differentiate between two kinds of images. Iconic images are mainly single product images where the image is loosely focused only on the main apparel, footwear or accessory. Non-Iconic are mainly multiple product images where the image contains multiple apparel, footwear and accessories. Non-Iconic images are typically full outfit images whereas iconic images are mainly focused on the main product.
 </aside>
 
-<h2 id="get-visual-attributes-for-iconic-images">Get visual attributes for iconic images</h2>
+<h2 id="get-visual-attributes-for-iconic-non-iconic-fashion-images">Get visual attributes for iconic/non-iconic fashion images</h2>
 
-<p>Given a iconic fashion image (containing apparel,accessories,or footwear) identify the main product <strong>category</strong> along with the different <strong>attributes</strong>. The attributes predicted shall be consistent with the predicted category, e.g. <code class="prettyprint">sleeve length</code> won&rsquo;t be predicted for category <code class="prettyprint">jeans</code>.</p>
+<p>Given a fashion image (containing apparel,accessories,or footwear) identify the detect differnt product <strong>category</strong> along with the different <strong>attributes</strong>. The attributes predicted shall be consistent with the predicted category, e.g. <code class="prettyprint">sleeve length</code> won&rsquo;t be predicted for category <code class="prettyprint">jeans</code>.</p>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Get visual attributes for a given iconic image.</span>
-<span class="c"># GET /v1/visualattributes/iconic</span>
+<span class="c"># Get visual attributes for a given iconic/non-iconic image.</span>
+<span class="c"># GET /v1/visualattributes</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -2935,8 +2935,12 @@ We differentiate between two kinds of images. Iconic images are mainly single pr
 
 <span class="c"># Parameters.</span>
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c"># Optional parameters.</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'threshold'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="c">#params['image_type'] = 'iconic'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'image_type'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'non-iconic'</span>
 
-<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/visualattributes/iconic'</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/visualattributes'</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
@@ -2947,7 +2951,7 @@ We differentiate between two kinds of images. Iconic images are mainly single pr
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
                          <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                          <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_1.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_2.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
 
 <span class="s">"""            
 # OPTION 2 : Pass the image url
@@ -2969,91 +2973,337 @@ with open(image_filename,'rb') as images_file:
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+<span class="c"># Human friendly repsonse.</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+
+<span class="n">image_location</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s?api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">results</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                  <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'[original image] </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">image_location</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'entities'</span><span class="p">]:</span>
+    <span class="n">entity_swatch</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s&amp;api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">entity</span><span class="p">[</span><span class="s">'image_location'</span><span class="p">]),</span>
+                                    <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'[</span><span class="si">%1.2</span><span class="s">f][</span><span class="si">%</span><span class="s">s][</span><span class="si">%</span><span class="s">s]'</span><span class="o">%</span><span class="p">(</span><span class="n">entity</span><span class="p">[</span><span class="s">'category'</span><span class="p">][</span><span class="s">'score'</span><span class="p">][</span><span class="n">entity</span><span class="p">[</span><span class="s">'category'</span><span class="p">][</span><span class="s">'value'</span><span class="p">]],</span>
+                                     <span class="n">entity</span><span class="p">[</span><span class="s">'category'</span><span class="p">][</span><span class="s">'value'</span><span class="p">],</span>
+                                     <span class="n">entity_swatch</span><span class="p">))</span> 
+    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">entity</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">]:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'[</span><span class="si">%1.2</span><span class="s">f][</span><span class="si">%</span><span class="s">s][</span><span class="si">%</span><span class="s">s]'</span><span class="o">%</span><span class="p">(</span><span class="n">entity</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">][</span><span class="n">attribute</span><span class="p">][</span><span class="s">'score'</span><span class="p">][</span><span class="n">entity</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">][</span><span class="n">attribute</span><span class="p">][</span><span class="s">'value'</span><span class="p">]],</span>
+                                 <span class="n">attribute</span><span class="p">,</span>
+                                 <span class="n">entity</span><span class="p">[</span><span class="s">'attributes'</span><span class="p">][</span><span class="n">attribute</span><span class="p">][</span><span class="s">'value'</span><span class="p">]))</span>
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"570.49"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"stilettos"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7297826409339905</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"sandals"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22344675660133362</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pumps"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02747255750000477</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stilettos"</span><span class="w">
- </span><span class="p">},</span><span class="w">
- </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"fit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"skinny"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.011083225719630718</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"regular"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.947587251663208</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"slim"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.024282250553369522</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2823.04"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"entities"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"palazzo"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22113326648841536</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"salwar"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06767382153963641</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"pant"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5747724771499634</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pant"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regular"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"color"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"golden"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08500122278928757</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"black"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5809345245361328</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"silver"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10020259022712708</span><span class="w">
+   </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"style"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"fusion"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1323334127664566</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"maternity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.12990465760231018</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"casual"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13776597380638123</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"casual"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"rise"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"mid rise"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9471921920776367</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"high rise"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.003534807590767741</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"low rise"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04925554618239403</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mid rise"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"fabric"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"polyester"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.14030905067920685</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"rayon"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10886745154857635</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"cotton"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3303784728050232</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cotton"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"fit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"regular"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8877512812614441</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"slim"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05478856340050697</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"loose"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.012176275253295898</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regular"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"color"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"pink"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13715988397598267</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"multicoloured"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18392638862133026</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"red"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2667190730571747</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"pattern"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"solid"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8236303329467773</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"embellished"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07058356702327728</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"embroidered"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04244432970881462</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"solid"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"material"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"leather"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1788148432970047</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"polyurethane"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8198845982551575</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"cotton"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.000506136566400528</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"polyurethane"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"age_gender"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"boys"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.021265005692839622</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"girls"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.28132501244544983</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"women"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6916653513908386</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"women"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"ankle length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06449545174837112</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"full length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8689517974853516</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"regular length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05531088262796402</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"full length"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"age_gender"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"men"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.310367149988451e-08</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"girls"</span><span class="p">:</span><span class="w"> </span><span class="mf">9.555650493098256e-09</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"women"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9999998807907104</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">292</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5747724771499634</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">155</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">246</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">642</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"women"</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe?top_left_x=155&amp;top_left_y=246&amp;width=292&amp;height=642"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"heel height"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"medium: 2.5-3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3852241635322571</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"low: 1.5-2.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008176162838935852</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"high: above 3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6064814925193787</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"person"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7402761578559875</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"person"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high: above 3.5 inch"</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe?top_left_x=163&amp;top_left_y=5&amp;width=278&amp;height=877"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">278</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7402761578559875</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">163</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">877</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"heel shape"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"stiletto"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9994674324989319</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"block"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00012550147948786616</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"kitten"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0003877997223753482</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"sandal"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4261542558670044</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"sandals"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3518989313999086</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"boots"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.054356454120087605</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sandal"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"stiletto"</span><span class="w">
+   </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"heel height"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"medium: 2.5-3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"low: 1.5-2.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.6993671187192092e-11</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"high: above 3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1122387733042416e-11</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium: 2.5-3.5 inch"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">111</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4261542558670044</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">240</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">823</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">63</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe?top_left_x=240&amp;top_left_y=823&amp;width=111&amp;height=63"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"tip shape"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"pointed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.20216183364391327</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"open"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6662291884422302</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"round"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1315946727991104</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"sandal"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2754097878932953</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"pumps"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09048446886142614</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"sandals"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13116798881638747</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sandal"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"open"</span><span class="w">
+   </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"heel height"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"medium: 2.5-3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.981193630257621e-05</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"low: 1.5-2.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.3353110334396475e-15</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"high: above 3.5 inch"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.999920129776001</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"high: above 3.5 inch"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">115</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2754097878932953</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">328</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">833</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">55</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe?top_left_x=328&amp;top_left_y=833&amp;width=115&amp;height=55"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"ankle height"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"calf length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.014615225605666637</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"low ankle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.003991052508354187</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"ankle length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9804659485816956</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"blouse"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06075274238587225</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"sweater"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05060515634194118</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.31577786803245544</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"shirt"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ankle length"</span><span class="w">
+   </span><span class="s2">"attributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"style"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"party"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.007760034408420324</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"casual"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9074917435646057</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"formal"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07398669421672821</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"casual"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"rise"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"mid rise"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9999979734420776</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"high rise"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1497794903669867e-11</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"low rise"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.994056219700724e-06</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mid rise"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"fabric"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"polyester"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10793536901473999</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"blend"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06727375090122223</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"cotton"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4398740828037262</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cotton"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"fit"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"relaxed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.011904584243893623</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"regular"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8485410213470459</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"slim"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.11031126230955124</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"regular"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"color"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"pink"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2812502682209015</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"green"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1360998898744583</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"yellow"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07928851246833801</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"pattern"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"solid"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.881832480430603</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"printed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.044556956738233566</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"textured"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.029497725889086723</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"solid"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"sleeve style"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"cap sleeves"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9173927307128906</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"roll up sleeves"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08121675252914429</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"puff sleeves"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0013715812237933278</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cap sleeves"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"age_gender"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"men"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.018686337396502495</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"girls"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.058831632137298584</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"women"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9153407216072083</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"women"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"waist length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09034832566976547</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"thigh length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.020926641300320625</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"hip length"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8840341567993164</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hip length"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"sleeve length"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"short sleeves"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0034761312417685986</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"3/4th sleeves"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0034854754339903593</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"long sleeves"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9906822443008423</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"long sleeves"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"neck"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"v neck"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2768712639808655</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"round neck"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.11630632728338242</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"polo neck"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21823753416538239</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v neck"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">204</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.31577786803245544</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">183</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">138</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">233</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe?top_left_x=183&amp;top_left_y=138&amp;width=204&amp;height=233"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"closing"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"buckle"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.26762887835502625</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"slip on"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4985831677913666</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.145882248878479</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"layer_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"face"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8626712560653687</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"product_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"UNK"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"face"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"slip on"</span><span class="w">
+   </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/23e67de5-1ac0-487d-9e7f-619e91e685a7.jpe?top_left_x=217&amp;top_left_y=30&amp;width=97&amp;height=104"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"bounding_box"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">97</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8626712560653687</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_x"</span><span class="p">:</span><span class="w"> </span><span class="mi">217</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"top_left_y"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">104</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="w">
   </span><span class="p">}</span><span class="w">
- </span><span class="p">}</span><span class="w">
+ </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <h3 id="end-point">End point</h3>
 
-<p><code class="prettyprint">GET /v1/visualattributes/iconic</code></p>
+<p><code class="prettyprint">GET /v1/visualattributes</code></p>
 
 <h3 id="request">Request</h3>
 
@@ -3070,6 +3320,18 @@ with open(image_filename,'rb') as images_file:
 <td>image/jpeg</td>
 <td>(<strong>Required</strong>) The image. The image can be in PNG, JPEG, BMP, or GIF.</td>
 <td></td>
+</tr>
+<tr>
+<td>threshold</td>
+<td>query</td>
+<td>Threshold for detections, ignore entities whose score is below this threshold value.</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>iamge_type</td>
+<td>query</td>
+<td>Can be either <code class="prettyprint">iconic</code> or <code class="prettyprint">non-iconic</code>.</td>
+<td><code class="prettyprint">iconic</code></td>
 </tr>
 </tbody></table>
 
@@ -3104,12 +3366,44 @@ with open(image_filename,'rb') as images_file:
 <td>The time taken for prediction in milliseconds.</td>
 </tr>
 <tr>
-<td>category</td>
+<td><strong>entities</strong></td>
+<td>A list of detected entities. Each element of the list contains the following fields.</td>
+</tr>
+<tr>
+<td><strong>bounding_box</strong></td>
+<td>The bounding box for the deteted entity containing the following fields.</td>
+</tr>
+<tr>
+<td>top_left_x</td>
+<td>The x co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>top_left_y</td>
+<td>The y co-ordinate of the top left corner of the bounding box.</td>
+</tr>
+<tr>
+<td>width</td>
+<td>The width of the bounding box.</td>
+</tr>
+<tr>
+<td>height</td>
+<td>The height of the bounding box.</td>
+</tr>
+<tr>
+<td>score</td>
+<td>The confidence score.</td>
+</tr>
+<tr>
+<td><strong>category</strong></td>
 <td>The top-3 product categories predicted along with their respective confidence levels and the final predicted category.</td>
 </tr>
 <tr>
-<td>attributes</td>
+<td><strong>attributes</strong></td>
 <td>The attributes and their top-3 values predicted along with the respective confidence levels.</td>
+</tr>
+<tr>
+<td><strong>image_location</strong></td>
+<td>The image location of the detected entity</td>
 </tr>
 </tbody></table>
 
@@ -3531,7 +3825,7 @@ with open(image_filename,'rb') as images_file:
 <td></td>
 </tr>
 <tr>
-<td>threhold</td>
+<td>threshold</td>
 <td>query</td>
 <td>Threshold for detections, ignore entities whose score is below this threshold value.</td>
 <td>0.2</td>
