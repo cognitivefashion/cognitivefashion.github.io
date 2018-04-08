@@ -7758,6 +7758,8 @@ The current version supports building only one trend report at the same time and
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c"># Optional</span>
+<span class="c">#params['catalog_name'] = 'vogue-autumn-winter-2017'</span>
 
 <span class="n">report_name</span> <span class="o">=</span> <span class="s">'vogue-autumn-winter'</span>
 
@@ -7770,294 +7772,397 @@ The current version supports building only one trend report at the same time and
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 
-<span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">'colors'</span><span class="p">]:</span>
-    <span class="k">print</span> <span class="n">color</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span>
+<span class="c"># Print the colors.</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="s">'2013'</span><span class="p">,</span><span class="s">'2014'</span><span class="p">,</span><span class="s">'2015'</span><span class="p">,</span><span class="s">'2016'</span><span class="p">,</span><span class="s">'2017'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">color_info</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'popularity [</span><span class="si">%</span><span class="s">s] [</span><span class="si">%+1.2</span><span class="s">f] trend [</span><span class="si">%</span><span class="s">s] [</span><span class="si">%+1.2</span><span class="s">f] [</span><span class="si">%</span><span class="s">s]'</span><span class="o">%</span><span class="p">(</span>
+                          <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">'</span><span class="si">%1.2</span><span class="s">f'</span><span class="o">%</span><span class="p">(</span><span class="n">color_info</span><span class="p">[</span><span class="s">'popularity_by_id'</span><span class="p">][</span><span class="s">'</span><span class="si">%</span><span class="s">s-</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">report_name</span><span class="p">,</span><span class="n">year</span><span class="p">)])</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]),</span>
+                          <span class="n">color_info</span><span class="p">[</span><span class="s">'popularity_forecast'</span><span class="p">][</span><span class="s">'mean'</span><span class="p">],</span>
+                          <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">'</span><span class="si">%+1.2</span><span class="s">f'</span><span class="o">%</span><span class="p">(</span><span class="n">color_info</span><span class="p">[</span><span class="s">'trend_by_id'</span><span class="p">][</span><span class="s">'</span><span class="si">%</span><span class="s">s-</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">report_name</span><span class="p">,</span><span class="n">year</span><span class="p">)])</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]),</span>
+                          <span class="n">color_info</span><span class="p">[</span><span class="s">'trend_forecast'</span><span class="p">][</span><span class="s">'mean'</span><span class="p">],</span>
+                          <span class="n">color_info</span><span class="p">[</span><span class="s">'pantone_id'</span><span class="p">]))</span>
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-27 10:37:36.358990"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.12"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-04-08 08:23:29.263227"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.98"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.12728999876319122</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.11846037510176805</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"papaya"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21971830985915494</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#5e564e"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">37.087884341146065</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.729542020793312</span><span class="p">,</span><span class="w">
-    </span><span class="mf">5.8311566365969565</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jet black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jet"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">45</span><span class="p">,</span><span class="w">
+    </span><span class="mi">44</span><span class="p">,</span><span class="w">
+    </span><span class="mi">47</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">100.0</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">94</span><span class="p">,</span><span class="w">
-    </span><span class="mi">86</span><span class="p">,</span><span class="w">
-    </span><span class="mi">78</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">30.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.17021276595744683</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.3686274509803922</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">26</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">61</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-0303 tcx jet black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.27372356393630976</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08555227333057681</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10808528033524438</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.045649819903448</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21111111024727194</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.16250000081027</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.30499999874377953</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18235294136206898</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">156</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2111111111111111</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1625</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.305</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18235294117647058</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.12146459232037632</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.453414784272708</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.16597509597616583</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.4698675509883368</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white gold"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09295774647887324</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c3a696"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pink"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">70.23022967554536</span><span class="p">,</span><span class="w">
-    </span><span class="mf">8.083993928497623</span><span class="p">,</span><span class="w">
-    </span><span class="mf">12.209366351225558</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">60.0</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">195</span><span class="p">,</span><span class="w">
-    </span><span class="mi">166</span><span class="p">,</span><span class="w">
-    </span><span class="mi">150</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">21.333333333333314</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.23076923076923073</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.7647058823529411</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">31</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10555555375433567</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01875000188182624</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06499999997553355</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18235293984079062</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">66</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tan"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10555555555555556</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01875</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.065</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18235294117647058</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.047120763884222955</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.26775401097536666</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1574373874297948</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3023520749400484</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dark lava"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13380281690140844</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#4a423b"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.12474437627811862</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#2e2d30"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">28.55926533070292</span><span class="p">,</span><span class="w">
-    </span><span class="mf">2.047899595026992</span><span class="p">,</span><span class="w">
-    </span><span class="mf">5.501238386707485</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">70.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10106382816649939</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.17857142615067614</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.12121212398756362</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.12999999648153948</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09183673705739197</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">90.0</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">74</span><span class="p">,</span><span class="w">
-    </span><span class="mi">66</span><span class="p">,</span><span class="w">
-    </span><span class="mi">59</span><span class="w">
+    </span><span class="mi">46</span><span class="p">,</span><span class="w">
+    </span><span class="mi">45</span><span class="p">,</span><span class="w">
+    </span><span class="mi">48</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">122</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">18.67502318692506</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.1641448868809912</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-1.7731775401694017</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-0303 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">28.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.20270270270270274</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.2901960784313726</span><span class="w">
+    </span><span class="mf">259.99999999999994</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.06249999999999989</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.18823529411764706</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.23333333198751538</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08125000054292353</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1449999990809743</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06470588240193809</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">95</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">35</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">26</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.23333333333333334</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08125</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.145</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06470588235294118</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10106382978723404</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.17857142857142858</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.12121212121212122</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09183673469387756</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.13864351451135104</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.36027123838492425</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.11081386193678662</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.030499034528666535</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3087030731262529</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1696010538274597</span><span class="w">
    </span><span class="p">}</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.612144903259598</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.32502210212075666</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dark vanilla"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13943661971830987</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c8bfab"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">77.567985885634</span><span class="p">,</span><span class="w">
-    </span><span class="mf">-0.2225972073570115</span><span class="p">,</span><span class="w">
-    </span><span class="mf">11.218179844582398</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"deep well"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"raisin black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">44</span><span class="p">,</span><span class="w">
+    </span><span class="mi">42</span><span class="p">,</span><span class="w">
+    </span><span class="mi">51</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">80.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-3713 tcx deep well"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015566962791144334</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.33375267885934234</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.26977967317365265</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.22423467190267088</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1114519427402863</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#22202a"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21276595355640066</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09693877266310735</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.060606066963965866</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07499999163851878</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.11734694598084383</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">85.0</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="mi">191</span><span class="p">,</span><span class="w">
-    </span><span class="mi">171</span><span class="w">
+    </span><span class="mi">34</span><span class="p">,</span><span class="w">
+    </span><span class="mi">32</span><span class="p">,</span><span class="w">
+    </span><span class="mi">42</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">109</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">12.86179904012861</span><span class="p">,</span><span class="w">
+    </span><span class="mf">3.5801169702007196</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-6.343380699850043</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-3713 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">41.379310344827616</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.14500000000000002</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.7843137254901961</span><span class="w">
+    </span><span class="mf">252.0</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.23809523809523814</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.16470588235294117</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">39</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2166666657847035</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.006250000214277067</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21999999913628526</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0882352938883679</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21666666666666667</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00625</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08823529411764706</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2127659574468085</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09693877551020408</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06060606060606061</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.075</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.11734693877551021</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.2787645697974107</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3400206912085775</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0306280607055834</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0614139235353279</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.24248830328589702</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.15195111341061246</span><span class="w">
    </span><span class="p">}</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.39087462409644025</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.27244798323564934</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"grullo"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03943661971830986</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#948776"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">57.00933143397715</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.9748630692357771</span><span class="p">,</span><span class="w">
-    </span><span class="mf">10.91651260092894</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black ink"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black olive"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">68</span><span class="p">,</span><span class="w">
+    </span><span class="mi">65</span><span class="p">,</span><span class="w">
+    </span><span class="mi">60</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">30.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-0506 tcx black ink"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.34844147476010096</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6817749099763932</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.8257142812078491</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1785714478460592</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.065439672801636</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#444340"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02127659559146082</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10714285332584271</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04545454898588769</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0799999966233297</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07142857173438694</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">75.0</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">148</span><span class="p">,</span><span class="w">
-    </span><span class="mi">135</span><span class="p">,</span><span class="w">
-    </span><span class="mi">118</span><span class="w">
+    </span><span class="mi">68</span><span class="p">,</span><span class="w">
+    </span><span class="mi">67</span><span class="p">,</span><span class="w">
+    </span><span class="mi">64</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">64</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">28.415459788429516</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-0.22870650807427229</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.9645499625216334</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-0506 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">34.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.20270270270270274</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.5803921568627451</span><span class="w">
+    </span><span class="mf">45.00000000000006</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.05882352941176472</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.26666666666666666</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">21</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="w">
    </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02127659574468085</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10714285714285714</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.045454545454545456</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07142857142857142</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0005011718754029948</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.19164819507100214</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09557351159779957</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5309714246051445</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"heron"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">98</span><span class="p">,</span><span class="w">
+    </span><span class="mi">97</span><span class="p">,</span><span class="w">
+    </span><span class="mi">126</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 18-3817 tcx heron"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25516862766198656</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.008004838367361827</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.004636694980282223</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1394553051314291</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.019427402862985686</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#5d607d"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.061111106565130024</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.018750002197004373</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.044999996665530374</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.029411764252569035</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015957453050017</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.030612222082882584</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015151550242968215</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01499998395269847</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02040815601843815</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">35.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">93</span><span class="p">,</span><span class="w">
+    </span><span class="mi">96</span><span class="p">,</span><span class="w">
+    </span><span class="mi">125</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">19</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">41.49038321061422</span><span class="p">,</span><span class="w">
+    </span><span class="mf">5.772538816200379</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-16.61053151124028</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18-3817 tcx"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
     </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">234.375</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.256</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.49019607843137253</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06111111111111111</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01875</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.045</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.029411764705882353</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015957446808510637</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.030612244897959183</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015151515151515152</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02040816326530612</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.040234912730223824</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10094250156085967</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03035379441531792</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03869663665993158</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05696091646598237</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.047828776562956976</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0970617321776512</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white sand"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"timberwolf"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">219</span><span class="p">,</span><span class="w">
+    </span><span class="mi">213</span><span class="p">,</span><span class="w">
+    </span><span class="mi">209</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 13-0002 tcx white sand"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.20115535841989507</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07030295267334408</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.16875410705247687</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.16146461244093568</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07566462167689161</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#d7d1d0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09042553119131298</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09183673675117678</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08585857644650922</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.050000010183979496</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0612244844941708</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">80.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">215</span><span class="p">,</span><span class="w">
+    </span><span class="mi">209</span><span class="p">,</span><span class="w">
+    </span><span class="mi">208</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">74</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">84.27837486243521</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.8817398220458137</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.2191511354760154</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"13-0002 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">8.571428571428555</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.032558139534883734</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8431372549019608</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09042553191489362</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09183673469387756</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08585858585858586</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.061224489795918366</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0027438964207623234</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08989843677661184</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04632116659868708</span><span class="w">
    </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">]</span><span class="w">
@@ -8093,6 +8198,12 @@ Prior to calling this API the trend report has to be built.
 <td>colors</td>
 <td>query</td>
 <td>The number of colors.</td>
+<td>10</td>
+</tr>
+<tr>
+<td>catalog_name</td>
+<td>query</td>
+<td>You can optionally specify the catalog name if you want the results from the previous years.</td>
 <td></td>
 </tr>
 </tbody></table>
@@ -8206,6 +8317,8 @@ Prior to calling this API the trend report has to be built.
 
 <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c"># Optional</span>
+<span class="c">#params['catalog_name'] = 'vogue-autumn-winter-2017'</span>
 
 <span class="n">report_name</span> <span class="o">=</span> <span class="s">'vogue-autumn-winter'</span>
 
@@ -8218,295 +8331,397 @@ Prior to calling this API the trend report has to be built.
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 
-<span class="k">for</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">'colors'</span><span class="p">]:</span>
-    <span class="k">print</span> <span class="n">color</span><span class="p">[</span><span class="s">'name'</span><span class="p">]</span>
-
+<span class="c"># Print the colors.</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="s">'2013'</span><span class="p">,</span><span class="s">'2014'</span><span class="p">,</span><span class="s">'2015'</span><span class="p">,</span><span class="s">'2016'</span><span class="p">,</span><span class="s">'2017'</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">color_info</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s">'colors'</span><span class="p">]:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">'popularity [</span><span class="si">%</span><span class="s">s] [</span><span class="si">%+1.2</span><span class="s">f] trend [</span><span class="si">%</span><span class="s">s] [</span><span class="si">%+1.2</span><span class="s">f] [</span><span class="si">%</span><span class="s">s]'</span><span class="o">%</span><span class="p">(</span>
+                          <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">'</span><span class="si">%1.2</span><span class="s">f'</span><span class="o">%</span><span class="p">(</span><span class="n">color_info</span><span class="p">[</span><span class="s">'popularity_by_id'</span><span class="p">][</span><span class="s">'</span><span class="si">%</span><span class="s">s-</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">report_name</span><span class="p">,</span><span class="n">year</span><span class="p">)])</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]),</span>
+                          <span class="n">color_info</span><span class="p">[</span><span class="s">'popularity_forecast'</span><span class="p">][</span><span class="s">'mean'</span><span class="p">],</span>
+                          <span class="s">' '</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">'</span><span class="si">%+1.2</span><span class="s">f'</span><span class="o">%</span><span class="p">(</span><span class="n">color_info</span><span class="p">[</span><span class="s">'trend_by_id'</span><span class="p">][</span><span class="s">'</span><span class="si">%</span><span class="s">s-</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">report_name</span><span class="p">,</span><span class="n">year</span><span class="p">)])</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="n">years</span><span class="p">]),</span>
+                          <span class="n">color_info</span><span class="p">[</span><span class="s">'trend_forecast'</span><span class="p">][</span><span class="s">'mean'</span><span class="p">],</span>
+                          <span class="n">color_info</span><span class="p">[</span><span class="s">'pantone_id'</span><span class="p">]))</span>
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-11-27 10:37:36.358990"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5.53"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"computed_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-04-08 08:23:29.263227"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.45"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"colors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">497752322.2741051</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.235715230566532</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dark sienna"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.056338028169014086</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#402122"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">16.957248576431418</span><span class="p">,</span><span class="w">
-    </span><span class="mf">15.021140508932994</span><span class="p">,</span><span class="w">
-    </span><span class="mf">5.866954508283007</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"olivenite"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"aztec gold"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">193</span><span class="p">,</span><span class="w">
+    </span><span class="mi">166</span><span class="p">,</span><span class="w">
+    </span><span class="mi">92</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.0</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">64</span><span class="p">,</span><span class="w">
-    </span><span class="mi">33</span><span class="p">,</span><span class="w">
-    </span><span class="mi">34</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">358.06451612903226</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.484375</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.25098039215686274</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 15-0732 tcx olivenite"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.976730869261527</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.25904713834398163</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5923803456031483</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1785704702543323</span><span class="w">
    </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.017382413087934562</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#bc9f52"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"olive"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005555555511256352</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.006249999950126951</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.1854818562143316e-12</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22352940997773238</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.010638301716580001</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02551019780659891</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.673337612199791e-09</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01500000029600288</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03571427823021432</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005555555555555556</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00625</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2235294117647059</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.21919940064855728</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21922465390486276</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.2626628152741416e-05</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">18452119.817761216</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"indian red"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01971830985915493</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c46463"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">53.76430408872871</span><span class="p">,</span><span class="w">
-    </span><span class="mf">38.108463259306944</span><span class="p">,</span><span class="w">
-    </span><span class="mf">18.279605679684895</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">27.500000000000004</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">196</span><span class="p">,</span><span class="w">
-    </span><span class="mi">100</span><span class="p">,</span><span class="w">
-    </span><span class="mi">99</span><span class="w">
+    </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="mi">159</span><span class="p">,</span><span class="w">
+    </span><span class="mi">82</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">66.59479318367542</span><span class="p">,</span><span class="w">
+    </span><span class="mf">1.2071716907996466</span><span class="p">,</span><span class="w">
+    </span><span class="mf">43.61008842556798</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"15-0732 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">0.6185567010309114</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.4948979591836735</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.7686274509803922</span><span class="w">
+    </span><span class="mf">43.58490566037733</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.5638297872340425</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7372549019607844</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
     </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
     </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
    </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tan"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.010638297872340425</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.025510204081632654</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03571428571428571</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0054111940580404486</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06648021884312591</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.030534512392542727</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.571549001664395</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carmine"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carmine"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="mi">72</span><span class="p">,</span><span class="w">
+    </span><span class="mi">105</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 17-1831 tcx carmine"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.218867318426964</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.084173058429286</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.33332935240964134</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.5000004190614799</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0081799591002045</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#b94668"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02777777496324953</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">5.017991386996323e-10</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03999999598475976</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005882352647930724</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005319150011365242</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.010204085522693439</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02525251555530907</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.322792285214708e-09</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">-4.458101750498371e-09</span><span class="w">
    </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">185</span><span class="p">,</span><span class="w">
+    </span><span class="mi">70</span><span class="p">,</span><span class="w">
+    </span><span class="mi">104</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">46.573551824894544</span><span class="p">,</span><span class="w">
+    </span><span class="mf">49.345973558034494</span><span class="p">,</span><span class="w">
+    </span><span class="mf">4.994866094189598</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"17-1831 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">342.2608695652174</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.6216216216216216</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7254901960784313</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maroon"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005319148936170213</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01020408163265306</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.025252525252525252</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.049635410157543226</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.030412093249694426</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0096116584539244</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.9002808043760666</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"burgundy"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"burgundy"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">100</span><span class="p">,</span><span class="w">
+    </span><span class="mi">49</span><span class="p">,</span><span class="w">
+    </span><span class="mi">62</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-1617 tcx burgundy"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.49456702511890355</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1040734357100044</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3893066120901132</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.8979602872913048</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.014314928425357873</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#5f323d"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"purple"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005319147493313</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">-4.080331614253474e-09</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005050514716681838</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03499998777961907</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.025510208902419326</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">17.5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">95</span><span class="p">,</span><span class="w">
+    </span><span class="mi">50</span><span class="p">,</span><span class="w">
+    </span><span class="mi">61</span><span class="w">
+   </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tomato"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.027777777777777776</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0058823529411764705</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.05974450566166774</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06387994327947344</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0020677188089028493</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">5079144.232882881</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cool grey"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.022535211267605635</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#8391b6"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">60.29571831507566</span><span class="p">,</span><span class="w">
-    </span><span class="mf">3.5433538937366116</span><span class="p">,</span><span class="w">
-    </span><span class="mf">-20.959539984083687</span><span class="w">
+    </span><span class="mf">26.880879480444015</span><span class="p">,</span><span class="w">
+    </span><span class="mf">21.737230131132435</span><span class="p">,</span><span class="w">
+    </span><span class="mf">2.138083288990311</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">20.0</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">131</span><span class="p">,</span><span class="w">
-    </span><span class="mi">145</span><span class="p">,</span><span class="w">
-    </span><span class="mi">182</span><span class="w">
-   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-1617 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">223.52941176470588</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.28021978021978033</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.7137254901960784</span><span class="w">
+    </span><span class="mf">345.3333333333333</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.4736842105263158</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.37254901960784315</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005555555085396079</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.6459908464743507e-10</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06999999433464991</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005882352802880201</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gray"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005555555555555556</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0058823529411764705</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.06850921461312398</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06920115765005821</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00034597151846711444</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">10.612144903259598</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dark vanilla"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.13943661971830987</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#c8bfab"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">77.567985885634</span><span class="p">,</span><span class="w">
-    </span><span class="mf">-0.2225972073570115</span><span class="p">,</span><span class="w">
-    </span><span class="mf">11.218179844582398</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">80.0</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="mi">191</span><span class="p">,</span><span class="w">
-    </span><span class="mi">171</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">41.379310344827616</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.14500000000000002</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.7843137254901961</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">39</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
     </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2166666657847035</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.006250000214277067</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21999999913628526</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0882352938883679</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">99</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maroon"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.21666666666666667</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.00625</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.22</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08823529411764706</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005319148936170213</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005050505050505051</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.035</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.025510204081632654</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.2787645697974107</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.3400206912085775</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0306280607055834</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.025658486147475734</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04677156348715779</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.010556538669841027</span><span class="w">
    </span><span class="p">}</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.6044313381841329</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.8642376911307246</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pale silver"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18732394366197183</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#ccc5c0"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">79.9404763594862</span><span class="p">,</span><span class="w">
-    </span><span class="mf">1.5506503538516014</span><span class="p">,</span><span class="w">
-    </span><span class="mf">3.361606653267346</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"valiant poppy"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"firebrick"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="mi">50</span><span class="p">,</span><span class="w">
+    </span><span class="mi">44</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">90.0</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 18-1549 tcx valiant poppy"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.693773482978249</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.010100475412465</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.3333322551535562</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.4999999533767581</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.022494887525562373</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#be1f24"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015957445073912335</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07653060568321701</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015151517728698292</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.004999998160189827</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.4879756417621442e-09</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.0</span><span class="p">,</span><span class="w">
    </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mi">204</span><span class="p">,</span><span class="w">
-    </span><span class="mi">197</span><span class="p">,</span><span class="w">
-    </span><span class="mi">192</span><span class="w">
+    </span><span class="mi">190</span><span class="p">,</span><span class="w">
+    </span><span class="mi">31</span><span class="p">,</span><span class="w">
+    </span><span class="mi">36</span><span class="w">
    </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">41.30704144641319</span><span class="p">,</span><span class="w">
+    </span><span class="mf">60.19009061985351</span><span class="p">,</span><span class="w">
+    </span><span class="mf">39.52332046616106</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18-1549 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="mf">25.0</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.05882352941176472</span><span class="p">,</span><span class="w">
-    </span><span class="mf">0.8</span><span class="w">
+    </span><span class="mf">358.1132075471698</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.8368421052631578</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.7450980392156863</span><span class="w">
    </span><span class="p">],</span><span class="w">
    </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">73</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">32</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08888888888209355</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.45624999924450865</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.060000000098657365</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18823529379558995</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">133</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">180</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">160</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">170</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"silver"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"red"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.08888888888888889</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.45625</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.06</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.18823529411764706</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015957446808510637</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.07653061224489796</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.015151515151515152</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.005</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.4773062410333882</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.47984889182870377</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0012713253976577997</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.024902090520356926</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10317595574874246</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.039136932614192765</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"trend_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.7906371620551244</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"pantone_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"astral aura"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"grape"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"pantone_rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">54</span><span class="p">,</span><span class="w">
+    </span><span class="mi">49</span><span class="p">,</span><span class="w">
+    </span><span class="mi">81</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pantone 19-3830 tcx astral aura"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trend_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.668688540385415</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.20100251734269106</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.45016069962896715</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.818877437721917</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03374233128834356</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"hex"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#322e4b"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"universal_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"black"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id_predicted"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02127659660718742</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0408163201213404</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.010101016968916778</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.03999999541935249</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05612244643346036</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_percentile"</span><span class="p">:</span><span class="w"> </span><span class="mf">55.00000000000001</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"rgb"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mi">50</span><span class="p">,</span><span class="w">
+    </span><span class="mi">46</span><span class="p">,</span><span class="w">
+    </span><span class="mi">75</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances"</span><span class="p">:</span><span class="w"> </span><span class="mi">33</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lab"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">20.596319430718573</span><span class="p">,</span><span class="w">
+    </span><span class="mf">9.582459495460604</span><span class="p">,</span><span class="w">
+    </span><span class="mf">-17.306983424884383</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"pantone_code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"19-3830 tcx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"total_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">188</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">198</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">196</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"hsv"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="mf">248.27586206896552</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.3866666666666667</span><span class="p">,</span><span class="w">
+    </span><span class="mf">0.29411764705882354</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"n_instances_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mi">11</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"entrylevel_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"navy blue"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"popularity_by_id"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2013"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.02127659574468085</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2017"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04081632653061224</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2016"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.010101010101010102</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2015"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"vogue-autumn-winter-2014"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05612244897959184</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"popularity_forecast"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"confidence_interval_lower_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.004410300375401743</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"confidence_interval_upper_limit"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09245706928045698</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"mean"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.04402338445252762</span><span class="w">
    </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">]</span><span class="w">
@@ -8544,6 +8759,12 @@ Prior to calling this API the trend report has to be built.
 <td>colors</td>
 <td>query</td>
 <td>The number of colors.</td>
+<td>10</td>
+</tr>
+<tr>
+<td>catalog_name</td>
+<td>query</td>
+<td>You can optionally specify the catalog name if you want the results from the previous years.</td>
 <td></td>
 </tr>
 </tbody></table>
