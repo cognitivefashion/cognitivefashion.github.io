@@ -12727,7 +12727,106 @@ Prior to calling this API the dominant looks index has to be built.
 
           <h1 id="complete-the-look">Complete the Look</h1>
 
-<p>Given a fashion apparel suggest another apparel/accessory that goes well with it.</p>
+<p>Given a fashion apparel suggest another apparel/accessory that goes well with it. The API also returns a natural language style tip along with the products.</p>
+
+<p>Some use cases for visual attributes include:
+- recommendation of apparels based on style rules
+- aids in curating fashion outfits by bloggers, designers</p>
+
+<aside class="notice">
+We differentiate between two kinds of usecase. Complete the look using the meta data of the product of interest. Complete the look using the image of the product of interest.
+</aside>
+
+<h2 id="complete-the-look-using-meta-data-of-the-product-of-interest">Complete the Look using meta data of the product of interest</h2>
+
+<p>Given a fashion apparel suggest another apparel/accessory that goes well with it using the meta data of the product</p>
+<pre class="highlight python tab-python"><code>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Replace this with the custom url generated for you.</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c"># Pass the api key into the header</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s">'X-Api-Key'</span><span class="p">:</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]}</span>
+
+<span class="c"># Parameters.</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'query_text'</span><span class="p">]</span> <span class="o">=</span> <span class="s">"red floral dress"</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'gender'</span><span class="p">]</span> <span class="o">=</span> <span class="s">"female"</span>
+
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/complete_the_look/text/'</span>
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="err">u'recommendation'</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">u'heels'</span><span class="p">,</span><span class="w"> </span><span class="err">u'sling</span><span class="w"> </span><span class="err">bag'</span><span class="p">,</span><span class="w"> </span><span class="err">u'earrings'</span><span class="p">],</span><span class="w">
+ </span><span class="err">u'style_tip'</span><span class="p">:</span><span class="w"> </span><span class="err">u'style</span><span class="w"> </span><span class="err">this</span><span class="w"> </span><span class="err">dress</span><span class="w"> </span><span class="err">by</span><span class="w"> </span><span class="err">teaming</span><span class="w"> </span><span class="err">it</span><span class="w"> </span><span class="err">with</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">pair</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">black</span><span class="w"> </span><span class="err">heels</span><span class="w"> </span><span class="err">and</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">sling</span><span class="w"> </span><span class="err">bag</span><span class="w"> </span><span class="err">and</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">pair</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">earrings</span><span class="w"> </span><span class="err">and</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">sling</span><span class="w"> </span><span class="err">bag.</span><span class="w"> </span><span class="err">'</span><span class="p">,</span><span class="w">
+ </span><span class="err">u'time_ms'</span><span class="p">:</span><span class="w"> </span><span class="mf">0.45203208923339844</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<h3 id="end-point">End point</h3>
+
+<p>`GET /v1/complete_the_look/text/</p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>query_text</td>
+<td>query</td>
+<td>(<strong>Required</strong>) The query text</td>
+<td></td>
+</tr>
+<tr>
+<td>gender</td>
+<td>query</td>
+<td>gender for the query text</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken for generating the response in milliseconds.</td>
+</tr>
+<tr>
+<td><strong>style_tip</strong></td>
+<td>The style tip for the query fashion item</td>
+</tr>
+<tr>
+<td><strong>recommendation</strong></td>
+<td>List of fashion items which would go well with the query fashion item</td>
+</tr>
+</tbody></table>
+
+<h2 id="complete-the-look-using-the-image-of-the-product-of-interest">Complete the Look using the image of the product of interest</h2>
 
 <p>Coming soon &hellip;</p>
 
