@@ -280,6 +280,44 @@ curl <span class="s2">"api_endpoint_here"</span>?api_key<span class="o">=</span>
 You must replace <code>your_api_key</code> with your personal API key.
 </aside>
 
+<h1 id="data-collection">Data collection</h1>
+<pre class="highlight shell tab-shell"><code><span class="c"># Set X-Data-Collection-Opt-Out to true in the header.</span>
+curl <span class="s1">'api_endpoint_here'</span> -H  <span class="s2">"X-Data-Collection-Opt-Out: true"</span>
+
+<span class="c"># If you are making a GET request, </span>
+<span class="c"># you may also set the data_collection_opt_out parameter to true.</span>
+curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span class="o">=</span><span class="nb">true</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">'api_endpoint_here'</span>
+
+<span class="c"># Set X-Data-Collection-Opt-Out to true in the header.</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'your_api_key'</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">'api_endpoint_here'</span>
+
+<span class="c"># If you are making a GET request, you may also set the </span>
+<span class="c"># data_collection_opt_out parameter to true.</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'api_key'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'your_api_key'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'data_collection_opt_out'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre>
+<p>By default, most APIs log requests and their results. For example, the visual search API by default will save the user uploaded image. Logging is done only to improve the accuracy of the APIs. The logged data is not shared or made public. However, you have the option of opting out. To prevent the service from accessing your data for further API improvements, set the <code class="prettyprint">X-Data-Collection-Opt-Out</code> header parameter to <code class="prettyprint">true</code>. For example, for visual search API this will delete the user uploaded image from our servers as soon as the computations are done.</p>
+
+<p>The preferred way is to include it in a header that looks like the following:</p>
+
+<p><code class="prettyprint">curl &#39;api_endpoint_here&#39; -H  &quot;X-Data-Collection-Opt-Out: true&quot;</code></p>
+
+<p>If you are making a GET request, you may also set the <code class="prettyprint">data_collection_opt_out</code> parameter to <code class="prettyprint">true</code>.</p>
+
+<p><code class="prettyprint">curl &quot;api_endpoint_here&quot;?data_collection_opt_out=true</code></p>
+
 <h1 id="fashion-quote">Fashion quote</h1>
 <pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
