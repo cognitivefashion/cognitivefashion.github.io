@@ -4034,11 +4034,17 @@ with open(image_filename,'rb') as images_file:
 <span class="n">params</span><span class="p">[</span><span class="s">'b'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">95</span>
 
 <span class="c"># Parameters - optional</span>
-<span class="c">#params['color_count'] = 3</span>
-<span class="c">#params['color_family'] = 'full'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'color_count'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'color_family'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'full'</span>
+<span class="c">#params['color_family'] = 'universal'</span>
+<span class="c">#params['color_family'] = 'entrylevel'</span>
 <span class="c">#params['color_family'] = 'pantone'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'method'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'accurate'</span>
+<span class="c">#params['method'] = 'fast'</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
@@ -4167,8 +4173,14 @@ with open(image_filename,'rb') as images_file:
 <tr>
 <td>color_family</td>
 <td>query</td>
-<td>the color family, can be either <code class="prettyprint">full</code> or <code class="prettyprint">pantone</code></td>
-<td><code class="prettyprint">pantone</code></td>
+<td>the color family, can be either <code class="prettyprint">universal</code>, <code class="prettyprint">entrylevel</code>, <code class="prettyprint">full</code> or <code class="prettyprint">pantone</code></td>
+<td><code class="prettyprint">full</code></td>
+</tr>
+<tr>
+<td>method</td>
+<td>query</td>
+<td>The method to use to get the color names, can be either <code class="prettyprint">accurate</code> (exact but slower) or <code class="prettyprint">fast</code> (approximate but fast)</td>
+<td><code class="prettyprint">accurate</code></td>
 </tr>
 </tbody></table>
 
@@ -5835,6 +5847,8 @@ The color search index has to be built first before you can use this API.
 <span class="n">params</span><span class="p">[</span><span class="s">'ignore_background'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
 <span class="n">params</span><span class="p">[</span><span class="s">'model'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'person_accurate'</span>
 <span class="c">#params['fraction_pixels_threshold'] = 0.1</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'color_name_method'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'accurate'</span>
+<span class="c">#params['color_name_method'] = 'fast'</span>
 
 <span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/colors/dominant_colors'</span>
 
@@ -6090,6 +6104,12 @@ with open(image_filename,'rb') as images_file:
 <td>query</td>
 <td>Include only those colors whos fraction of pixels is greater than this number.</td>
 <td>0.0</td>
+</tr>
+<tr>
+<td>color_name_method</td>
+<td>query</td>
+<td>The method to use to get the color names, can be either <code class="prettyprint">accurate</code> (exact but slower) or <code class="prettyprint">fast</code> (approximate but fast)</td>
+<td><code class="prettyprint">accurate</code></td>
 </tr>
 </tbody></table>
 
