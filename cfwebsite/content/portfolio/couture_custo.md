@@ -26,5 +26,6 @@ IBM build a tool for Custo Barcelona for its new capsule collection inspired by 
 ## More details
 
 1. [The artificial intelligence of IBM contributes its bit in the inspiration of Custo Barcelona](https://www.ibm.com/blogs/think/es-es/2018/06/06/custo-inteligencia-artificial/), THINK blog
+1. [Custo at Lanzarote Fashion Weekend](https://custo.com/blog/2018/05/22/custo-lanzarote-fashion-weekend/), Custo
 1. [Custo Barcelona falls in love with Lanzarote](http://www.lancelotdigital.com/lanzarote/custo-barcelona-se-enamora-de-lanzarote), Lancelo Digital
 
