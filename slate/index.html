@@ -1510,10 +1510,12 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 
 <h2 id="build-visual-search-index">Build visual search index</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Build the visual search index</span>
+<span class="c"># Build the visual search index.</span>
 <span class="c"># POST /v1/catalog/{catalog_name}/visual_search_index</span>
 <span class="c"># params - per_category_index</span>
 <span class="c">#          full_index</span>
+<span class="c">#          group_by</span>
+<span class="c">#          group_by_k </span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -1561,6 +1563,22 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <span class="c"># visual search index.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c">#params['full_index'] = 'true'</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># group_by : boolean, optional(default:'false')</span>
+<span class="c">#</span>
+<span class="c">#    If this is set to True the group_by option is enabled. This</span>
+<span class="c">#    groups the results from visual search into distinct groups </span>
+<span class="c">#    according to various criteria. Currently the group_by option </span>
+<span class="c">#    works only when full_index is set to True. If full_index is </span>
+<span class="c">#    False the group_by is disabled.</span>
+<span class="c">#</span>
+<span class="c"># group_by_k : int, optional(default:5).</span>
+<span class="c">#</span>
+<span class="c">#    The number of nearest neighbors to use for group_by.</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c">#params['group_by'] = 'false'</span>
+<span class="c">#params['group_by_k'] = 5</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># PATH PARAMETERS</span>
@@ -1626,6 +1644,18 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <td>query</td>
 <td>If this is set to <code class="prettyprint">true</code> builds the the full visual search index along with the separate visual search index for each visual search category. By default the full visual search index is built. Make this <code class="prettyprint">false</code> only if you do not see the need for the full visual search index.</td>
 <td><code class="prettyprint">true</code></td>
+</tr>
+<tr>
+<td>group_by</td>
+<td>query</td>
+<td>If this is set to <code class="prettyprint">true</code> the <code class="prettyprint">group_by</code> option is enabled. This will allow the results from visual search to be grouped into distinct groups  according to various criteria. Currently the <code class="prettyprint">group_by</code> option works only when <code class="prettyprint">full_index</code> is set to <code class="prettyprint">true</code>. If <code class="prettyprint">full_index</code> is <code class="prettyprint">false</code> the <code class="prettyprint">group_by</code> option is disabled.</td>
+<td><code class="prettyprint">false</code></td>
+</tr>
+<tr>
+<td>group_by_k</td>
+<td>query</td>
+<td>The number of nearest neighbors to use for group_by.</td>
+<td>5</td>
 </tr>
 </tbody></table>
 
@@ -2311,15 +2341,14 @@ The first time the API is called the nearest neighbors are retrieved and the res
 
           <h2 id="visual-search">Visual Search</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Visual Search</span>
-<span class="c">#</span>
 <span class="c"># Get visually similar products in the catalog for an uploaded image.</span>
 <span class="c"># POST /v1/catalog/{catalog_name}/visual_search</span>
 <span class="c"># params - max_number_of_results</span>
 <span class="c">#          per_category_index</span>
-<span class="c">#          category</span>
+<span class="c">#          categories</span>
+<span class="c">#          sort_option    </span>
 <span class="c">#          visual_search_categories_threshold</span>
-<span class="c">#          sort_option</span>
+<span class="c">#          group_by</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
@@ -2354,7 +2383,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c">#</span>
 <span class="c"># The maximum number of results to return. </span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># category : str, optional (default: None) </span>
@@ -2372,7 +2401,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c"># If this is set to 'true' first predicts the visual search category for the</span>
 <span class="c"># uploaded image and then does visual search with the predicted categories.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'per_category_index'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
+<span class="c">#params['per_category_index'] = 'true'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># visual_search_categories_threshold : float, optional (default: 0.0)</span>
@@ -2380,16 +2409,34 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c"># Use the prdictions from the visual search categories classifier</span>
 <span class="c"># only if the confidence score is greater than this value. </span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'visual_search_categories_threshold'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="c">#params['visual_search_categories_threshold'] = 0.0</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># reweight_similarity_scores : str, optional (default: 'false')</span>
+<span class="c">#</span>
+<span class="c"># If true multiplies the visual similarity scores by the (normalized) category </span>
+<span class="c"># classifier prediction scores.    </span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c">#params['reweight_similarity_scores'] = 'false'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># sort_option : str, optional (default: 'visual_similarity')</span>
 <span class="c">#</span>
 <span class="c"># 'visual_similarity'  : Results are sorted by visual similarity.</span>
-<span class="c"># 'apparel_similarity' : Re-sorts the results from visual browse using </span>
-<span class="c">#                        apparel similarity.</span>
+<span class="c"># 'apparel_similarity' : Re-sorts the results from using apparel similarity.</span>
+<span class="c"># 'color_similarity'   : Re-sorts the results from using color similarity.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c">#params['sort_option'] = 'apparel_similarity'</span>
+<span class="c">#params['sort_option'] = 'color_similarity'</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># - group_by : str, optional (default: None)  </span>
+<span class="c">#    This field can be used to group the results from visual search </span>
+<span class="c">#    into distinct groups according to various criteria. </span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c">#params['group_by'] = 'color'</span>
+<span class="c">#params['group_by'] = 'visual'</span>
+<span class="c">#params['group_by'] = 'visual,color'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># PATH PARAMETERS</span>
@@ -2437,6 +2484,7 @@ with open(image_filename,'rb') as images_file:
 <span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 
+
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># FRIENDLY RESPONSE</span>
 <span class="c">#------------------------------------------------------------------------------</span>
@@ -2459,7 +2507,6 @@ with open(image_filename,'rb') as images_file:
     <span class="n">image_location</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/images/</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">,</span><span class="n">image_filename</span><span class="p">)</span>
     <span class="n">image_url_local</span> <span class="o">=</span> <span class="s">'</span><span class="si">%</span><span class="s">s?api_key=</span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">image_location</span><span class="p">),</span><span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">])</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s </span><span class="si">%</span><span class="s">s </span><span class="si">%1.2</span><span class="s">f </span><span class="si">%</span><span class="s">s'</span><span class="o">%</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span><span class="n">image_id</span><span class="p">,</span><span class="n">score</span><span class="p">,</span><span class="n">image_url_local</span><span class="p">))</span>
-
 </code></pre>
 <blockquote>
 <p>Sample json response</p>
@@ -2568,6 +2615,24 @@ Note that the visual search index has to be built first before we can use this A
 <td>query</td>
 <td>Use the predictions from the visual search categories classifier only if the confidence score is greater than this value.</td>
 <td>0.0</td>
+</tr>
+<tr>
+<td>reweight_similarity_scores</td>
+<td>query</td>
+<td>If <code class="prettyprint">true</code> multiplies the visual similarity scores by the (normalized) category classifier prediction scores.</td>
+<td><code class="prettyprint">false</code></td>
+</tr>
+<tr>
+<td>sort_option</td>
+<td>query</td>
+<td>The sort option to use. Can be either <code class="prettyprint">visual_similarity</code> (Results are sorted by visual similarity.) or <code class="prettyprint">apparel_similarity</code> (Re-sorts the results using a combination of visual similarity and textual similarity based on the avaialble meta data.) or <code class="prettyprint">color_similarity</code> (Re-sorts the results using a combination of visual similarity and color similarity based on the avaialble meta data.).</td>
+<td><code class="prettyprint">visual_similarity</code></td>
+</tr>
+<tr>
+<td>group_by</td>
+<td>query</td>
+<td>This field can be used to group the results from visual search into distinct groups according to various criteria. This is specfied as a comma separated string, for example, <code class="prettyprint">group_by=color,pattern</code>. This would group results with similar color and pattern into a distinct group. The group is accessed by the field <code class="prettyprint">group_id</code> in the results. Note that the field has to be a valid field avaialble in the product json. There is also a special field called <code class="prettyprint">visual</code> which uses the total visual apprarance to group the reuslts rather than one specific attribute, for example, <code class="prettyprint">group_by=visual,color</code>. In order to use this feature <code class="prettyprint">group_by</code> should also be set to <code class="prettyprint">true</code> when building the visual search index. The final set of returned results are sorted by the group size. This is currently an experimental feature and following are the suggested values to try are <code class="prettyprint">group_by=visual</code>,<code class="prettyprint">group_by=color</code> and <code class="prettyprint">group_by=visual,color</code>.</td>
+<td></td>
 </tr>
 </tbody></table>
 
