@@ -2112,10 +2112,16 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <ol>
 <li><p><strong>Visual Search</strong> (<em>Search the look</em>) Consumer can upload any fashion image of his/her liking and visual search will show visually similar products that exist in the catalog. </p></li>
 <li><p><strong>Visual Browse</strong> (<em>Show me more like this</em>) A user clicks on an existing apparel/accessory image in the catalog and visual browse will fetch and display visually similar looking products from the catalog. This is a more interactive way of browsing the catalog based on visual search. </p></li>
-<li><p><strong>Category based Visual Search/Browse</strong> (<em>Search the look in a specific category</em>) The visual search APIs also support searching in a specific category. The user can upload any image and specify the category to search in (for example, show me similar looks like this in the <code class="prettyprint">shirts</code> category). To enable this use <code class="prettyprint">visual_search_category</code> field in the product json. </p></li>
-</ol>
+<li><p><strong>Category based Visual Search/Browse</strong> (<em>Visual Search and Visual Browse in a specific category</em>) The visual search and visual browse APIs also support searching in a specific category. For example, in visual search, the user can upload any image and specify the category to search in (for example, show me similar looks like this in the <code class="prettyprint">dress</code> category). To enable this use <code class="prettyprint">visual_search_category</code> (for visual search) and <code class="prettyprint">visual_browse_category</code> (for visual browse) field in the product json. </p>
 
-<p><code class="prettyprint">visual_search_category</code> - A list of categories(or buckets) this product belongs to (for example, <code class="prettyprint">data[&#39;visual_search_category&#39;] = [&#39;shirts&#39;]</code>). This field is used to support category based visual search. A separate visual search index will be built with images from a particular category. While in most cases this will be same as <code class="prettyprint">category</code> field in principle this field can be differnet. For example, <code class="prettyprint">shirts</code> could be the <code class="prettyprint">category</code> while the <code class="prettyprint">visual_search_category</code> could be <code class="prettyprint">women shirts</code>. The field can also support multiple category values. For example, <code class="prettyprint">data[&#39;visual_search_category&#39;] = [&#39;tops&#39;,&#39;blouses&#39;]</code>. This means that the images corresponding to this product will be included in the visual search index for both <code class="prettyprint">tops</code> and <code class="prettyprint">blouses</code>.</p>
+<p><code class="prettyprint">visual_search_category</code> - A list of categories(or buckets) this product belongs to (for example, <code class="prettyprint">data[&#39;visual_search_category&#39;] = [&#39;dress&#39;]</code>). This field is used to support category based visual search. </p>
+
+<p><code class="prettyprint">visual_browse_category</code> - A list of categories(or buckets) this product belongs to (for example, <code class="prettyprint">data[&#39;visual_browse_category&#39;] = [&#39;sheath dress&#39;]</code>). This field is used to support category based visual browse. </p>
+
+<p>A separate visual search index will be built with images from a particular category. While in most cases this will be same as <code class="prettyprint">category</code> field in principle this field can be differnet. For example, <code class="prettyprint">shirts</code> could be the <code class="prettyprint">category</code> while the <code class="prettyprint">visual_search_category</code> could be <code class="prettyprint">women shirts</code>. </p>
+
+<p>The field can also support multiple category values. For example, <code class="prettyprint">data[&#39;visual_search_category&#39;] = [&#39;tops&#39;,&#39;blouses&#39;]</code>. This means that the images corresponding to this product will be included in the visual search index for both <code class="prettyprint">tops</code> and <code class="prettyprint">blouses</code>.</p></li>
+</ol>
 
 <h2 id="build-visual-search-index">Build visual search index</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
@@ -2130,7 +2136,10 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2166,12 +2175,12 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <span class="c"># full_index : str, optional (default: 'true')   </span>
 <span class="c">#</span>
 <span class="c"># If this is set to 'true' builds the the full visual search index along with</span>
-<span class="c"># the separate visual search index for each visual search category. By default</span>
-<span class="c"># the full visual search index is build alon with the separate index for each</span>
-<span class="c"># category. Make this 'false' only if you do not see the need for the full</span>
-<span class="c"># visual search index.</span>
+<span class="c"># the separate visual search index for each visual search/browse category. </span>
+<span class="c"># By default the full visual search index is build along with the separate </span>
+<span class="c"># index for each category. Make this 'false' only if you do not see the need </span>
+<span class="c"># for the full visual search index.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['full_index'] = 'true'</span>
+<span class="c">#params['full_index'] = 'false'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># group_by : boolean, optional(default:'false')</span>
@@ -2186,7 +2195,7 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <span class="c">#</span>
 <span class="c">#    The number of nearest neighbors to use for group_by.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['group_by'] = 'false'</span>
+<span class="c">#params['group_by'] = 'true'</span>
 <span class="c">#params['group_by_k'] = 5</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
@@ -2220,7 +2229,7 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 </span></code></pre>
 <p>Build the visual search index.</p>
 
-<p>Before you can start using the visual search and visual browse APIs the visual search index has to be built first. This API computes the feature representations for all the catalog images and then builds a visual search index for fast nearest neighbor retrieval.</p>
+<p>Before you can start using the visual search and visual browse APIs the visual search index has to be built first. This API computes the feature representations for all the catalog images and then builds a visual search index(each each category) for fast nearest neighbor retrieval.</p>
 
 <h3 id="end-point">End point</h3>
 
@@ -2245,7 +2254,7 @@ http://api_gateway_url/v1/catalog/sample_catalog/images/SKLTS16AMCWSH8SH20_5.jpg
 <tr>
 <td>per_category_index</td>
 <td>query</td>
-<td>If this is set to <code class="prettyprint">true</code> builds a separate visual search index for each category as specified in the field <code class="prettyprint">data[&#39;visual_search_category&#39;]</code>.</td>
+<td>If this is set to <code class="prettyprint">true</code> builds a separate visual search index for each category as specified in the field <code class="prettyprint">data[&#39;visual_search_category&#39;]</code> and <code class="prettyprint">data[&#39;visual_browse_category&#39;]</code>.</td>
 <td><code class="prettyprint">false</code></td>
 </tr>
 <tr>
@@ -2307,10 +2316,14 @@ The current version supports building only one index at the same time and does n
 <span class="c"># Get the status of the visual search index. </span>
 <span class="c"># GET  /v1/catalog/{catalog_name}/visual_search_index</span>
 <span class="c">#------------------------------------------------------------------------------</span>
+
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2358,40 +2371,38 @@ The current version supports building only one index at the same time and does n
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5.18"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"catalog_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample_catalog"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
   </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"done"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-06-21 12:45:32.151198"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-06-21 12:45:38.879901"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"num_of_products_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"kurta"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"num_of_images_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"kurta"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"feature_computation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"num_of_images_error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"num_of_images_existing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"num_of_images_processed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
   </span><span class="s2">"visual_search_index"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="w">
   </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"start_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-10-26 09:15:33.013153"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"index_updated"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"finish_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-10-26 09:15:40.012162"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"visual_search_index_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"26"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"lower"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"full"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
@@ -2407,18 +2418,42 @@ The current version supports building only one index at the same time and does n
     </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"34"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
    </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="s2">"num_of_images_missing_features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"num_of_images_indexed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"30"</span><span class="w">
    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_products_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lower"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"full"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"kurta"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="s2">"38"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"feature_computation"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"num_of_images_error"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_ignored"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_existing"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"num_of_images_processed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"28"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_images_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="s2">"18"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lower"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"full"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"kurta"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10"</span><span class="w">
   </span><span class="p">}</span><span class="w">
- </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32.12"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"catalog_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample_catalog"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <p>Get the status of the visual search index.</p>
@@ -2483,7 +2518,7 @@ The current version supports building only one index at the same time and does n
 </tr>
 <tr>
 <td>num_of_products_by_category</td>
-<td>The number of products in the catalog bucketed by <code class="prettyprint">visual_search_category</code>.</td>
+<td>The number of products in the catalog bucketed by <code class="prettyprint">visual_search_category</code> and <code class="prettyprint">visual_browse_category</code>.</td>
 </tr>
 <tr>
 <td>num_of_images</td>
@@ -2491,7 +2526,7 @@ The current version supports building only one index at the same time and does n
 </tr>
 <tr>
 <td>num_of_images_by_category</td>
-<td>The number of images in the catalog bucketed by <code class="prettyprint">visual_search_category</code>.</td>
+<td>The number of images in the catalog bucketed by <code class="prettyprint">visual_search_category</code> and <code class="prettyprint">visual_browse_category</code>.</td>
 </tr>
 <tr>
 <td><strong>feature_computation</strong></td>
@@ -2531,7 +2566,7 @@ The current version supports building only one index at the same time and does n
 </tr>
 <tr>
 <td><strong>visual_search_index_by_category</strong></td>
-<td>Same info as <strong>visual_search_index</strong> but bucketed by <code class="prettyprint">visual_search_category</code>.</td>
+<td>Same info as <strong>visual_search_index</strong> but bucketed by <code class="prettyprint">visual_search_category</code> and <code class="prettyprint">visual_browse_category</code>.</td>
 </tr>
 </tbody></table>
 
@@ -2548,7 +2583,10 @@ The bucketed fields (*_by_category) are present in the response only when the &l
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2656,14 +2694,18 @@ The bucketed fields (*_by_category) are present in the response only when the &l
 <span class="c"># params - max_number_of_results</span>
 <span class="c">#          per_category_index</span>
 <span class="c">#          category</span>
-<span class="c">#          use_cache</span>
+<span class="c">#          unique_products</span>
 <span class="c">#          sort_option</span>
+<span class="c">#          use_cache</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2705,12 +2747,34 @@ The bucketed fields (*_by_category) are present in the response only when the &l
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># category : str, optional (default: None) </span>
 <span class="c">#</span>
-<span class="c"># Optionally you can also spaecify a list of categories to search.</span>
+<span class="c"># Optionally you can also specify a list of categories to search.</span>
 <span class="c"># This is specified as a comma separated string, for example, </span>
 <span class="c"># `category=tops,blouses`. The categories have to be valid </span>
-<span class="c"># categories specified in the data['visual_search_category'] field.</span>
+<span class="c"># categories specified in the data['visual_browse_category'] field.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['category'] = 'joggers,shirt,dress'</span>
+<span class="c">#params['category'] = 'shirt,dress'</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># unique_products : str, optional (default: 'false')</span>
+<span class="c">#</span>
+<span class="c"># By default visual browse uses all images available for a product.</span>
+<span class="c"># Hence, sometimes in the search results the same product id can </span>
+<span class="c"># appear multiple times (with a different image_id). If this </span>
+<span class="c"># parameter is set to 'true' then the results are post-filtered </span>
+<span class="c"># to contain only unique products (the best matching image_id is</span>
+<span class="c"># retained).  </span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c">#params['unique_products'] = 'true'</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># sort_option : str, optional (default: 'visual_similarity')</span>
+<span class="c">#</span>
+<span class="c"># 'visual_similarity'  : Results are sorted by visual similarity.</span>
+<span class="c"># 'apparel_similarity' : Re-sorts the results from using apparel similarity.</span>
+<span class="c"># 'color_similarity'   : Re-sorts the results from using color similarity.</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c">#params['sort_option'] = 'apparel_similarity'</span>
+<span class="c">#params['sort_option'] = 'color_similarity'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># use_cache : str, optional (default: 'true')</span>
@@ -2719,17 +2783,7 @@ The bucketed fields (*_by_category) are present in the response only when the &l
 <span class="c"># On subsequent calls the API directly retrieves the results from the cache </span>
 <span class="c"># unless use_cache='false'.  </span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['use_cache'] = 'false'</span>
-
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># sort_option : str, optional (default: 'visual_similarity')</span>
-<span class="c">#</span>
-<span class="c"># 'visual_similarity'  : Results are sorted by visual similarity.</span>
-<span class="c"># 'apparel_similarity' : Re-sorts the results from visual browse using </span>
-<span class="c">#                        apparel similarity.</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['sort_option'] = 'apparel_similarity'</span>
-
+<span class="n">params</span><span class="p">[</span><span class="s">'use_cache'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'false'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># PATH PARAMETERS</span>
@@ -2756,8 +2810,8 @@ The bucketed fields (*_by_category) are present in the response only when the &l
                         <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                         <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span>
-<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
 <span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
@@ -2783,41 +2837,41 @@ The bucketed fields (*_by_category) are present in the response only when the &l
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.86"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"cache"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
- </span><span class="s2">"per_category_index"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
  </span><span class="s2">"sort_option"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visual_similarity"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6.81"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"cache"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="s2">"joggers"</span><span class="w">
  </span><span class="p">],</span><span class="w">
+ </span><span class="s2">"per_category_index"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
  </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10449"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9999680509281461</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10449"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6284773349761963</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10449"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6199260652065277</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6176716089248657</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10448"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.47634875774383545</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.47411400079727173</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ABOFA15AMCWJG10448"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.45831894874572754</span><span class="w">
   </span><span class="p">}</span><span class="w">
@@ -2871,13 +2925,13 @@ Note that the visual search index has to be built first before we can use this A
 <tr>
 <td>per_category_index</td>
 <td>query</td>
-<td>If this is set to <code class="prettyprint">true</code> does visual browse only in the categories specifed  in the <code class="prettyprint">data[&#39;visual_search_category&#39;]</code>` field.</td>
+<td>If this is set to <code class="prettyprint">true</code> does visual browse only in the categories specifed  in the <code class="prettyprint">data[&#39;visual_browse_category&#39;]</code>` field.</td>
 <td><code class="prettyprint">false</code></td>
 </tr>
 <tr>
 <td>category</td>
 <td>query</td>
-<td>Optionally you can also spaecify a list of categories to search. This is specified as a comma separated string, for example, <code class="prettyprint">category=tops,blouses</code>. The categories have to be valid categories specified in the data[&lsquo;visual_search_category&rsquo;] field.</td>
+<td>Optionally you can also spaecify a list of categories to search. This is specified as a comma separated string, for example, <code class="prettyprint">category=tops,blouses</code>. The categories have to be valid categories specified in the data[&lsquo;visual_browse_category&rsquo;] field.</td>
 <td></td>
 </tr>
 <tr>
@@ -2891,6 +2945,12 @@ Note that the visual search index has to be built first before we can use this A
 <td>query</td>
 <td>The sort option to use. Can be either <code class="prettyprint">visual_similarity</code> (Results are sorted by visual similarity.) or <code class="prettyprint">apparel_similarity</code> (Re-sorts the results from visual browse using a combination of visual similarity and textual similarity based on the avaialble meta data.)</td>
 <td><code class="prettyprint">visual_similarity</code></td>
+</tr>
+<tr>
+<td>unique_products</td>
+<td>query</td>
+<td>By default visual browse uses all images available for a product. Hence, sometimes in the search results the same product id can appear multiple times (with a different image_id). If this parameter is set to &lsquo;true&rsquo; then the results are post-filtered to contain only unique products (the best matching image_id is retained).</td>
+<td><code class="prettyprint">false</code></td>
 </tr>
 </tbody></table>
 
@@ -2915,8 +2975,8 @@ Note that the visual search index has to be built first before we can use this A
 <td>Indicates whetehr category based visual search was used or not.</td>
 </tr>
 <tr>
-<td>visual_search_category</td>
-<td>The list of visual search categories used.</td>
+<td>visual_browse_category</td>
+<td>The list of visual browse categories used.</td>
 </tr>
 <tr>
 <td>sort_option</td>
@@ -2939,14 +2999,148 @@ Note that the visual search index has to be built first before we can use this A
 <td>The similarity score in the range from 0(dissimilar)  to 1(similar).</td>
 </tr>
 <tr>
-<td>visual_search_category</td>
-<td>The visual search category for the product.</td>
+<td>visual_browse_category</td>
+<td>The visual browse category for the product.</td>
 </tr>
 </tbody></table>
 
 <aside class="notice">
 The first time the API is called the nearest neighbors are retrieved and the results are cached. On subsequent calls the API directly retrieves the results from the cache unless specified not to use the cache. The cache automatically gets invalidated whenever the index gets updated.
 </aside>
+
+<h2 id="get-visual-browse-categories">Get visual browse categories</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get all visual browse categories </span>
+<span class="c"># GET /v1/catalog/{catalog_name}/visual_browse_categories</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># API URL</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># HEADERS</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c"># API key</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span>
+<span class="c"># Data collection opt out.</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># OPTIONAL QUERY PARAMETERS</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># PATH PARAMETERS</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># API END POINT</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/visual_browse_categories'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14.88"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"counts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"kurta"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"t-shirt"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"kurta"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"shirt"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"joggers"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="s2">"t-shirt"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"joggers"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dress"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"shirt"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"kurta"</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get all visual browse categories </p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/visual_browse_categories</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>categories</td>
+<td>The visual browse categories.</td>
+</tr>
+<tr>
+<td>counts</td>
+<td>The counts of the visual browse categories.</td>
+</tr>
+</tbody></table>
 
           <h2 id="visual-search">Visual Search</h2>
 <pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
@@ -2957,13 +3151,17 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c">#          categories</span>
 <span class="c">#          sort_option    </span>
 <span class="c">#          visual_search_categories_threshold</span>
+<span class="c">#          unique_products</span>
 <span class="c">#          group_by</span>
 <span class="c">#------------------------------------------------------------------------------</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
 <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2992,7 +3190,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c">#</span>
 <span class="c"># The maximum number of results to return. </span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'max_number_of_results'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># category : str, optional (default: None) </span>
@@ -3010,7 +3208,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c"># If this is set to 'true' first predicts the visual search category for the</span>
 <span class="c"># uploaded image and then does visual search with the predicted categories.</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['per_category_index'] = 'true'</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'per_category_index'</span><span class="p">]</span> <span class="o">=</span> <span class="s">'true'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># visual_search_categories_threshold : float, optional (default: 0.0)</span>
@@ -3018,7 +3216,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c"># Use the prdictions from the visual search categories classifier</span>
 <span class="c"># only if the confidence score is greater than this value. </span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="c">#params['visual_search_categories_threshold'] = 0.0</span>
+<span class="n">params</span><span class="p">[</span><span class="s">'visual_search_categories_threshold'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.25</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># reweight_similarity_scores : str, optional (default: 'false')</span>
@@ -3039,6 +3237,18 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c">#params['sort_option'] = 'color_similarity'</span>
 
 <span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># unique_products : str, optional (default: 'false')</span>
+<span class="c">#</span>
+<span class="c"># By default visual browse uses all images available for a product.</span>
+<span class="c"># Hence, sometimes in the search results the same product id can </span>
+<span class="c"># appear multiple times (with a different image_id). If this </span>
+<span class="c"># parameter is set to 'true' then the results are post-filtered </span>
+<span class="c"># to contain only unique products (the best matching image_id is</span>
+<span class="c"># retained).  </span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c">#params['unique_products'] = 'true'</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># - group_by : str, optional (default: None)  </span>
 <span class="c">#    This field can be used to group the results from visual search </span>
 <span class="c">#    into distinct groups according to various criteria. </span>
@@ -3056,7 +3266,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="c">#------------------------------------------------------------------------------</span>
 <span class="c"># API END POINT</span>
 <span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/visual_search'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'v1/catalog/</span><span class="si">%</span><span class="s">s/visual_search'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
 
@@ -3069,7 +3279,7 @@ The first time the API is called the nearest neighbors are retrieved and the res
 <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
                          <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                          <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_3.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
+                         <span class="n">data</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">'test_image_4.jpeg'</span><span class="p">,</span><span class="s">'rb'</span><span class="p">))</span>
 
 <span class="s">"""       
 # OPTION 2 : Pass the image url
@@ -3121,50 +3331,50 @@ with open(image_filename,'rb') as images_file:
 <p>Sample json response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/c06f93b0-ac6f-4abc-a01f-5a59b139e0fa.jpe"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"image_location"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/v1/images/ed802be3-afaf-4e84-bc0a-95a4cdee9268.jpe"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"sort_option"</span><span class="p">:</span><span class="w"> </span><span class="s2">"visual_similarity"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"563.05"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"572.09"</span><span class="p">,</span><span class="w">
  </span><span class="s2">"per_category_index"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
  </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="s2">"upper"</span><span class="w">
  </span><span class="p">],</span><span class="w">
  </span><span class="s2">"visual_search_category_predictions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9998906529487854</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"pant"</span><span class="p">:</span><span class="w"> </span><span class="mf">7.608256959051509e-06</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mf">8.080697318057176e-05</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"jeans"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.1917099982383661e-05</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"shorts"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.029329622568618e-06</span><span class="w">
+  </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5216091680340469</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"outer"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.028820261858555796</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"pant"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.007078210662257334</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.39006669973059616</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"shorts"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.0016162813953428667</span><span class="w">
  </span><span class="p">},</span><span class="w">
  </span><span class="s2">"products"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91642"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.9808963257819414</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91642"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6712234914302826</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.47364169359207153</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91642"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.449137806892395</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91662"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.6435617506504059</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.424848735332489</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
    </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LPJNA16AMDMTE91662"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5532491207122803</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SKLTS16AMCWSH8SP01"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.42225950956344604</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"image_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SKLTS16AMCWSH8SH20"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.534146636724472</span><span class="w">
+   </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SKLTS16AMCWSH8SP01"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.42015230655670166</span><span class="w">
   </span><span class="p">}</span><span class="w">
  </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -3236,6 +3446,12 @@ Note that the visual search index has to be built first before we can use this A
 <td>query</td>
 <td>The sort option to use. Can be either <code class="prettyprint">visual_similarity</code> (Results are sorted by visual similarity.) or <code class="prettyprint">apparel_similarity</code> (Re-sorts the results using a combination of visual similarity and textual similarity based on the avaialble meta data.) or <code class="prettyprint">color_similarity</code> (Re-sorts the results using a combination of visual similarity and color similarity based on the avaialble meta data.).</td>
 <td><code class="prettyprint">visual_similarity</code></td>
+</tr>
+<tr>
+<td>unique_products</td>
+<td>query</td>
+<td>By default visual browse uses all images available for a product. Hence, sometimes in the search results the same product id can appear multiple times (with a different image_id). If this parameter is set to &lsquo;true&rsquo; then the results are post-filtered to contain only unique products (the best matching image_id is retained).</td>
+<td><code class="prettyprint">false</code></td>
 </tr>
 <tr>
 <td>group_by</td>
@@ -3328,6 +3544,134 @@ The last two parameters (per_category_index  and visual_search_categories_thresh
 <tr>
 <td>visual_search_category</td>
 <td>The visual search category for the product.</td>
+</tr>
+</tbody></table>
+
+<h2 id="get-visual-search-categories">Get visual search categories</h2>
+<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Get all visual search categories </span>
+<span class="c"># GET /v1/catalog/{catalog_name}/visual_search_categories</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="k">except</span> <span class="nb">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># API URL</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># HEADERS</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c"># API key</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span>
+<span class="c"># Data collection opt out.</span>
+<span class="n">headers</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># OPTIONAL QUERY PARAMETERS</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># PATH PARAMETERS</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># Catalog name.</span>
+<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
+
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="c"># API END POINT</span>
+<span class="c">#------------------------------------------------------------------------------</span>
+<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/visual_search_categories'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+</code></pre>
+<blockquote>
+<p>Sample json response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4.78"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"counts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_products_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lower"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"num_of_images_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"lower"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span><span class="p">},</span><span class="w">
+ </span><span class="s2">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"lower"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dress"</span><span class="w">
+ </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Get all visual search categories </p>
+
+<h3 id="end-point">End point</h3>
+
+<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/visual_search_categories</code></p>
+
+<h3 id="request">Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>catalog_name</td>
+<td>path</td>
+<td>(<strong>Required</strong>) The catalog name.</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<h3 id="response">Response</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>time_ms</td>
+<td>The time taken in milliseconds.</td>
+</tr>
+<tr>
+<td>categories</td>
+<td>The visual search categories.</td>
+</tr>
+<tr>
+<td>counts</td>
+<td>The counts of the visual search categories.</td>
 </tr>
 </tbody></table>
 
@@ -3713,135 +4057,6 @@ Any time you add new product or images to the catalog you will have to call this
 <tr>
 <td>num_of_images_processed</td>
 <td>The total number of images for which the predictions were computed.</td>
-</tr>
-</tbody></table>
-
-<h2 id="get-categories">Get categories</h2>
-<pre class="highlight python tab-python"><code><span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Get all visual search categories </span>
-<span class="c"># GET /v1/catalog/{catalog_name}/visual_search_categories</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urljoin</span>
-<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
-
-<span class="kn">from</span> <span class="nn">props</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># API URL</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">api_gateway_url</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'api_gateway_url'</span><span class="p">]</span>
-
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># HEADERS</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">headers</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="c"># API key</span>
-<span class="n">headers</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Api-Key'</span><span class="p">]</span>
-<span class="c"># Data collection opt out.</span>
-<span class="n">headers</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'X-Data-Collection-Opt-Out'</span><span class="p">]</span>
-
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># OPTIONAL QUERY PARAMETERS</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># PATH PARAMETERS</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># Catalog name.</span>
-<span class="n">catalog_name</span> <span class="o">=</span> <span class="n">props</span><span class="p">[</span><span class="s">'catalog_name'</span><span class="p">]</span>
-
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="c"># API END POINT</span>
-<span class="c">#------------------------------------------------------------------------------</span>
-<span class="n">api_endpoint</span> <span class="o">=</span> <span class="s">'/v1/catalog/</span><span class="si">%</span><span class="s">s/visual_search_categories'</span><span class="o">%</span><span class="p">(</span><span class="n">catalog_name</span><span class="p">)</span>
-
-<span class="n">url</span> <span class="o">=</span> <span class="n">urljoin</span><span class="p">(</span><span class="n">api_gateway_url</span><span class="p">,</span><span class="n">api_endpoint</span><span class="p">)</span>
-
-<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
-                        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
-
-<span class="k">print</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span>
-<span class="n">pprint</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
-
-</code></pre>
-<blockquote>
-<p>Sample json response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
- </span><span class="s2">"time_ms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6.33"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"counts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="s2">"num_of_products"</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"num_of_products_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"outer"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pant"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"num_of_images"</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"num_of_images_by_category"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"upper"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"outer"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"dress"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pant"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
- </span><span class="p">},</span><span class="w">
- </span><span class="s2">"categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-  </span><span class="s2">"upper"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"pant"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"dress"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"outer"</span><span class="w">
- </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>Get all visual search categories </p>
-
-<h3 id="end-point">End point</h3>
-
-<p><code class="prettyprint">GET /v1/catalog/{catalog_name}/visual_search_categories</code></p>
-
-<h3 id="request">Request</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>catalog_name</td>
-<td>path</td>
-<td>(<strong>Required</strong>) The catalog name.</td>
-<td></td>
-</tr>
-</tbody></table>
-
-<h3 id="response">Response</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>time_ms</td>
-<td>The time taken in milliseconds.</td>
-</tr>
-<tr>
-<td>categories</td>
-<td>The visual search categories.</td>
-</tr>
-<tr>
-<td>counts</td>
-<td>The counts of the visual search categories.</td>
 </tr>
 </tbody></table>
 
