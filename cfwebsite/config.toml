@@ -7,6 +7,10 @@ disqusShortname = ""
 # Enable Google Analytics by entering your tracking code
 googleAnalytics = ""
 
+disableKinds = [
+  "taxonomy",
+  "taxonomyTerm"
+]
 
 [params]
   # Style options: default (pink), blue, green, pink, red, sea, violet

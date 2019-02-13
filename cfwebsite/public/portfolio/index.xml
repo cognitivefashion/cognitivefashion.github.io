@@ -6,7 +6,6 @@
     <description>Recent content in Portfolios on AI for Fashion</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; IBM Corp. 2018</copyright>
     <lastBuildDate>Sat, 05 Nov 2016 19:41:01 +0530</lastBuildDate>
     
 	<atom:link href="https://cognitivefashion.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
@@ -18,8 +17,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_visual_browse/</guid>
-      <description>&lt;p&gt;Show me more like this
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Show me more like this&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -28,8 +26,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_fit/</guid>
-      <description>&lt;p&gt;AI empowers designers In IBM, Tommy Hilfiger and FIT collaboration
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;AI empowers designers In IBM, Tommy Hilfiger and FIT collaboration&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -38,8 +35,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_jasongrech/</guid>
-      <description>&lt;p&gt;IBM and Jason Grech launched a couture collection at MSFW 2016 developed using technology to analyze and predict fashion trends from runway images.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;IBM and Jason Grech launched a couture collection at MSFW 2016 developed using technology to analyze and predict fashion trends from runway images.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -48,8 +44,7 @@
       <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/workshop_kdd2018/</guid>
-      <description>&lt;p&gt;AI for fashion
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;AI for fashion&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -58,8 +53,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_natural_language_search/</guid>
-      <description>&lt;p&gt;Search the product catalog in natural language.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Search the product catalog in natural language.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -68,8 +62,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_custo/</guid>
-      <description>&lt;p&gt;Inspirational Search for Custo Barcelona at Lanzarote Fashion Weekend 2018
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Inspirational Search for Custo Barcelona at Lanzarote Fashion Weekend 2018&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -78,8 +71,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_fsp/</guid>
-      <description>&lt;p&gt;The future of Bollywood fashion designed by Falguni Shane Peacock in association with IBM Watson on Cloud.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;The future of Bollywood fashion designed by Falguni Shane Peacock in association with IBM Watson on Cloud.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -88,8 +80,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_grammy/</guid>
-      <description>&lt;p&gt;AI analyses fashion at Grammys 2018
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;AI analyses fashion at Grammys 2018&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -98,8 +89,7 @@
       <pubDate>Sat, 05 Nov 2016 20:23:59 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_marchesa/</guid>
-      <description>&lt;p&gt;Marchesa teams up with IBM Watson, to design their first cognitive dress.
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Marchesa teams up with IBM Watson, to design their first cognitive dress.&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -108,8 +98,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_visual_search/</guid>
-      <description>&lt;p&gt;Shop the look
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Shop the look&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -118,8 +107,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_clrs/</guid>
-      <description>&lt;p&gt;Color trend analysis and forecasting workbench
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Color trend analysis and forecasting workbench&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -128,8 +116,7 @@
       <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_vogueindia/</guid>
-      <description>&lt;p&gt;Towards the first AI inspired Saree Gown, in collaboration with Vogue and Designer Gaurav Gupta
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Towards the first AI inspired Saree Gown, in collaboration with Vogue and Designer Gaurav Gupta&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -138,8 +125,7 @@
       <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/workshop_kdd2017/</guid>
-      <description>&lt;p&gt;Machine learning meets fashion
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Machine learning meets fashion&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -148,8 +134,7 @@
       <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_wwd/</guid>
-      <description>&lt;p&gt;Cognitive is the new black at New York Fashion Week
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Cognitive is the new black at New York Fashion Week&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -158,8 +143,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_colors/</guid>
-      <description>&lt;p&gt;Dominant color palette
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Dominant color palette&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -168,8 +152,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_visual_attributes/</guid>
-      <description>&lt;p&gt;Identify product attributes from images
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Identify product attributes from images&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -178,8 +161,7 @@
       <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/couture_huishanzhang/</guid>
-      <description>&lt;p&gt;IBM and Vogue present the first cognitive dress in china
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;IBM and Vogue present the first cognitive dress in china&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -188,8 +170,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_ctl/</guid>
-      <description>&lt;p&gt;What goes well with this
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;What goes well with this&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -198,8 +179,7 @@
       <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
       
       <guid>https://cognitivefashion.github.io/portfolio/api_zeitgeist/</guid>
-      <description>&lt;p&gt;Fashion trends
-&lt;/p&gt;</description>
+      <description>&lt;p&gt;Fashion trends&lt;/p&gt;</description>
     </item>
     
   </channel>

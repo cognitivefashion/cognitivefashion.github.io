@@ -357,23 +357,24 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 
           <h1 id="catalog">Catalog</h1>
 
-<p>The APIs come in two flavors. Some APIs are simple and do not require access to the product catalog. However we have another bunch of powerful APIs which operate on top of the client catalog. The first step is to upload the product catalog. These are some end points for uploading, accessing, modifying and deleting  a product catalog.</p>
+<p>The APIs come in two flavors. Some APIs work on top of a simple user input and do not require access to the product catalog. However some APIs (like visual search) operate on top of a client catalog. The first step is to upload the product catalog. These are some end points for uploading, accessing, modifying and deleting a product catalog.</p>
 
-<h2 id="product-json-format">Product JSON Format</h2>
+<p>We use the term <strong>catalog</strong> to refer to a collection of product jsons. A product json consists of any available product meta-data and info about the product images.</p>
+
+<h2 id="product-json-format">Product JSON format</h2>
 
 <blockquote>
-<p>Sample json document for catalog ingestion corresponding to this <a href="http://www.abof.com/product/109FA16AWWWDR9D03Y10-109F-Women-Brown-&amp;-Yellow-Printed-Dress">product</a>.</p>
+<p>Sample product json document for catalog ingestion.</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"109FA16AWWWDR9D03Y10"</span><span class="p">,</span><span class="w"> 
+ </span><span class="s2">"gender"</span><span class="p">:</span><span class="w"> </span><span class="s2">"female"</span><span class="p">,</span><span class="w">  
+ </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"109f women brown &amp; yellow printed dress"</span><span class="p">,</span><span class="w"> 
  </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://www.abof.com/product/109FA16AWWWDR9D03Y10-109F-Women-Brown-&amp;-Yellow-Printed-Dress"</span><span class="p">,</span><span class="w"> 
  </span><span class="s2">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-10-12"</span><span class="p">,</span><span class="w"> 
  </span><span class="s2">"out_of_stock"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="p">,</span><span class="w">
- </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"109f women brown &amp; yellow printed dress"</span><span class="p">,</span><span class="w"> 
  </span><span class="s2">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dress"</span><span class="p">,</span><span class="w"> 
- </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"dress"</span><span class="p">],</span><span class="w">
  </span><span class="s2">"taxonomy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"women;dress"</span><span class="p">,</span><span class="w"> 
- </span><span class="s2">"gender"</span><span class="p">:</span><span class="w"> </span><span class="s2">"female"</span><span class="p">,</span><span class="w">  
  </span><span class="s2">"age_group"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
   </span><span class="s2">"teenager"</span><span class="p">,</span><span class="w"> 
   </span><span class="s2">"adult"</span><span class="w">
@@ -448,12 +449,14 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mf">2199.0</span><span class="p">,</span><span class="w"> 
  </span><span class="s2">"sale_price"</span><span class="p">:</span><span class="w"> </span><span class="mf">1100.0</span><span class="p">,</span><span class="w"> 
  </span><span class="s2">"sale_percentage"</span><span class="p">:</span><span class="w"> </span><span class="mf">50.0</span><span class="p">,</span><span class="w">
- </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INR"</span><span class="w">
+ </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"INR"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"visual_search_category"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"dress"</span><span class="p">],</span><span class="w">
+ </span><span class="s2">"visual_browse_category"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"dress"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>We refer to any <strong>apparel</strong>, <strong>accessory</strong>, or <strong>shoes</strong> as a <strong>product</strong> in the table below. A product in a catalog is represented as a json object with fields specified below. Ingesting the catalog means uploading these json files for all products in the catalog via an API call.</p>
+<p>We refer to any <strong>apparel</strong>, <strong>accessory</strong>, or <strong>footwear</strong> as a <strong>product</strong> in the table below. A product in a catalog is represented as a json object with fields specified below. Ingesting the catalog means uploading these json files for all products in the catalog via an API call.</p>
 
-<p>Try to populate as much information available for each product into these fields in the json document. Except for the fields in bold (<strong>id</strong>, <strong>gender</strong>, <strong>name</strong> (for natural language search), <strong>images</strong>(for visual search and visual browse)) all of these are optional. However the the performance of the natural language search is heavily dependent on the richness of these structured fields and is recommended that you provide as much information as possible.</p>
+<p>Try to populate as much information available for each product into these fields in the json document. Except for the fields in bold (<strong>id</strong>, <strong>gender</strong>, <strong>name</strong> (for natural language search), <strong>images</strong>(for visual search and visual browse)) all other fields are optional. However the performance of the natural language search is heavily dependent on the richness of these structured fields and is recommended that you provide as much information as possible.</p>
 
 <table><thead>
 <tr>
@@ -468,24 +471,9 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 <td>A unique identifier for the product for which there is a product page and a set of product images associated with it.</td>
 </tr>
 <tr>
-<td>url</td>
+<td><strong>gender</strong></td>
 <td>string</td>
-<td>The corresponding url of the product page.</td>
-</tr>
-<tr>
-<td>date</td>
-<td>string</td>
-<td>The date when the item was entered into the catalog, in <code class="prettyprint">YYYY-MM-DD</code> format.</td>
-</tr>
-<tr>
-<td>out_of_stock</td>
-<td>string</td>
-<td>Can either be <code class="prettyprint">yes</code> or <code class="prettyprint">no</code>. This is the field that need to be changed to <code class="prettyprint">yes</code> when a product goes out of stock. By default all search queries will not return out-of-stock products. Note that typically out of stock is at the SKU level. Ideally make this <code class="prettyprint">yes</code>  only when all SKUs for this product are out of stock.</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td><em>You will typically use this when the product will be replenished. If you think the product will be discontinued and not available again you can delete that product entirely.</em></td>
+<td>The gender for which the product is intended for, can be <code class="prettyprint">male</code>, <code class="prettyprint">female</code> or <code class="prettyprint">unisex</code>. Use <code class="prettyprint">UNK</code> if not known.</td>
 </tr>
 <tr>
 <td><strong>name</strong></td>
@@ -493,24 +481,29 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 <td>The name of the product. This is generally a free text brief description of the product.</td>
 </tr>
 <tr>
+<td>url</td>
+<td>string</td>
+<td>The corresponding url of the product page.</td>
+</tr>
+<tr>
+<td>date</td>
+<td>string</td>
+<td>The date when the item was entered into the catalog, in <code class="prettyprint">YYYY-MM-DD</code> format. You can also include time, like, <code class="prettyprint">2015-01-01T12:10:30Z</code>.</td>
+</tr>
+<tr>
+<td>out_of_stock</td>
+<td>string</td>
+<td>Can either be <code class="prettyprint">yes</code> or <code class="prettyprint">no</code>. This is the field that need to be changed to <code class="prettyprint">yes</code> when a product goes out of stock. By default all search queries will not return out-of-stock products. Note that typically out of stock is at the SKU level. Ideally make this <code class="prettyprint">yes</code>  only when all SKUs for this product are out of stock. You will typically use this when the product will be replenished. If you think the product will be discontinued and not available again you can delete that product entirely.</td>
+</tr>
+<tr>
 <td>category</td>
 <td>string</td>
 <td>The product category.</td>
 </tr>
 <tr>
-<td>visual_search_category</td>
-<td>list string</td>
-<td>A list of categories(or buckets) this product belongs to. This field is used to support category based visual search. A separate visual search index will be built with images from a particular category. While in most cases this will be same as <code class="prettyprint">category</code> field in principle this field can be differnet. For example, <code class="prettyprint">shirts</code> could be the <code class="prettyprint">category</code> while the <code class="prettyprint">visual_search_category</code> could be <code class="prettyprint">women shirts</code>. The field can also support multiple category values. For example, <code class="prettyprint">data[&#39;visual_search_category&#39;] = [&#39;tops&#39;,&#39;blouses&#39;]</code>. This means that the images corresponding to this product will be included in the visual search index for both <code class="prettyprint">tops</code> and <code class="prettyprint">blouses</code>.</td>
-</tr>
-<tr>
 <td>taxonomy</td>
 <td>string</td>
-<td>The complete product taxonomy if known, separated via <code class="prettyprint">;</code>.</td>
-</tr>
-<tr>
-<td><strong>gender</strong></td>
-<td>string</td>
-<td>The gender for which the product is intended for, can be <code class="prettyprint">male</code>, <code class="prettyprint">female</code> or <code class="prettyprint">unisex</code>.</td>
+<td>The complete product taxonomy separated via <code class="prettyprint">;</code>.</td>
 </tr>
 <tr>
 <td>age_group</td>
@@ -524,18 +517,28 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 </tr>
 <tr>
 <td></td>
-<td>image_id</td>
+<td><strong>image_id</strong></td>
 <td>The image id (string).</td>
 </tr>
 <tr>
 <td></td>
-<td>image_url</td>
-<td>The image url. The actual image will be downloaded from this url to build the visual search index. The image format can be in JPEG,PNG,BMP, or GIF.</td>
+<td><strong>image_url</strong></td>
+<td>The image url. The actual image will be automatically downloaded from this url. The image format can be in JPEG,PNG,BMP, or GIF. Note that this url should be publicly accessible for us to download the image.</td>
+</tr>
+<tr>
+<td></td>
+<td>image_filename</td>
+<td>You can optionally specify an image filename. The image will be downloaded to the specified image filename.</td>
+</tr>
+<tr>
+<td></td>
+<td>image_type</td>
+<td>Can be either <code class="prettyprint">primary</code> or <code class="prettyprint">secondary</code>. You can use this field also to categorize images.</td>
 </tr>
 <tr>
 <td></td>
 <td>ignore</td>
-<td>You can use this field to select what kind of images should be used for visual browse/search.  If <code class="prettyprint">yes</code> then the image will not be downloaded and excluded from visual browse/search. In the example on the right, we ignore all images which have close-up of some details in the product.</td>
+<td>You can use this field to select what kind of images should be used for visual browse/search. If <code class="prettyprint">yes</code> then the image will not be downloaded and excluded from visual browse/search. In the example on the right, we ignore all images which have close-up of some details in the product.</td>
 </tr>
 <tr>
 <td></td>
@@ -550,27 +553,22 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 <tr>
 <td></td>
 <td>camera_focus</td>
-<td>Which part of the model the camera is focussed on. Can take one of the following values: <code class="prettyprint">full</code> (complete view of the model, entire body), <code class="prettyprint">top</code> (upper part of the model above the waist, used in shirts etc.), <code class="prettyprint">bottom</code> (lower part of the model below the waist, used in trousers etc.), <code class="prettyprint">portrait</code> (model face, normally up to the shoulder), <code class="prettyprint">detail</code> (a close-up of some details in the product), <code class="prettyprint">outfit</code> (complete view of the model, entire body along with other apparel and accessories), <code class="prettyprint">UNK</code>.</td>
-</tr>
-<tr>
-<td></td>
-<td>image_type</td>
-<td>Can be either <code class="prettyprint">primary</code> or <code class="prettyprint">secondary</code>. You can use this field also to categorize images.</td>
+<td>Which part of the model the camera is focused on. Can take one of the following values: <code class="prettyprint">full</code> (complete view of the model, entire body), <code class="prettyprint">top</code> (upper part of the model above the waist, used in shirts etc.), <code class="prettyprint">bottom</code> (lower part of the model below the waist, used in trousers etc.), <code class="prettyprint">portrait</code> (model face, normally up to the shoulder), <code class="prettyprint">detail</code> (a close-up of some details in the product), <code class="prettyprint">outfit</code> (complete view of the model, entire body along with other apparel and accessories), <code class="prettyprint">UNK</code>.</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td><em>The fields <code class="prettyprint">ignore</code>,<code class="prettyprint">model_worn</code>, <code class="prettyprint">pose</code>, <code class="prettyprint">camera_focus</code>, and <code class="prettyprint">image_type</code> are optional.</em></td>
+<td><em>The fields <code class="prettyprint">image_filename</code>,<code class="prettyprint">image_type</code>,<code class="prettyprint">ignore</code>,<code class="prettyprint">model_worn</code>, <code class="prettyprint">pose</code>, and <code class="prettyprint">camera_focus</code> are optional.</em></td>
 </tr>
 <tr>
 <td>color</td>
 <td>list of string</td>
-<td>A list of colors terms that describe the colors in the product.</td>
+<td>A list of terms that describe the colors in the product.</td>
 </tr>
 <tr>
 <td>pattern</td>
 <td>list of string</td>
-<td>A list of pattern terms that describe the pattern on the fabric.</td>
+<td>A list of terms that describe the pattern on the fabric.</td>
 </tr>
 <tr>
 <td>fabric</td>
@@ -625,7 +623,7 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 <tr>
 <td></td>
 <td></td>
-<td><em>Note that the natural language search by default will use the sale_price field  for the queries that deal with price.</em></td>
+<td><em>Note that the natural language search by default will use the sale_price field for the queries that deal with price.</em></td>
 </tr>
 <tr>
 <td>sale_percentage</td>
@@ -640,7 +638,17 @@ curl <span class="s2">"api_endpoint_here"</span>?data_collection_opt_out<span cl
 <tr>
 <td></td>
 <td></td>
-<td><em>The catalog can have products in different currencies, and we will normalize the price internally for serving the query results.</em> (Not yet available)</td>
+<td><em>The following two fields below are for category based visual search and visual browse. For more details refer to the Visual Search API.</em></td>
+</tr>
+<tr>
+<td>visual_search_category</td>
+<td>list of string</td>
+<td>A list of categories (or buckets) this product belongs to. This field is used to support category based visual search.</td>
+</tr>
+<tr>
+<td>visual_browse_category</td>
+<td>list of string</td>
+<td>A list of categories (or buckets) this product belongs to. This field is used to support category based visual browse.</td>
 </tr>
 </tbody></table>
 
